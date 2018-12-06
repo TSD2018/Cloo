@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".CleanActivity">
+
+    <ScrollView
+            android:layout_width="368dp"
+            android:layout_height="495dp" tools:layout_editor_absoluteY="8dp" tools:layout_editor_absoluteX="8dp">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                      android:orientation="vertical">
+            <TextView
+                    android:text="TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/textView_location"/>
+            <TextView
+                    android:text="Basics"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" tools:layout_editor_absoluteY="34dp"
+                    app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp" android:id="@+id/textView_checksLabel"/>
+            <CheckBox
+                    android:text="Water Available"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/checkBoxWater"/>
+            <CheckBox
+                    android:text="Lights Working"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/checkBoxElectricity"/>
+            <CheckBox
+                    android:text="Stinks?"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/checkBoxStinks"/>
+            <CheckBox
+                    android:text="Plumbing ok?"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/checkBoxPlumbing"/>
+            <TextView
+                    android:text="Wash, Clean, Wipe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/textViewCleanAndTidy"/>
+            <CheckBox
+                    android:text="Sink"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/checkBoxSink"/>
+            <CheckBox
+                    android:text="Mirror"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/checkBoxMirror"/>
+            <CheckBox
+                    android:text="Toilets"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/checkBoxToilets"/>
+            <CheckBox
+                    android:text="Floor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/checkBoxFloor"/>
+            <CheckBox
+                    android:text="Wall Tiles"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" tools:layout_editor_absoluteY="333dp"
+                    tools:layout_editor_absoluteX="80dp" android:id="@+id/checkBoxWall"/>
+            <TextView
+                    android:text="Check Stock"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/textViewStock"/>
+            <CheckBox
+                    android:text="Soap"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" tools:layout_editor_absoluteY="374dp"
+                    tools:layout_editor_absoluteX="8dp" android:id="@+id/checkBoxSoap"/>
+            <CheckBox
+                    android:text="Tissue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/checkBoxTissue"/>
+            <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="84dp"
+                    android:inputType="none|textCapSentences|textAutoCorrect|textAutoComplete|textMultiLine"
+                    android:ems="10"
+                    tools:layout_editor_absoluteY="439dp" tools:layout_editor_absoluteX="30dp"
+                    android:id="@+id/editTextOthers" android:hint="Remarks"/>
+            <TextView
+                    android:text="Date and Time:"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/textViewTimeStampLabel"/>
+            <TextView
+                    android:text="1/11/11 1:11:11"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/textViewCleanTimeStamp"/>
+            <Button
+                    android:text="Cleaned"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/button_Cleaned"/>
+        </LinearLayout>
+    </ScrollView>
+</android.support.constraint.ConstraintLayout>
