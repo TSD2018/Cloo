@@ -96,6 +96,7 @@ class MainActivity_LocateLoo : AppCompatActivity() {
 
                     mLocationAddress!!.text = "Latitude: " + mLastLocation!!.latitude.toString() +
                             " Logitude: " + mLastLocation!!.longitude.toString()
+                    CurrentLocation.setLastLocation(mLastLocation!!)
                 } else {
                     Log.i(MainActivity_LocateLoo.TAG, "getLastLocation:exception", task.exception)
                     showMessage(getString(R.string.no_location_detected))

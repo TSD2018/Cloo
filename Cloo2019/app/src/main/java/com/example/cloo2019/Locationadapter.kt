@@ -14,6 +14,10 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main__locate_loo.*
+import java.math.RoundingMode
+import java.text.DecimalFormat
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 class Locationadapter(val mCtx: Context, val layoutResId: Int, val locationList: List<cUserInput>)
     : ArrayAdapter<cUserInput>(mCtx, layoutResId, locationList) {
@@ -30,16 +34,45 @@ class Locationadapter(val mCtx: Context, val layoutResId: Int, val locationList:
         // need to get the current latlng to compute the distance!
         // how do I get the current latlng here? should I just pass them as argument for Locationadaptor class?
 
+        val currentLocation = CurrentLocation.getLastLocation()
         val loo = locationList[position]
 
         // KARTIK _28_NOV_2018: Change the text to show the name and address of the loo. Would also need to have provision to show the distance
 
-        val distanceLat = loo.latval - 0.0 //currentLocation.latitude
-        val distanceLng = loo.lngVal - 0.0 //currentLocation.longitude
+        val distanceLat = loo.latval - currentLocation!!.latitude
+        val distanceLng = loo.lngVal - currentLocation!!.longitude
 
-        textViewLooName.text = loo.address + "\n" + distanceLat.toString() + "," + distanceLng.toString() + " ltlg away" +
+        var distance = sqrt(((distanceLat).pow(2)) + ((distanceLng).pow(2))) * 111 /*km*/ * 1000
+        var distanceStr: String
+
+        if (distance > 1000.0) {
+            var df = DecimalFormat("##.#")
+            distance = distance / 1000.0
+            df.roundingMode = RoundingMode.CEILING
+            distanceStr = df.format(distance) + " km(s) away"
+        }
+        else {
+            var df = DecimalFormat("###")
+            df.roundingMode = RoundingMode.CEILING
+            distanceStr = df.format(distance) + " mtr(s) away"
+        }
+
+        var ratings: String = "     "
+        val numStars = loo.userRating.toInt()
+
+        if(numStars == 0){
+            ratings = " N A "
+        }
+        else{
+            ratings = "*".repeat(numStars) + " ".padEnd(5-numStars)
+        }
+
+        textViewLooName.text = loo.address + "\nRating [" + ratings +"]      " + distanceStr
+
+
+/*        textViewLooName.text = loo.address + "\n" + distanceLat.toString() + "," + distanceLng.toString() + " ltlg away" +
                 "\nRating = " + loo.userRating
-
+*/
 /*        textViewLooName.text = "Lat: " + loo.latval.toString() + "Lng: " + loo.lngVal.toString() + "Alt: " +
                 loo.altVal.toString() + "Rating: " + loo.userRating.toString() + "Comments: " + loo.userComments
 */
