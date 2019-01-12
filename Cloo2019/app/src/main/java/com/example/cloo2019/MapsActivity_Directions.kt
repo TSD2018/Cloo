@@ -40,21 +40,24 @@ class MapsActivity_Directions : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var toiletID: String
     private lateinit var toiletAddress: String
+    private var userRating: Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps__directions)
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 
+        // TBD - Should be reading the FireBase DB for Toilet Master (after getting the TOILET_ID
+        // from the Intent and populating the information on the page here
+
+        toiletID = intent.getStringExtra("TOILET_ID")
+        toiletAddress = intent.getStringExtra("TOILET_ADDRESS")
+        userRating = intent.getDoubleExtra("RATING", 0.0)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-
-
-
-
     }
 
     /**
@@ -75,17 +78,12 @@ class MapsActivity_Directions : AppCompatActivity(), OnMapReadyCallback {
         val dest = LatLng(intent.getDoubleExtra("LAT", 0.0), intent.getDoubleExtra("LNG", 0.0))
         val rtng = intent.getIntExtra("RATING",0)
 
-        toiletID = intent.getStringExtra("TOILET_ID")
-        toiletAddress = intent.getStringExtra("TOILET_ADDRESS")
-
         val looAddress = findViewById<TextView>(R.id.textView_loo_address)
         val currentRating = findViewById<RatingBar>(R.id.ratingBar)
         looAddress.text = toiletAddress
         currentRating.setIsIndicator(true)
         currentRating.rating = rtng.toFloat()
 
-
-//        val sydney = LatLng(-34.0, 151.0)
         mMap.addMarker(MarkerOptions().position(dest).title("Destination"))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(dest))
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(dest, 12.0f))
@@ -123,33 +121,13 @@ class MapsActivity_Directions : AppCompatActivity(), OnMapReadyCallback {
             startActivity(i)
         }
 
-
-
         val buttonNavigate = findViewById<Button>(R.id.button_Navigate)
         buttonNavigate?.setOnClickListener {
-
-
-            /*            val i = Intent(android.content.Intent.ACTION_VIEW)
-            i.setData(Uri.parse("geo:0,0?q="+loo.latval.toString()+","+loo.lngVal.toString()))
-            val ichooser = Intent.createChooser(i, "Launch Maps")
-            startActivity(mCtx,ichooser,null)
-
-
-            https://www.google.com/maps/dir/?api=1&destination=+ dest.latitude.toString() + "," + dest.longitude.toString()
-
-
-*/
             val navigationIntentUri =
                 Uri.parse("https://www.google.com/maps/dir/?api=1&destination=" + dest.latitude.toString() + "," + dest.longitude.toString())
-//            val navigationIntentUri = Uri.parse("google.navigation:q=" + dest.latitude.toString() + "," + dest.longitude.toString())
-//            val navigationIntentUri = Uri.parse("geo:0,0?q="+dest.latitude.toString() +","+dest.longitude.toString())
             val mapIntent = Intent(Intent.ACTION_VIEW, navigationIntentUri)
             mapIntent.setPackage("com.google.android.apps.maps")
             startActivityForResult(mapIntent, 10)
-
-//            val i = Intent(this, MainActivity_AddNewLoo::class.java)
-//            startActivity(i)
-
         }
     }
 
@@ -163,69 +141,9 @@ class MapsActivity_Directions : AppCompatActivity(), OnMapReadyCallback {
             // KARTIK to pass the toilet ID
             i.putExtra("TOILET_ID", toiletID )
             i.putExtra("TOILET_ADDRESS", toiletAddress)
-
-//            val i = Intent(this, MainActivity_AddNewLoo::class.java)
             startActivity(i)
         }
     }
 
 
-    //On button press Directions, call the Navigation
-
-    /*
-    val navigationIntentUri = Uri.parse("google.navigation:q=" + newLatLng.latval.toString() + "," + newLatLng.lngVal.toString())
-    val mapIntent = Intent(Intent.ACTION_VIEW,navigationIntentUri )
-    mapIntent.setPackage("com.google.android.apps.maps")
-    startActivity(mCtx,mapIntent,null)
-*/
-
-
-/*
-                dest.latitude.toString()
-                dest.longitude.toString()
-
-                val urlDirections = "https://maps.googleapis.com/maps/api/directions/json?origin=" +
-                        currentLatLng.latitude.toString() + "," +
-                        currentLatLng.longitude.toString() + "&destination=" +
-                        dest.latitude.toString() + "," +
-                        dest.longitude.toString() + "&key=" + getString(R.string.google_maps_key)
-
-                val path: MutableList<List<LatLng>> = ArrayList()
-
-                val requestQueue = Volley.newRequestQueue(this)
-
-                val dRequest = object: StringRequest(Request.Method.GET, urlDirections, Response.Listener<String> { response ->
-//                        Toast("All is well")
-
-                    val jsonResponse = JSONObject(response)
-                    val routes = jsonResponse.getJSONArray("routes")
-                    val legs = routes.getJSONObject(0).getJSONArray("legs")
-                    val steps = legs.getJSONObject(0).getJSONArray("steps")
-
-                    for (i in 0 until steps.length()) {
-                        val points = steps.getJSONObject(i).getJSONObject("polyline").getString("points")
-//                        path.add(Po)
-                        path.add(PolyUtil.decode(points))
-                    }
-
-                    for (i in 0 until path.size) {
-                        mMap.addPolyline(PolylineOptions().addAll(path[i]).color(Color.RED))
-                    }
-
-
-                }, Response.ErrorListener{
-                    _ ->
-
-
-
-//                        Toast("Error in Listening")
-
-                    }){}
-
-                requestQueue.add(dRequest)
-
-            }
-        }
-    }
-*/
 }

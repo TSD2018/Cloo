@@ -26,10 +26,8 @@ import kotlinx.android.synthetic.main.content_janitor.*
 class JanitorActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
-
     private lateinit var toiletID: String
     private lateinit var toiletAddress: String
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,8 +37,6 @@ class JanitorActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-
-
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -55,9 +51,6 @@ class JanitorActivity : AppCompatActivity(), OnMapReadyCallback {
             if (R.id.radioButtonPrivate == checkedId) "Private"
             Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT).show()
         }
-
-
-
     }
 
     /**
@@ -73,13 +66,11 @@ class JanitorActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        // Add a marker in Sydney and move the camera
-
         val dest = LatLng(intent.getDoubleExtra("LAT", 0.0), intent.getDoubleExtra("LNG", 0.0))
-
+        val userRating = intent.getDoubleExtra("RATING",0.0)
         val latVal = dest.latitude
         val lngVal = dest.longitude
-        val altVal = 0.0
+        val altVal = intent.getDoubleExtra("ALT", 0.0)
 
         toiletID = intent.getStringExtra("TOILET_ID")
         toiletAddress = intent.getStringExtra("TOILET_ADDRESS")
@@ -108,37 +99,35 @@ class JanitorActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val saveButton = findViewById<Button>(R.id.buttonSave)
         saveButton.setOnClickListener(){
-            // Update the record with all contents into the Toilet Master for that ToiletID
-
-            // var latval: Double, var lngVal: Double, var altVal: Double, var address: String, var userRating: Int,
-            //    var toiletAccess: Int, var genderType: Int, var toiletType: Int, var maintainedBy: String, var contact: String
 
             var toiletMaster = ToiletMaster()
+            /*** TBD -- this record should be read from the ToiletMaster, populated in the UI -
+             * editable controls and overwrite editable fields and retain the non-editable fields such
+             * as lastCleanedBy, lastCleanedTimeStamp, userRating
+             */
 
-
-            toiletMaster.id = toiletID
-            toiletMaster.latval = latVal
-            toiletMaster.lngVal = lngVal
-            toiletMaster.altVal = altVal
+            toiletMaster.toiletId = toiletID
+            toiletMaster.lat = latVal
+            toiletMaster.lng= lngVal
+            toiletMaster.alt= altVal
+            toiletMaster.toiletName = ""
             toiletMaster.address = looAddress.text.toString()
-            toiletMaster.userRating = 0     // should be 0, will be computed based on the ToiletRatings
+            toiletMaster.userRating =  userRating   // retain the original read value, will be computed based on the ToiletRatings every time rating is added
             toiletMaster.toiletAccess = genderType   // should be changed to a constant to indicate PUBLIC
             toiletMaster.maintainedBy = maintainedBy.text.toString()
             toiletMaster.contact = contactJanitor.text.toString()
+            toiletMaster.toiletOwnerBy = ""
+            toiletMaster.toiletSponsor= ""
+            toiletMaster.genderType = 0
+            toiletMaster.toiletType = 0
+            toiletMaster.lastCleanedBy = "" //this will remove any existing data!
+            toiletMaster.lastCleanedTimeStamp = ""  // This will remove any existing timestamp
 
-
-            val FireDBRef = FirebaseDatabase.getInstance().getReference("toilet_master")
-
+            val FireDBRef = FirebaseDatabase.getInstance().getReference("ToiletMaster")
             FireDBRef.child(toiletID).setValue(toiletMaster).addOnCompleteListener {
                 Toast.makeText(this@JanitorActivity,"Thank you! Toilet Master Updated", Toast.LENGTH_SHORT).show()
             }
             Toast.makeText(this@JanitorActivity,"KV_DEBUG:: End of onMapReady in JanitorActivity!", Toast.LENGTH_SHORT).show()
-
-
         }
     }
-
-
-
-
 }

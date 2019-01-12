@@ -5,7 +5,10 @@ package com.example.cloo2019
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import java.time.LocalDateTime
 
 class MainActivity_Rating : AppCompatActivity() {
@@ -14,6 +17,7 @@ class MainActivity_Rating : AppCompatActivity() {
     private lateinit var editComments: EditText
 
     lateinit var toilet_id: String
+    var masterRating: Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +30,7 @@ class MainActivity_Rating : AppCompatActivity() {
 
         LocationAddress.text = intent.getStringExtra("TOILET_ADDRESS")
         toilet_id = intent.getStringExtra("TOILET_ID")
+        masterRating = intent.getDoubleExtra("RATING", 0.0)
 
         if(ratingBar!=null){
             val buttonSubmit=findViewById<Button>(R.id.button_submit_close)
@@ -35,7 +40,6 @@ class MainActivity_Rating : AppCompatActivity() {
 
                 val msg_Comments = editComments.text
 
-                val current = LocalDateTime.now()
 
                 saveUserRatings()
             }
@@ -48,12 +52,14 @@ class MainActivity_Rating : AppCompatActivity() {
 
         val userComments: String
         val ChosenRating: Int
-        val current = LocalDateTime.now()
+        val current = CurrentTimeStamp().getString()
+        val userID: String = ""
 
         userComments = editComments.text.toString()
         ChosenRating = ratingBar.rating.toInt()
 
-        val FireDBRef = FirebaseDatabase.getInstance().getReference("toilet_ratings")
+        val FireDBRef = FirebaseDatabase.getInstance().getReference("ToiletRating/$toilet_id")
+//        val FireDBRef = FirebaseDatabase.getInstance().getReference("toilet_ratings")
         val userRatingId = FireDBRef.push().key
 
         if(userRatingId == null) {
@@ -61,7 +67,7 @@ class MainActivity_Rating : AppCompatActivity() {
             return
         }
 
-        val asb = UserRating(userRatingId, toilet_id, ChosenRating, userComments)
+        val asb = UserRating(userRatingId, toilet_id, userID, ChosenRating, userComments,current)
 
         FireDBRef.child(userRatingId).setValue(asb).addOnCompleteListener {
             Toast.makeText(this@MainActivity_Rating,"Thank you! Rating Saved", Toast.LENGTH_SHORT).show()
