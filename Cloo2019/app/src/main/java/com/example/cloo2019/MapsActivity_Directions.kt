@@ -41,6 +41,7 @@ class MapsActivity_Directions : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var toiletID: String
     private lateinit var toiletAddress: String
     private var userRating: Double = 0.0
+    private lateinit var lastCleanedTimeStamp: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +54,9 @@ class MapsActivity_Directions : AppCompatActivity(), OnMapReadyCallback {
         toiletID = intent.getStringExtra("TOILET_ID")
         toiletAddress = intent.getStringExtra("TOILET_ADDRESS")
         userRating = intent.getDoubleExtra("RATING", 0.0)
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
 
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
@@ -77,12 +80,18 @@ class MapsActivity_Directions : AppCompatActivity(), OnMapReadyCallback {
 
         val dest = LatLng(intent.getDoubleExtra("LAT", 0.0), intent.getDoubleExtra("LNG", 0.0))
         val rtng = intent.getIntExtra("RATING",0)
+        lastCleanedTimeStamp = intent.getStringExtra("LAST_CLEANED")
 
         val looAddress = findViewById<TextView>(R.id.textView_loo_address)
         val currentRating = findViewById<RatingBar>(R.id.ratingBar)
         looAddress.text = toiletAddress
         currentRating.setIsIndicator(true)
         currentRating.rating = rtng.toFloat()
+
+        val lastCleanedTimeStampTextView = findViewById<TextView>(R.id.textViewCleanTimeStamp)
+        lastCleanedTimeStampTextView!!.text = lastCleanedTimeStamp  // will take care of showing timestamp on load
+        // TBD: Need to take care of the same, when the Toilet is cleaned, this needs to be updated again
+
 
         mMap.addMarker(MarkerOptions().position(dest).title("Destination"))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(dest))

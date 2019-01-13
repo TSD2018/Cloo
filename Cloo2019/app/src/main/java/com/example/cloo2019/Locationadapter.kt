@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main__locate_loo.*
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -30,6 +31,20 @@ class Locationadapter(val mCtx: Context, val layoutResId: Int, val locationList:
         val textViewLooName = view.findViewById<TextView>(R.id.textView_looName)
 
         val currentLocation = CurrentLocation.getLastLocation()
+
+        /***** 13 Jan 2019:Kartik TOP *********/
+        // Added the check for currentLocation == null, incase the location services are turned off
+        // and/or getLastLocation returns null.
+        // TBD: There is a function to force get the location, which google maps use.  Need to find
+        // that and use the same.  would need to decide if it should be done here or on the Create
+        // of the landing page (which might be better :))
+        if (currentLocation == null){
+            Toast.makeText(mCtx, "Location unknown, please restart with location set.",Toast.LENGTH_SHORT).show()
+            return view
+        }
+        // Hopefully the above check should prevent the application from crashing on startup when
+        // location is not available
+        /***** 13 Jan 2019:Kartik END *********/
         val loo = locationList[position]
         val distanceLat = loo.lat - currentLocation!!.latitude
         val distanceLng = loo.lng - currentLocation!!.longitude
@@ -59,7 +74,8 @@ class Locationadapter(val mCtx: Context, val layoutResId: Int, val locationList:
             ratings = "*".repeat(numStars) + " ".padEnd(5-numStars)
         }
 
-        textViewLooName.text = loo.address + "\nRating [" + ratings +"]      " + distanceStr
+        var lastCleanedTimeStamp = CurrentTimeStamp().getPresentableTimeString(loo.lastCleanedTimeStamp)
+        textViewLooName.text = loo.address + "\nRating [" + ratings +"]      " + distanceStr + "\nCleaned on: $lastCleanedTimeStamp"
 
         textViewLooName.setOnClickListener {
             val i = Intent(mCtx, MapsActivity_Directions::class.java)
@@ -69,6 +85,7 @@ class Locationadapter(val mCtx: Context, val layoutResId: Int, val locationList:
             i.putExtra("RATING", loo.userRating)
             i.putExtra("TOILET_ADDRESS", loo.address)
             i.putExtra("TOILET_ID", loo.toiletId )
+            i.putExtra("LAST_CLEANED", lastCleanedTimeStamp)
             startActivity(mCtx,i,null)
         }
         return view

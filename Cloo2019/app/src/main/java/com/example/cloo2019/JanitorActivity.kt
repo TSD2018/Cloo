@@ -106,6 +106,7 @@ class JanitorActivity : AppCompatActivity(), OnMapReadyCallback {
              * as lastCleanedBy, lastCleanedTimeStamp, userRating
              */
 
+
             toiletMaster.toiletId = toiletID
             toiletMaster.lat = latVal
             toiletMaster.lng= lngVal

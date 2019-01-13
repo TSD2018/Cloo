@@ -13,6 +13,21 @@
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                       android:orientation="vertical">
             <TextView
+                    android:text="1/11/11 1:11:11"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/textViewCleanTimeStamp"/>
+            <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="84dp"
+                    android:inputType="none|textCapSentences|textAutoCorrect|textAutoComplete|textMultiLine"
+                    android:ems="10"
+                    tools:layout_editor_absoluteY="439dp" tools:layout_editor_absoluteX="30dp"
+                    android:id="@+id/editTextOthers" android:hint="Remarks"/>
+            <Button
+                    android:text="Cleaned"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/button_Cleaned"/>
+            <TextView
                     android:text="TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:id="@+id/textView_location"/>
@@ -76,25 +91,6 @@
                     android:text="Tissue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/checkBoxTissue"/>
-            <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="84dp"
-                    android:inputType="none|textCapSentences|textAutoCorrect|textAutoComplete|textMultiLine"
-                    android:ems="10"
-                    tools:layout_editor_absoluteY="439dp" tools:layout_editor_absoluteX="30dp"
-                    android:id="@+id/editTextOthers" android:hint="Remarks"/>
-            <TextView
-                    android:text="Date and Time:"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/textViewTimeStampLabel"/>
-            <TextView
-                    android:text="1/11/11 1:11:11"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/textViewCleanTimeStamp"/>
-            <Button
-                    android:text="Cleaned"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/button_Cleaned"/>
         </LinearLayout>
     </ScrollView>
 </android.support.constraint.ConstraintLayout>

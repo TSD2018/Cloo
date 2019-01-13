@@ -5,10 +5,7 @@ package com.example.cloo2019
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -24,6 +21,9 @@ class CleanActivity : AppCompatActivity() {
         var toiletID: String = intent.getStringExtra("TOILET_ID")
         val buttonCleaned = findViewById<Button>(R.id.button_Cleaned)
         val janitorComments: EditText = findViewById(R.id.editTextOthers)
+        var timeStamp = findViewById<TextView>(R.id.textViewCleanTimeStamp)
+        timeStamp!!.text = CurrentTimeStamp().getPresentableTimeString(CurrentTimeStamp().getString())
+
         val janitorID: String = "Test Name, should come from Janitor login"
         var recordTime: String = "Test, should include the system timestamp"
 
