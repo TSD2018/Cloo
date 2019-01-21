@@ -30,4 +30,5 @@
     <string name="button_go">Directions</string>
     <string name="title_activity_janitor">JanitorActivity</string>
 
+    <string-array name="Gender"/>
 </resources>

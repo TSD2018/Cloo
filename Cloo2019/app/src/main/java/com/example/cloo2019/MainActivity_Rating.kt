@@ -5,11 +5,7 @@ package com.example.cloo2019
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import java.time.LocalDateTime
 
 class MainActivity_Rating : AppCompatActivity() {
 
@@ -24,7 +20,7 @@ class MainActivity_Rating : AppCompatActivity() {
 
         setContentView(R.layout.activity_main__rating)
 
-        val LocationAddress = findViewById<TextView>(R.id.textView_location)
+        val LocationAddress = findViewById<TextView>(R.id.textView_toiletName)
         ratingBar = findViewById(R.id.ratingBar2)
         editComments = findViewById(R.id.editText_comment)
 

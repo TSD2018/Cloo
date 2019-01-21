@@ -18,14 +18,24 @@ class CleanActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_clean)
 
-        var toiletID: String = intent.getStringExtra("TOILET_ID")
+        val toiletID: String = intent.getStringExtra("TOILET_ID")
+        val toiletName: String = intent.getStringExtra("TOILET_NAME")
+        val janitorName: String = intent.getStringExtra("TOILET_JANITOR")
+
+
+        val textToiletName = findViewById<TextView >(R.id.textView_toiletName)
+        textToiletName.text = toiletName
+
+        val textJanitorName = findViewById<EditText>(R.id.editText_JanitorName)
+        textJanitorName.setText(janitorName)
+
         val buttonCleaned = findViewById<Button>(R.id.button_Cleaned)
         val janitorComments: EditText = findViewById(R.id.editTextOthers)
         var timeStamp = findViewById<TextView>(R.id.textViewCleanTimeStamp)
         timeStamp!!.text = CurrentTimeStamp().getPresentableTimeString(CurrentTimeStamp().getString())
 
-        val janitorID: String = "Test Name, should come from Janitor login"
-        var recordTime: String = "Test, should include the system timestamp"
+//        val janitorID: String = "Test Name, should come from Janitor login"
+//        var recordTime: String = "Test, should include the system timestamp"
 
         buttonCleaned.setOnClickListener(){
             val waterAvailable: CheckBox = findViewById(R.id.checkBoxWater)
@@ -39,7 +49,7 @@ class CleanActivity : AppCompatActivity() {
             val wallTiles: CheckBox = findViewById(R.id.checkBoxWall)
             val soap: CheckBox = findViewById(R.id.checkBoxSoap)
             val tissue: CheckBox = findViewById(R.id.checkBoxTissue)
-            recordTime = CurrentTimeStamp().getString()
+            val recordTime = CurrentTimeStamp().getString()
 
 /*            var cleanedToilet = CleanedRecord()
             cleanedToilet.toiletId = toiletID
@@ -80,7 +90,7 @@ class CleanActivity : AppCompatActivity() {
                     tissue.isChecked,
                     janitorComments.text.toString(),
                     CurrentTimeStamp().getString(),
-                    janitorID)
+                    janitorName)
 
                FireDBRef.child(cleanedRecordId).setValue(cleanedToilet).addOnCompleteListener {
                     Toast.makeText(this@CleanActivity, "Thank you! Cleaned Record Submitted", Toast.LENGTH_SHORT).show()
@@ -91,7 +101,7 @@ class CleanActivity : AppCompatActivity() {
 /****** TODO: 10-Jan-2019: Kartik TOP *****/
             val toiletDBRef = FirebaseDatabase.getInstance().getReference("ToiletMaster/$toiletID")
             toiletDBRef.child("lastCleanedTimeStamp").setValue(recordTime)
-            toiletDBRef.child("lastCleanedBy").setValue(janitorID)
+            toiletDBRef.child("lastCleanedBy").setValue(textJanitorName.text.toString())
 /****** TODO: 10-Jan-2019: Kartik END *****/
             finish()
         }

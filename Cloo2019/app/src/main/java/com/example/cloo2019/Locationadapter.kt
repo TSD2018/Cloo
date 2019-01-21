@@ -74,8 +74,38 @@ class Locationadapter(val mCtx: Context, val layoutResId: Int, val locationList:
             ratings = "*".repeat(numStars) + " ".padEnd(5-numStars)
         }
 
-        var lastCleanedTimeStamp = CurrentTimeStamp().getPresentableTimeString(loo.lastCleanedTimeStamp)
-        textViewLooName.text = loo.address + "\nRating [" + ratings +"]      " + distanceStr + "\nCleaned on: $lastCleanedTimeStamp"
+        var lastCleanedTimeStampPresentable = CurrentTimeStamp().getPresentableTimeString(loo.lastCleanedTimeStamp)
+        textViewLooName.text = loo.address + "\nRating [" + ratings +"]      " + distanceStr + "\nCleaned on: $lastCleanedTimeStampPresentable"
+
+        var toiletAccessType = ""
+
+        when(loo.toiletAccess) {
+            1 -> {toiletAccessType = "Free Public Toilet"}
+            2 -> {toiletAccessType = "Pay and Use Toilet"}
+            3 -> {toiletAccessType = "For Customers Only"}
+            4 -> {toiletAccessType = "Restricted Entry"}
+            5 -> {toiletAccessType = "Private"}
+            else -> {toiletAccessType = "Toilet Access Unknown"}
+        }
+
+        var toiletGender = "Toilet for: "
+        when (loo.genderType){
+            1 -> {toiletGender = toiletGender +"Gents Only"}
+            2 -> {toiletGender = toiletGender +"Ladies Only"}
+            3 -> {toiletGender = toiletGender +"Ladies and Gents (Separate)"}
+            4 -> {toiletGender = toiletGender +"Unisex"}
+            else -> {toiletGender = toiletGender +"unknown"}
+        }
+
+        var toiletType = "Toilet Style: "
+        when (loo.toiletType) {
+            1 -> {toiletType = toiletType + "Western"}
+            2 -> {toiletType = toiletType + "Indian"}
+            3 -> {toiletType = toiletType + "Urinals only"}
+            else -> {toiletType = toiletType + "unknown"}
+        }
+
+        var toiletFeatures = toiletAccessType + "\n" + toiletGender + "\n" + toiletType
 
         textViewLooName.setOnClickListener {
             val i = Intent(mCtx, MapsActivity_Directions::class.java)
@@ -85,7 +115,18 @@ class Locationadapter(val mCtx: Context, val layoutResId: Int, val locationList:
             i.putExtra("RATING", loo.userRating)
             i.putExtra("TOILET_ADDRESS", loo.address)
             i.putExtra("TOILET_ID", loo.toiletId )
-            i.putExtra("LAST_CLEANED", lastCleanedTimeStamp)
+            i.putExtra("LAST_CLEANED_PRESENTABLE", lastCleanedTimeStampPresentable)
+            i.putExtra("LAST_CLEANED", loo.lastCleanedTimeStamp)
+            i.putExtra("TOILET_FEATURES",toiletFeatures)
+            i.putExtra("TOILET_GENDER", loo.genderType )
+            i.putExtra("TOILET_ACCESS", loo.toiletAccess)
+            i.putExtra("TOILET_CONTACT", loo.contact)
+            i.putExtra("TOILET_JANITOR", loo.lastCleanedBy)
+            i.putExtra("TOILET_MAINTAINEDBY", loo.maintainedBy)
+            i.putExtra("TOILET_NAME", loo.toiletName)
+            i.putExtra("TOILET_OWNEDBY", loo.toiletOwnerBy)
+            i.putExtra("TOILET_SPONSOR", loo.toiletSponsor)
+            i.putExtra("TOILET_TYPE", loo.toiletType)
             startActivity(mCtx,i,null)
         }
         return view

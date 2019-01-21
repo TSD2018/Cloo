@@ -40,8 +40,23 @@ class MapsActivity_Directions : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var toiletID: String
     private lateinit var toiletAddress: String
+    private var lat: Double = 0.0
+    private var lng: Double = 0.0
+    private var alt: Double = 0.0
     private var userRating: Double = 0.0
     private lateinit var lastCleanedTimeStamp: String
+    private lateinit var lastCleanedTimeStampPresentable: String
+
+    private lateinit var toiletContact: String
+    private lateinit var toiletJanitor: String
+    private lateinit var toiletMaintainedBy: String
+    private lateinit var toiletName: String
+    private lateinit var toiletOwnedBy: String
+    private lateinit var toiletSponsor: String
+
+    private var genderType: Int = 0
+    private var toiletAccess: Int = 0
+    private var toiletType: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,9 +66,32 @@ class MapsActivity_Directions : AppCompatActivity(), OnMapReadyCallback {
         // TBD - Should be reading the FireBase DB for Toilet Master (after getting the TOILET_ID
         // from the Intent and populating the information on the page here
 
+        lat = intent.getDoubleExtra("LAT", 0.0)
+        lng = intent.getDoubleExtra("LNG", 0.0)
+        alt = intent.getDoubleExtra("ALT", 0.0)
+
+        genderType = intent.getIntExtra("TOILET_GENDER",0)
+        toiletAccess = intent.getIntExtra("TOILET_ACCESS", 0)
+        toiletType = intent.getIntExtra("TOILET_TYPE", 0)
+
+        toiletContact = intent.getStringExtra("TOILET_CONTACT")
+        toiletJanitor = intent.getStringExtra("TOILET_JANITOR")
+        toiletMaintainedBy = intent.getStringExtra("TOILET_MAINTAINEDBY")
+        toiletName= intent.getStringExtra("TOILET_NAME")
+        toiletOwnedBy= intent.getStringExtra("TOILET_OWNEDBY")
+        toiletSponsor = intent.getStringExtra("TOILET_SPONSOR")
+
         toiletID = intent.getStringExtra("TOILET_ID")
         toiletAddress = intent.getStringExtra("TOILET_ADDRESS")
         userRating = intent.getDoubleExtra("RATING", 0.0)
+
+        lastCleanedTimeStamp = intent.getStringExtra("LAST_CLEANED")
+        lastCleanedTimeStampPresentable = intent.getStringExtra("LAST_CLEANED_PRESENTABLE")
+
+        val toiletFeatures = intent.getStringExtra("TOILET_FEATURES")
+
+        var toiletFeaturesView = findViewById<TextView>(R.id.textView_feature)
+        toiletFeaturesView.setText(toiletFeatures)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
@@ -78,18 +116,16 @@ class MapsActivity_Directions : AppCompatActivity(), OnMapReadyCallback {
 
         // Add a marker in Sydney and move the camera
 
-        val dest = LatLng(intent.getDoubleExtra("LAT", 0.0), intent.getDoubleExtra("LNG", 0.0))
-        val rtng = intent.getIntExtra("RATING",0)
-        lastCleanedTimeStamp = intent.getStringExtra("LAST_CLEANED")
+        val dest = LatLng(lat, lng)
 
         val looAddress = findViewById<TextView>(R.id.textView_loo_address)
         val currentRating = findViewById<RatingBar>(R.id.ratingBar)
         looAddress.text = toiletAddress
         currentRating.setIsIndicator(true)
-        currentRating.rating = rtng.toFloat()
+        currentRating.rating = userRating.toFloat()
 
         val lastCleanedTimeStampTextView = findViewById<TextView>(R.id.textViewCleanTimeStamp)
-        lastCleanedTimeStampTextView!!.text = lastCleanedTimeStamp  // will take care of showing timestamp on load
+        lastCleanedTimeStampTextView!!.text = lastCleanedTimeStampPresentable  // will take care of showing timestamp on load
         // TBD: Need to take care of the same, when the Toilet is cleaned, this needs to be updated again
 
 
@@ -116,10 +152,25 @@ class MapsActivity_Directions : AppCompatActivity(), OnMapReadyCallback {
         val buttonJanitor = findViewById<Button>(R.id.button_Janitor)
         buttonJanitor?.setOnClickListener {
             val i = Intent(this, JanitorActivity::class.java)
-            i.putExtra("LAT", intent.getDoubleExtra("LAT", 0.0))
-            i.putExtra("LNG", intent.getDoubleExtra("LNG", 0.0))
+            i.putExtra("LAT", lat)
+            i.putExtra("LNG", lng)
             i.putExtra("TOILET_ADDRESS", toiletAddress)
             i.putExtra("TOILET_ID", toiletID )
+
+            i.putExtra("ALT", alt)
+            i.putExtra("RATING", userRating)
+            i.putExtra("LAST_CLEANED", lastCleanedTimeStamp)
+            i.putExtra("LAST_CLEANED_PRESENTABLE", lastCleanedTimeStampPresentable)
+            i.putExtra("TOILET_GENDER", genderType)
+            i.putExtra("TOILET_ACCESS", toiletAccess)
+            i.putExtra("TOILET_CONTACT", toiletContact)
+            i.putExtra("TOILET_JANITOR", toiletJanitor)
+            i.putExtra("TOILET_MAINTAINEDBY", toiletMaintainedBy)
+            i.putExtra("TOILET_NAME", toiletName)
+            i.putExtra("TOILET_OWNEDBY", toiletOwnedBy)
+            i.putExtra("TOILET_SPONSOR", toiletSponsor)
+            i.putExtra("TOILET_TYPE", toiletType)
+
             startActivity(i)
         }
 
@@ -127,6 +178,8 @@ class MapsActivity_Directions : AppCompatActivity(), OnMapReadyCallback {
         buttonClean?.setOnClickListener {
             val i = Intent(this, CleanActivity::class.java)
             i.putExtra("TOILET_ID", toiletID )
+            i.putExtra("TOILET_NAME", toiletName)
+            i.putExtra("TOILET_JANITOR", toiletJanitor)
             startActivity(i)
         }
 
