@@ -57,16 +57,17 @@
             android:layout_height="wrap_content"
             android:id="@+id/textView_features_label"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginLeft="8dp" android:layout_marginStart="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/textView_loo_address" android:layout_marginTop="8dp"/>
+            android:layout_marginLeft="28dp" android:layout_marginStart="28dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView_loo_address" android:layout_marginTop="16dp"/>
     <TextView
             android:text="Feature data"
             android:layout_width="364dp"
-            android:layout_height="52dp"
+            android:layout_height="wrap_content"
             android:id="@+id/textView_feature"
             app:layout_constraintTop_toBottomOf="@+id/textView_features_label"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp" android:layout_marginTop="8dp"/>
+            android:layout_marginStart="8dp" android:layout_marginTop="8dp" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" android:layout_marginRight="8dp"/>
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" tools:layout_editor_absoluteX="17dp"
@@ -81,13 +82,14 @@
             app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"/>
     <TextView
-            android:text="TextView"
-            android:layout_width="wrap_content"
+            android:text="actvity_maps_directions_JantorName"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/textview_JanitorName"
             app:layout_constraintStart_toEndOf="@+id/textView_JanitorLabel"
             android:layout_marginLeft="8dp" android:layout_marginStart="8dp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/textView_JanitorLabel"/>
+            app:layout_constraintBaseline_toBaselineOf="@+id/textView_JanitorLabel"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:layout_marginRight="8dp"/>
     <Button
             android:text="Update Record"
             android:layout_width="wrap_content"
@@ -105,12 +107,13 @@
             app:layout_constraintBottom_toBottomOf="parent"/>
     <TextView
             android:text="TextView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/textViewCleanTimeStamp"
             app:layout_constraintStart_toEndOf="@+id/textViewCleanedOnLabel"
             app:layout_constraintBaseline_toBaselineOf="@+id/textViewCleanedOnLabel"
-            android:layout_marginLeft="8dp" android:layout_marginStart="8dp"/>
+            android:layout_marginLeft="8dp" android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" android:layout_marginRight="8dp"/>
     <TextView
             android:text="Cleaned on:"
             android:layout_width="wrap_content"

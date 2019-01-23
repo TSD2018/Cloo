@@ -14,6 +14,11 @@ class MainActivity_Rating : AppCompatActivity() {
 
     lateinit var toilet_id: String
     var masterRating: Double = 0.0
+    private var ratingSum: Int = 0
+    private var numberOfRatings: Int = 0
+    private var ratingSumLifeTime: Int = 0
+    private var numberOfRatingsLifeTime: Int = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +32,10 @@ class MainActivity_Rating : AppCompatActivity() {
         LocationAddress.text = intent.getStringExtra("TOILET_ADDRESS")
         toilet_id = intent.getStringExtra("TOILET_ID")
         masterRating = intent.getDoubleExtra("RATING", 0.0)
+        ratingSum = intent.getIntExtra("RATING_SUM", 0)
+        numberOfRatings = intent.getIntExtra("NUMBER_OF_RATINGS", 0)
+        ratingSumLifeTime = intent.getIntExtra("RATING_SUM_LIFETIME", 0)
+        numberOfRatingsLifeTime = intent.getIntExtra("NUMBER_OF_RATINGS_LIFETIME", 0)
 
         if(ratingBar!=null){
             val buttonSubmit=findViewById<Button>(R.id.button_submit_close)
@@ -35,7 +44,6 @@ class MainActivity_Rating : AppCompatActivity() {
                 Toast.makeText(this@MainActivity_Rating, msg, Toast.LENGTH_SHORT).show()
 
                 val msg_Comments = editComments.text
-
 
                 saveUserRatings()
             }
@@ -69,6 +77,27 @@ class MainActivity_Rating : AppCompatActivity() {
             Toast.makeText(this@MainActivity_Rating,"Thank you! Rating Saved", Toast.LENGTH_SHORT).show()
         }
         Toast.makeText(this@MainActivity_Rating,"Done!", Toast.LENGTH_SHORT).show()
+
+        /****** TODO: 23-Jan-2019: Kartik TOP *****/
+        //Read existing values and then update.
+
+        val toiletDBRef = FirebaseDatabase.getInstance().getReference("ToiletMaster/$toilet_id")
+
+        ratingSum += ChosenRating
+        numberOfRatings += 1
+
+        toiletDBRef.child("ratingSum").setValue(ratingSum)
+        toiletDBRef.child("numberOfRatings").setValue(numberOfRatings)
+
+        ratingSumLifeTime += ChosenRating
+        numberOfRatingsLifeTime += 1
+
+        toiletDBRef.child("ratingSumLifeTime").setValue(ratingSumLifeTime)
+        toiletDBRef.child("numberOfRatingsLifeTime").setValue(numberOfRatingsLifeTime)
+
+        /****** TODO: 23-Jan-2019: Kartik END *****/
+
+
 
         finish()
     }

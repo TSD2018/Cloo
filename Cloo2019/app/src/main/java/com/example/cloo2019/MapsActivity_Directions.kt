@@ -46,6 +46,10 @@ class MapsActivity_Directions : AppCompatActivity(), OnMapReadyCallback {
     private var userRating: Double = 0.0
     private lateinit var lastCleanedTimeStamp: String
     private lateinit var lastCleanedTimeStampPresentable: String
+    private var ratingSum: Int = 0
+    private var numberOfRatings: Int = 0
+    private var ratingSumLifeTime: Int = 0
+    private var numberOfRatingsLifeTime: Int = 0
 
     private lateinit var toiletContact: String
     private lateinit var toiletJanitor: String
@@ -85,6 +89,13 @@ class MapsActivity_Directions : AppCompatActivity(), OnMapReadyCallback {
         toiletAddress = intent.getStringExtra("TOILET_ADDRESS")
         userRating = intent.getDoubleExtra("RATING", 0.0)
 
+        ratingSum = intent.getIntExtra("RATING_SUM", 0)
+        numberOfRatings = intent.getIntExtra("NUMBER_OF_RATINGS", 0)
+        ratingSumLifeTime = intent.getIntExtra("RATING_SUM_LIFETIME", 0)
+        numberOfRatingsLifeTime = intent.getIntExtra("NUMBER_OF_RATINGS_LIFETIME", 0)
+
+
+
         lastCleanedTimeStamp = intent.getStringExtra("LAST_CLEANED")
         lastCleanedTimeStampPresentable = intent.getStringExtra("LAST_CLEANED_PRESENTABLE")
 
@@ -122,7 +133,10 @@ class MapsActivity_Directions : AppCompatActivity(), OnMapReadyCallback {
         val currentRating = findViewById<RatingBar>(R.id.ratingBar)
         looAddress.text = toiletAddress
         currentRating.setIsIndicator(true)
-        currentRating.rating = userRating.toFloat()
+        if(numberOfRatings > 0)
+            currentRating.rating = (ratingSum / numberOfRatings).toFloat()
+        else
+            currentRating.rating = 0.0F
 
         val lastCleanedTimeStampTextView = findViewById<TextView>(R.id.textViewCleanTimeStamp)
         lastCleanedTimeStampTextView!!.text = lastCleanedTimeStampPresentable  // will take care of showing timestamp on load
@@ -170,6 +184,10 @@ class MapsActivity_Directions : AppCompatActivity(), OnMapReadyCallback {
             i.putExtra("TOILET_OWNEDBY", toiletOwnedBy)
             i.putExtra("TOILET_SPONSOR", toiletSponsor)
             i.putExtra("TOILET_TYPE", toiletType)
+            i.putExtra("RATING_SUM", ratingSum)
+            i.putExtra("NUMBER_OF_RATINGS", numberOfRatings)
+            i.putExtra("RATING_SUM_LIFETIME", ratingSumLifeTime)
+            i.putExtra("NUMBER_OF_RATINGS_LIFETIME", numberOfRatingsLifeTime)
 
             startActivity(i)
         }
@@ -180,6 +198,10 @@ class MapsActivity_Directions : AppCompatActivity(), OnMapReadyCallback {
             i.putExtra("TOILET_ID", toiletID )
             i.putExtra("TOILET_NAME", toiletName)
             i.putExtra("TOILET_JANITOR", toiletJanitor)
+
+            // User ratings are reset to 0 after toilet is cleaned
+            // No need to share the current values with this intent
+
             startActivity(i)
         }
 
@@ -203,6 +225,12 @@ class MapsActivity_Directions : AppCompatActivity(), OnMapReadyCallback {
             // KARTIK to pass the toilet ID
             i.putExtra("TOILET_ID", toiletID )
             i.putExtra("TOILET_ADDRESS", toiletAddress)
+            i.putExtra("RATING_SUM", ratingSum)
+            i.putExtra("NUMBER_OF_RATINGS", numberOfRatings)
+            i.putExtra("RATING_SUM_LIFETIME", ratingSumLifeTime)
+            i.putExtra("NUMBER_OF_RATINGS_LIFETIME", numberOfRatingsLifeTime)
+
+
             startActivity(i)
         }
     }

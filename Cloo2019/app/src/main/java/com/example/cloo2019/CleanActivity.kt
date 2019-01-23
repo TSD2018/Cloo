@@ -98,11 +98,15 @@ class CleanActivity : AppCompatActivity() {
             }
             Toast.makeText(this@CleanActivity,"KV_DEBUG:: End of Cleaned in CleanActivity!", Toast.LENGTH_SHORT).show()
 
-/****** TODO: 10-Jan-2019: Kartik TOP *****/
+/****** TODO: 23-Jan-2019: Kartik TOP *****/
             val toiletDBRef = FirebaseDatabase.getInstance().getReference("ToiletMaster/$toiletID")
             toiletDBRef.child("lastCleanedTimeStamp").setValue(recordTime)
             toiletDBRef.child("lastCleanedBy").setValue(textJanitorName.text.toString())
-/****** TODO: 10-Jan-2019: Kartik END *****/
+
+            toiletDBRef.child("ratingSum").setValue(0)       // value is reset to 0
+            toiletDBRef.child("numberOfRatings").setValue(0)    // value is reset to 0
+
+/****** TODO:23-Jan-2019: Kartik END *****/
             finish()
         }
     }

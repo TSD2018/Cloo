@@ -52,7 +52,7 @@
     <EditText
             android:layout_width="327dp"
             android:layout_height="105dp"
-            android:inputType="textMultiLine|textPersonName"
+            android:inputType="textMultiLine|textCapSentences|textAutoComplete"
             android:ems="10"
             android:id="@+id/editText_LooRatingComments" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="8dp"

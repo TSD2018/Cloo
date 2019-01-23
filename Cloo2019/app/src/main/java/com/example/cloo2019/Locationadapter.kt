@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.activity_main__locate_loo.*
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import kotlin.math.pow
+import kotlin.math.round
 import kotlin.math.sqrt
 
 /******* 8-JAN-2019:KARTIK_V1 TOP *****/
@@ -65,7 +66,13 @@ class Locationadapter(val mCtx: Context, val layoutResId: Int, val locationList:
         }
 
         var ratings: String = "     "
-        val numStars = loo.userRating.toInt()
+//        val numStars = loo.userRating.toInt()
+
+        var numStars = 0
+        if(loo.numberOfRatings > 0 )
+            numStars = round((loo.ratingSum.toDouble() / loo.numberOfRatings.toDouble())).toInt()
+        else
+            numStars = 0
 
         if(numStars == 0){
             ratings = " N A "
@@ -75,7 +82,8 @@ class Locationadapter(val mCtx: Context, val layoutResId: Int, val locationList:
         }
 
         var lastCleanedTimeStampPresentable = CurrentTimeStamp().getPresentableTimeString(loo.lastCleanedTimeStamp)
-        textViewLooName.text = loo.address + "\nRating [" + ratings +"]      " + distanceStr + "\nCleaned on: $lastCleanedTimeStampPresentable"
+//        textViewLooName.text = loo.address + "\nRating [" + ratings +"]      " + distanceStr + "\nCleaned on: $lastCleanedTimeStampPresentable"
+        textViewLooName.text = loo.toiletName + "\nRating [" + ratings +"]      " + distanceStr + "\nCleaned on: $lastCleanedTimeStampPresentable"
 
         var toiletAccessType = ""
 
@@ -127,6 +135,10 @@ class Locationadapter(val mCtx: Context, val layoutResId: Int, val locationList:
             i.putExtra("TOILET_OWNEDBY", loo.toiletOwnerBy)
             i.putExtra("TOILET_SPONSOR", loo.toiletSponsor)
             i.putExtra("TOILET_TYPE", loo.toiletType)
+            i.putExtra("RATING_SUM", loo.ratingSum)
+            i.putExtra("NUMBER_OF_RATINGS", loo.numberOfRatings)
+            i.putExtra("RATING_SUM_LIFETIME", loo.ratingSumLifeTime)
+            i.putExtra("NUMBER_OF_RATINGS_LIFETIME", loo.numberOfRatingsLifeTime)
             startActivity(mCtx,i,null)
         }
         return view

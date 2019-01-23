@@ -57,6 +57,12 @@ class JanitorActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var checkIndianPan: CheckBox
     private lateinit var checkUrinal: CheckBox
 
+    private var ratingSum: Int = 0
+    private var numberOfRatings: Int = 0
+    private var ratingSumLifeTime: Int = 0
+    private var numberOfRatingsLifeTime: Int = 0
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_janitor)
@@ -80,6 +86,12 @@ class JanitorActivity : AppCompatActivity(), OnMapReadyCallback {
         userRating = intent.getDoubleExtra("RATING", 0.0)
         lastCleanedTimeStamp = intent.getStringExtra("LAST_CLEANED")
         lastCleanedTimeStampPresentable = intent.getStringExtra("LAST_CLEANED_PRESENTABLE")
+
+        ratingSum = intent.getIntExtra("RATING_SUM", 0)
+        numberOfRatings = intent.getIntExtra("NUMBER_OF_RATINGS", 0)
+        ratingSumLifeTime = intent.getIntExtra("RATING_SUM_LIFETIME", 0)
+        numberOfRatingsLifeTime = intent.getIntExtra("NUMBER_OF_RATINGS_LIFETIME", 0)
+
 
         editToiletName = findViewById<EditText>(R.id.editText_ToiletName)
         editToiletName.setText(toiletName)
@@ -254,6 +266,12 @@ class JanitorActivity : AppCompatActivity(), OnMapReadyCallback {
             toiletMaster.toiletSponsor = toiletSponsor   // from the server
             toiletMaster.lastCleanedBy = toiletJanitor   // from clean record
             toiletMaster.lastCleanedTimeStamp = lastCleanedTimeStamp    // from clean record
+
+            toiletMaster.ratingSum = ratingSum   // retain the original value
+            toiletMaster.numberOfRatings = numberOfRatings  // retain the original value
+            toiletMaster.ratingSumLifeTime = ratingSumLifeTime   // retain the original value
+            toiletMaster.numberOfRatingsLifeTime = numberOfRatingsLifeTime    // retain the original value
+
 
             val FireDBRef = FirebaseDatabase.getInstance().getReference("ToiletMaster")
             FireDBRef.child(toiletID).setValue(toiletMaster).addOnCompleteListener {

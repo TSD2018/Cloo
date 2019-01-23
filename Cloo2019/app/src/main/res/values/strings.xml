@@ -13,7 +13,7 @@
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
-    <string name="string_your_current_location">Current Location</string>
+    <string name="string_your_current_location">Your current location</string>
     <string name="string_location_address_coordinates">Location address and coordinates</string>
     <string name="string_location">Location</string>
     <string name="strings_latitude">Latitude:</string>
@@ -22,13 +22,14 @@
     <string name="strings_longitude_default">longitude not known</string>
     <string name="strings_address_default">Location address</string>
     <string name="strings_comments">Comments (optional)</string>
-    <string name="strings_GetLocationButton">Refresh Location</string>
+    <string name="strings_GetLocationButton">Refresh</string>
     <string name="strings_SubmitButtonLabel">Submit</string>
     <string name="no_location_detected">No location detected. Make sure location is enabled on the device.</string>
     <string name="permission_denied_explanation">Permission was denied, but is needed for core functionality.</string>
     <string name="settings">Settings</string>
     <string name="button_go">Directions</string>
     <string name="title_activity_janitor">JanitorActivity</string>
+    <string name="string_app_version">cloo Ver 0.11</string>
 
     <string-array name="Gender"/>
 </resources>

@@ -5,6 +5,7 @@ package com.example.cloo2019
 import android.location.Location
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import java.sql.RowIdLifetime
 
 
 // Inserted in lieu of the code commented in the next section
@@ -17,6 +18,10 @@ class ToiletMaster(
     var toiletName: String,
     var address: String,
     var userRating: Double,
+    var ratingSum: Int,
+    var numberOfRatings: Int,
+    var ratingSumLifeTime: Int,
+    var numberOfRatingsLifeTime: Int,
     var toiletAccess: Int,  // 0: Public, 1: Restricted, 2: Private
     var genderType: Int,    // 1: Gents, 2: Ladies, 3: Unisex
     var toiletType: Int,    // 0: Urinals only, 1: squatting pan only, 2: Commode only 3: Urinals & Squatting 4: Urinals & Commode 5: All
@@ -30,7 +35,8 @@ class ToiletMaster(
 ) {
     constructor() : this(
         "", 0.0, 0.0, 0.0, "", "", 0.0, 0, 0,
-        0, "", "", "", "","",""
+        0,0, 0,0, 0, "", "",
+        "", "","",""
     ) {
     }
     /******* 19-JAN-2019:KARTIK_V1 TOP *****/
