@@ -20,14 +20,14 @@
             android:layout_height="wrap_content"
             android:id="@+id/ratingBar2" android:numStars="5"
             android:stepSize="1"
-            app:layout_constraintTop_toBottomOf="@+id/textView_location" android:layout_marginEnd="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView_toiletName" android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginRight="8dp" android:layout_marginStart="8dp"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
             android:layout_marginTop="16dp"/>
     <EditText
-            android:layout_width="323dp"
+            android:layout_width="0dp"
             android:layout_height="133dp"
-            android:inputType="none"
+            android:inputType="textMultiLine|textCapSentences|textAutoComplete"
             android:ems="10"
             android:id="@+id/editText_comment" android:hint="Comments (optional)" android:layout_marginTop="16dp"
             app:layout_constraintTop_toBottomOf="@+id/ratingBar2" app:layout_constraintEnd_toEndOf="parent"
@@ -46,19 +46,20 @@
             android:text="Submit + Close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button_submit_close" android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/editText_comment" app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/button_submit_close"
+            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="16dp" android:layout_marginRight="16dp"
             app:layout_constraintStart_toEndOf="@+id/button_submit_choose_another" android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"/>
+            android:layout_marginStart="8dp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/button_submit_choose_another"/>
     <TextView
-            android:text="TextView"
+            android:text="activity_main_rating_toiletname"
             android:layout_width="339dp"
-            android:layout_height="48dp"
-            android:id="@+id/textView_location"
+            android:layout_height="40dp"
+            android:id="@+id/textView_toiletName"
             app:layout_constraintTop_toBottomOf="@+id/textView_Rating_label"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp" app:layout_constraintHorizontal_bias="1.0"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="12dp"/>
 </android.support.constraint.ConstraintLayout>

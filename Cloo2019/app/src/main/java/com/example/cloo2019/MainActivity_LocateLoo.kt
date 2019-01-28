@@ -33,7 +33,8 @@ class MainActivity_LocateLoo : AppCompatActivity() {
     var mLastLocation: Location? = null
 
     lateinit var fireDBRef: DatabaseReference
-    lateinit var looList: MutableList<cUserInput>
+    lateinit var looList: MutableList<ToiletMaster>  // 8-JAN-2019:KARTIK
+//    lateinit var looList: MutableList<cUserInput>  // 8-JAN-2019:KARTIK
     lateinit var looListView: ListView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +44,8 @@ class MainActivity_LocateLoo : AppCompatActivity() {
 
         looListView = findViewById(R.id.listview_loo_locations)
         looList = mutableListOf()
-        fireDBRef = FirebaseDatabase.getInstance().getReference("toilet_master")
+        fireDBRef = FirebaseDatabase.getInstance().getReference("ToiletMaster")
+//        fireDBRef = FirebaseDatabase.getInstance().getReference("toilet_master")
 //        fireDBRef = FirebaseDatabase.getInstance().getReference("ratings")
 
 
@@ -67,8 +69,11 @@ class MainActivity_LocateLoo : AppCompatActivity() {
             override fun onDataChange(p0: DataSnapshot) {
                 if(p0.exists()){
                     looList.clear()
+                    val temp = p0.children
+                    val qait=0
                     for (looCnt in p0.children){
-                        val loo = looCnt.getValue(cUserInput::class.java)
+                        val loo = looCnt?.getValue(ToiletMaster::class.java)  // 8-JAN-2019:KARTIK
+//                        val loo = looCnt.getValue(cUserInput::class.java)  // 8-JAN-2019:KARTIK
                         looList.add(loo!!)
                     }
 
@@ -95,7 +100,7 @@ class MainActivity_LocateLoo : AppCompatActivity() {
                     mLastLocation = task.result
 
                     mLocationAddress!!.text = "Latitude: " + mLastLocation!!.latitude.toString() +
-                            " Logitude: " + mLastLocation!!.longitude.toString()
+                            "\nLogitude: " + mLastLocation!!.longitude.toString()
                     CurrentLocation.setLastLocation(mLastLocation!!)
                 } else {
                     Log.i(MainActivity_LocateLoo.TAG, "getLastLocation:exception", task.exception)

@@ -88,7 +88,46 @@ class MainActivity_AddNewLoo : AppCompatActivity() {
             return
         }
 
-        val FireDBRef = FirebaseDatabase.getInstance().getReference("toilet_master")
+        val FireDBRef = FirebaseDatabase.getInstance().getReference("ToiletMaster")
+        val toiletId = FireDBRef.push().key
+        if(toiletId == null) {
+            Toast.makeText(this@MainActivity_AddNewLoo, "Toilet Master push key returned null", Toast.LENGTH_SHORT).show()
+            return
+        }
+        val toiletMasterRecord = ToiletMaster(toiletId, mLastLocation?.latitude!!, mLastLocation?.longitude!!,
+            mLastLocation?.altitude!!, "",  looAddress, ChosenRating.toDouble(),ChosenRating,1,
+            ChosenRating,1,0,0,0,"","","",
+            "","","")
+        FireDBRef.child(toiletId).setValue(toiletMasterRecord).addOnCompleteListener {
+            Toast.makeText(this@MainActivity_AddNewLoo,"New toiler created...", Toast.LENGTH_SHORT).show()
+        }
+        Toast.makeText(this@MainActivity_AddNewLoo,"Done!", Toast.LENGTH_SHORT).show()
+
+        val database = FirebaseDatabase.getInstance()
+        val ratingRef = database.getReference("ToiletRating/$toiletId")
+        val toiletRatingId = ratingRef.push().key
+        if(toiletRatingId == null) {
+            Toast.makeText(this@MainActivity_AddNewLoo, "Toilet Record ID push key returned null", Toast.LENGTH_SHORT).show()
+            return
+        }
+        val toiletRatingRecord = UserRating(toiletRatingId,toiletId,"",ChosenRating,userComments,"" )
+        ratingRef.child(toiletRatingId).setValue(toiletRatingRecord).addOnCompleteListener {
+            Toast.makeText(this@MainActivity_AddNewLoo, "and Rating Saved.  Thank you", Toast.LENGTH_SHORT).show()
+        }
+//        myRef.setValue("Hello, World!")
+        // Write a message to the database  DEBUG CODE should be be removed!
+        /* END:::2018-NOV-03:::Kartik::: DEBUG CODE should be be removed! */
+
+        finish()
+
+
+
+    }
+}
+
+/************ 8-Jan-2019:KARTIK_V1 TOP **************/
+/*
+val FireDBRef = FirebaseDatabase.getInstance().getReference("toilet_master")
 
         val cUserInputId = FireDBRef.push().key
 
@@ -128,5 +167,8 @@ class MainActivity_AddNewLoo : AppCompatActivity() {
         /* END:::2018-NOV-03:::Kartik::: DEBUG CODE should be be removed! */
 
         finish()
+
     }
 }
+        */
+/************ 8-Jan-2019:KARTIK_V1 END **************/

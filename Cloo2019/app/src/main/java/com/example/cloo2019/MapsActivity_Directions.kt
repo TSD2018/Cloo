@@ -40,21 +40,76 @@ class MapsActivity_Directions : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var toiletID: String
     private lateinit var toiletAddress: String
+    private var lat: Double = 0.0
+    private var lng: Double = 0.0
+    private var alt: Double = 0.0
+    private var userRating: Double = 0.0
+    private lateinit var lastCleanedTimeStamp: String
+    private lateinit var lastCleanedTimeStampPresentable: String
+    private var ratingSum: Int = 0
+    private var numberOfRatings: Int = 0
+    private var ratingSumLifeTime: Int = 0
+    private var numberOfRatingsLifeTime: Int = 0
+
+    private lateinit var toiletContact: String
+    private lateinit var toiletJanitor: String
+    private lateinit var toiletMaintainedBy: String
+    private lateinit var toiletName: String
+    private lateinit var toiletOwnedBy: String
+    private lateinit var toiletSponsor: String
+
+    private var genderType: Int = 0
+    private var toiletAccess: Int = 0
+    private var toiletType: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps__directions)
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 
+        // TBD - Should be reading the FireBase DB for Toilet Master (after getting the TOILET_ID
+        // from the Intent and populating the information on the page here
+
+        lat = intent.getDoubleExtra("LAT", 0.0)
+        lng = intent.getDoubleExtra("LNG", 0.0)
+        alt = intent.getDoubleExtra("ALT", 0.0)
+
+        genderType = intent.getIntExtra("TOILET_GENDER",0)
+        toiletAccess = intent.getIntExtra("TOILET_ACCESS", 0)
+        toiletType = intent.getIntExtra("TOILET_TYPE", 0)
+
+        toiletContact = intent.getStringExtra("TOILET_CONTACT")
+        toiletJanitor = intent.getStringExtra("TOILET_JANITOR")
+        toiletMaintainedBy = intent.getStringExtra("TOILET_MAINTAINEDBY")
+        toiletName= intent.getStringExtra("TOILET_NAME")
+        toiletOwnedBy= intent.getStringExtra("TOILET_OWNEDBY")
+        toiletSponsor = intent.getStringExtra("TOILET_SPONSOR")
+
+        toiletID = intent.getStringExtra("TOILET_ID")
+        toiletAddress = intent.getStringExtra("TOILET_ADDRESS")
+        userRating = intent.getDoubleExtra("RATING", 0.0)
+
+        ratingSum = intent.getIntExtra("RATING_SUM", 0)
+        numberOfRatings = intent.getIntExtra("NUMBER_OF_RATINGS", 0)
+        ratingSumLifeTime = intent.getIntExtra("RATING_SUM_LIFETIME", 0)
+        numberOfRatingsLifeTime = intent.getIntExtra("NUMBER_OF_RATINGS_LIFETIME", 0)
+
+
+
+        lastCleanedTimeStamp = intent.getStringExtra("LAST_CLEANED")
+        lastCleanedTimeStampPresentable = intent.getStringExtra("LAST_CLEANED_PRESENTABLE")
+
+        val toiletFeatures = intent.getStringExtra("TOILET_FEATURES")
+
+        var toiletFeaturesView = findViewById<TextView>(R.id.textView_feature)
+        toiletFeaturesView.setText(toiletFeatures)
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
 
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-
-
-
-
     }
 
     /**
@@ -72,20 +127,22 @@ class MapsActivity_Directions : AppCompatActivity(), OnMapReadyCallback {
 
         // Add a marker in Sydney and move the camera
 
-        val dest = LatLng(intent.getDoubleExtra("LAT", 0.0), intent.getDoubleExtra("LNG", 0.0))
-        val rtng = intent.getIntExtra("RATING",0)
-
-        toiletID = intent.getStringExtra("TOILET_ID")
-        toiletAddress = intent.getStringExtra("TOILET_ADDRESS")
+        val dest = LatLng(lat, lng)
 
         val looAddress = findViewById<TextView>(R.id.textView_loo_address)
         val currentRating = findViewById<RatingBar>(R.id.ratingBar)
         looAddress.text = toiletAddress
         currentRating.setIsIndicator(true)
-        currentRating.rating = rtng.toFloat()
+        if(numberOfRatings > 0)
+            currentRating.rating = (ratingSum / numberOfRatings).toFloat()
+        else
+            currentRating.rating = 0.0F
+
+        val lastCleanedTimeStampTextView = findViewById<TextView>(R.id.textViewCleanTimeStamp)
+        lastCleanedTimeStampTextView!!.text = lastCleanedTimeStampPresentable  // will take care of showing timestamp on load
+        // TBD: Need to take care of the same, when the Toilet is cleaned, this needs to be updated again
 
 
-//        val sydney = LatLng(-34.0, 151.0)
         mMap.addMarker(MarkerOptions().position(dest).title("Destination"))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(dest))
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(dest, 12.0f))
@@ -109,10 +166,29 @@ class MapsActivity_Directions : AppCompatActivity(), OnMapReadyCallback {
         val buttonJanitor = findViewById<Button>(R.id.button_Janitor)
         buttonJanitor?.setOnClickListener {
             val i = Intent(this, JanitorActivity::class.java)
-            i.putExtra("LAT", intent.getDoubleExtra("LAT", 0.0))
-            i.putExtra("LNG", intent.getDoubleExtra("LNG", 0.0))
+            i.putExtra("LAT", lat)
+            i.putExtra("LNG", lng)
             i.putExtra("TOILET_ADDRESS", toiletAddress)
             i.putExtra("TOILET_ID", toiletID )
+
+            i.putExtra("ALT", alt)
+            i.putExtra("RATING", userRating)
+            i.putExtra("LAST_CLEANED", lastCleanedTimeStamp)
+            i.putExtra("LAST_CLEANED_PRESENTABLE", lastCleanedTimeStampPresentable)
+            i.putExtra("TOILET_GENDER", genderType)
+            i.putExtra("TOILET_ACCESS", toiletAccess)
+            i.putExtra("TOILET_CONTACT", toiletContact)
+            i.putExtra("TOILET_JANITOR", toiletJanitor)
+            i.putExtra("TOILET_MAINTAINEDBY", toiletMaintainedBy)
+            i.putExtra("TOILET_NAME", toiletName)
+            i.putExtra("TOILET_OWNEDBY", toiletOwnedBy)
+            i.putExtra("TOILET_SPONSOR", toiletSponsor)
+            i.putExtra("TOILET_TYPE", toiletType)
+            i.putExtra("RATING_SUM", ratingSum)
+            i.putExtra("NUMBER_OF_RATINGS", numberOfRatings)
+            i.putExtra("RATING_SUM_LIFETIME", ratingSumLifeTime)
+            i.putExtra("NUMBER_OF_RATINGS_LIFETIME", numberOfRatingsLifeTime)
+
             startActivity(i)
         }
 
@@ -120,36 +196,22 @@ class MapsActivity_Directions : AppCompatActivity(), OnMapReadyCallback {
         buttonClean?.setOnClickListener {
             val i = Intent(this, CleanActivity::class.java)
             i.putExtra("TOILET_ID", toiletID )
+            i.putExtra("TOILET_NAME", toiletName)
+            i.putExtra("TOILET_JANITOR", toiletJanitor)
+
+            // User ratings are reset to 0 after toilet is cleaned
+            // No need to share the current values with this intent
+
             startActivity(i)
         }
 
-
-
         val buttonNavigate = findViewById<Button>(R.id.button_Navigate)
         buttonNavigate?.setOnClickListener {
-
-
-            /*            val i = Intent(android.content.Intent.ACTION_VIEW)
-            i.setData(Uri.parse("geo:0,0?q="+loo.latval.toString()+","+loo.lngVal.toString()))
-            val ichooser = Intent.createChooser(i, "Launch Maps")
-            startActivity(mCtx,ichooser,null)
-
-
-            https://www.google.com/maps/dir/?api=1&destination=+ dest.latitude.toString() + "," + dest.longitude.toString()
-
-
-*/
             val navigationIntentUri =
                 Uri.parse("https://www.google.com/maps/dir/?api=1&destination=" + dest.latitude.toString() + "," + dest.longitude.toString())
-//            val navigationIntentUri = Uri.parse("google.navigation:q=" + dest.latitude.toString() + "," + dest.longitude.toString())
-//            val navigationIntentUri = Uri.parse("geo:0,0?q="+dest.latitude.toString() +","+dest.longitude.toString())
             val mapIntent = Intent(Intent.ACTION_VIEW, navigationIntentUri)
             mapIntent.setPackage("com.google.android.apps.maps")
             startActivityForResult(mapIntent, 10)
-
-//            val i = Intent(this, MainActivity_AddNewLoo::class.java)
-//            startActivity(i)
-
         }
     }
 
@@ -163,69 +225,15 @@ class MapsActivity_Directions : AppCompatActivity(), OnMapReadyCallback {
             // KARTIK to pass the toilet ID
             i.putExtra("TOILET_ID", toiletID )
             i.putExtra("TOILET_ADDRESS", toiletAddress)
+            i.putExtra("RATING_SUM", ratingSum)
+            i.putExtra("NUMBER_OF_RATINGS", numberOfRatings)
+            i.putExtra("RATING_SUM_LIFETIME", ratingSumLifeTime)
+            i.putExtra("NUMBER_OF_RATINGS_LIFETIME", numberOfRatingsLifeTime)
 
-//            val i = Intent(this, MainActivity_AddNewLoo::class.java)
+
             startActivity(i)
         }
     }
 
 
-    //On button press Directions, call the Navigation
-
-    /*
-    val navigationIntentUri = Uri.parse("google.navigation:q=" + newLatLng.latval.toString() + "," + newLatLng.lngVal.toString())
-    val mapIntent = Intent(Intent.ACTION_VIEW,navigationIntentUri )
-    mapIntent.setPackage("com.google.android.apps.maps")
-    startActivity(mCtx,mapIntent,null)
-*/
-
-
-/*
-                dest.latitude.toString()
-                dest.longitude.toString()
-
-                val urlDirections = "https://maps.googleapis.com/maps/api/directions/json?origin=" +
-                        currentLatLng.latitude.toString() + "," +
-                        currentLatLng.longitude.toString() + "&destination=" +
-                        dest.latitude.toString() + "," +
-                        dest.longitude.toString() + "&key=" + getString(R.string.google_maps_key)
-
-                val path: MutableList<List<LatLng>> = ArrayList()
-
-                val requestQueue = Volley.newRequestQueue(this)
-
-                val dRequest = object: StringRequest(Request.Method.GET, urlDirections, Response.Listener<String> { response ->
-//                        Toast("All is well")
-
-                    val jsonResponse = JSONObject(response)
-                    val routes = jsonResponse.getJSONArray("routes")
-                    val legs = routes.getJSONObject(0).getJSONArray("legs")
-                    val steps = legs.getJSONObject(0).getJSONArray("steps")
-
-                    for (i in 0 until steps.length()) {
-                        val points = steps.getJSONObject(i).getJSONObject("polyline").getString("points")
-//                        path.add(Po)
-                        path.add(PolyUtil.decode(points))
-                    }
-
-                    for (i in 0 until path.size) {
-                        mMap.addPolyline(PolylineOptions().addAll(path[i]).color(Color.RED))
-                    }
-
-
-                }, Response.ErrorListener{
-                    _ ->
-
-
-
-//                        Toast("Error in Listening")
-
-                    }){}
-
-                requestQueue.add(dRequest)
-
-            }
-        }
-    }
-*/
 }
