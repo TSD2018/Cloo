@@ -1,6 +1,9 @@
 /* Created by Kartik Venkataraman, 14 Nov 2018 */
+/* Rev 0.2.  Code Cleanup - Kartik Venkataraman 29 Jan 2019 */
 
 package com.example.cloo2019
+
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.support.v4.content.ContextCompat.startActivity
@@ -10,25 +13,25 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_main__locate_loo.*
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import kotlin.math.pow
 import kotlin.math.round
 import kotlin.math.sqrt
 
-/******* 8-JAN-2019:KARTIK_V1 TOP *****/
-//Changed the class from cUserInput to ToiletMaster
-//class Locationadapter(val mCtx: Context, val layoutResId: Int, val locationList: List<cUserInput>)
-//: ArrayAdapter<cUserInput>(mCtx, layoutResId, locationList) {
-/******* 8-JAN-2019:KARTIK_V1 END *****/
-class Locationadapter(val mCtx: Context, val layoutResId: Int, val locationList: List<ToiletMaster>)
-    : ArrayAdapter<ToiletMaster>(mCtx, layoutResId, locationList) {
+class Locationadapter(
+    private val mCtx: Context,
+    private val layoutResId: Int,
+    private val locationList: List<ToiletMaster>
+) :
+    ArrayAdapter<ToiletMaster>(mCtx, layoutResId, locationList) {
 
+    @SuppressLint("SetTextI18n")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
 
-        val layoutInflater: LayoutInflater = LayoutInflater.from(mCtx)
-        val view: View = layoutInflater.inflate(layoutResId, null)
+        val layoutInflater = LayoutInflater.from(mCtx)
+        val view: View
+        view = layoutInflater.inflate(layoutResId, null)
         val textViewLooName = view.findViewById<TextView>(R.id.textView_looName)
 
         val currentLocation = CurrentLocation.getLastLocation()
@@ -39,94 +42,86 @@ class Locationadapter(val mCtx: Context, val layoutResId: Int, val locationList:
         // TBD: There is a function to force get the location, which google maps use.  Need to find
         // that and use the same.  would need to decide if it should be done here or on the Create
         // of the landing page (which might be better :))
-        if (currentLocation == null){
-            Toast.makeText(mCtx, "Location unknown, please restart with location set.",Toast.LENGTH_SHORT).show()
+        if (currentLocation == null) {
+            Toast.makeText(mCtx, "Location unknown, please restart with location set.", Toast.LENGTH_SHORT).show()
             return view
         }
-        // Hopefully the above check should prevent the application from crashing on startup when
-        // location is not available
         /***** 13 Jan 2019:Kartik END *********/
+
         val loo = locationList[position]
-        val distanceLat = loo.lat - currentLocation!!.latitude
-        val distanceLng = loo.lng - currentLocation!!.longitude
+        val distanceLat = loo.lat - currentLocation.latitude
+        val distanceLng = loo.lng - currentLocation.longitude
 
         var distance = sqrt(((distanceLat).pow(2)) + ((distanceLng).pow(2))) * 111 /*km*/ * 1000
-        var distanceStr: String
+        val distanceStr: String
 
         if (distance > 1000.0) {
-            var df = DecimalFormat("##.#")
-            distance = distance / 1000.0
+            val df = DecimalFormat("##.#")
+            distance /= 1000.0
             df.roundingMode = RoundingMode.CEILING
             distanceStr = df.format(distance) + " km(s) away"
-        }
-        else {
-            var df = DecimalFormat("###")
+        } else {
+            val df = DecimalFormat("###")
             df.roundingMode = RoundingMode.CEILING
             distanceStr = df.format(distance) + " mtr(s) away"
         }
 
-        var ratings: String = "     "
-//        val numStars = loo.userRating.toInt()
-
-        var numStars = 0
-        if(loo.numberOfRatings > 0 )
-            numStars = round((loo.ratingSum.toDouble() / loo.numberOfRatings.toDouble())).toInt()
+        val numStars = if (loo.numberOfRatings > 0)
+            round((loo.ratingSum.toDouble() / loo.numberOfRatings.toDouble())).toInt()
         else
-            numStars = 0
+            0
 
-        if(numStars == 0){
-            ratings = " N A "
+        val ratings = if (numStars == 0) {
+            " N A "
+        } else {
+            "*".repeat(numStars) + " ".padEnd(5 - numStars)
         }
-        else{
-            ratings = "*".repeat(numStars) + " ".padEnd(5-numStars)
-        }
 
-        var lastCleanedTimeStampPresentable = CurrentTimeStamp().getPresentableTimeString(loo.lastCleanedTimeStamp)
-//        textViewLooName.text = loo.address + "\nRating [" + ratings +"]      " + distanceStr + "\nCleaned on: $lastCleanedTimeStampPresentable"
-        textViewLooName.text = loo.toiletName + "\nRating [" + ratings +"]      " + distanceStr + "\nCleaned on: $lastCleanedTimeStampPresentable"
+        val lastCleanedTimeStampPresentable = CurrentTimeStamp().getPresentableTimeString(loo.lastCleanedTimeStamp)
+        textViewLooName.text = """${loo.toiletName}
+Rating [$ratings]      $distanceStr
+Cleaned on: $lastCleanedTimeStampPresentable"""
 
-        var toiletAccessType = ""
-
-        when(loo.toiletAccess) {
-            1 -> {toiletAccessType = "Free Public Toilet"}
-            2 -> {toiletAccessType = "Pay and Use Toilet"}
-            3 -> {toiletAccessType = "For Customers Only"}
-            4 -> {toiletAccessType = "Restricted Entry"}
-            5 -> {toiletAccessType = "Private"}
-            else -> {toiletAccessType = "Toilet Access Unknown"}
+        val toiletAccessType = when (loo.toiletAccess) {
+            1 -> {"Free Public Toilet"}
+            2 -> {"Pay and Use Toilet"}
+            3 -> {"For Customers Only"}
+            4 -> {"Restricted Entry"}
+            5 -> {"Private"}
+            else -> {"Toilet Access Unknown"}
         }
 
         var toiletGender = "Toilet for: "
-        when (loo.genderType){
-            1 -> {toiletGender = toiletGender +"Gents Only"}
-            2 -> {toiletGender = toiletGender +"Ladies Only"}
-            3 -> {toiletGender = toiletGender +"Ladies and Gents (Separate)"}
-            4 -> {toiletGender = toiletGender +"Unisex"}
-            else -> {toiletGender = toiletGender +"unknown"}
+        toiletGender = when (loo.genderType) {
+            1 -> {toiletGender + "Gents Only"}
+            2 -> {toiletGender + "Ladies Only"}
+            3 -> {toiletGender + "Ladies and Gents (Separate)"}
+            4 -> {toiletGender + "Unisex"}
+            else -> {toiletGender + "unknown"}
         }
 
         var toiletType = "Toilet Style: "
-        when (loo.toiletType) {
-            1 -> {toiletType = toiletType + "Western"}
-            2 -> {toiletType = toiletType + "Indian"}
-            3 -> {toiletType = toiletType + "Urinals only"}
-            else -> {toiletType = toiletType + "unknown"}
+        toiletType = when (loo.toiletType) {
+            1 -> {toiletType + "Western"}
+            2 -> {toiletType + "Indian"}
+            3 -> {toiletType + "Urinals only"}
+            else -> {toiletType + "unknown"}
         }
 
-        var toiletFeatures = toiletAccessType + "\n" + toiletGender + "\n" + toiletType
+        val toiletFeatures = toiletAccessType + "\n" + toiletGender + "\n" + toiletType
 
         textViewLooName.setOnClickListener {
-            val i = Intent(mCtx, MapsActivity_Directions::class.java)
+            val i = Intent(mCtx, MapsActivityDirections::class.java)
             i.putExtra("LAT", loo.lat)
             i.putExtra("LNG", loo.lng)
             i.putExtra("ALT", loo.alt)
             i.putExtra("RATING", loo.userRating)
             i.putExtra("TOILET_ADDRESS", loo.address)
-            i.putExtra("TOILET_ID", loo.toiletId )
+            i.putExtra("TOILET_ID", loo.toiletId)
             i.putExtra("LAST_CLEANED_PRESENTABLE", lastCleanedTimeStampPresentable)
             i.putExtra("LAST_CLEANED", loo.lastCleanedTimeStamp)
-            i.putExtra("TOILET_FEATURES",toiletFeatures)
-            i.putExtra("TOILET_GENDER", loo.genderType )
+            i.putExtra("TOILET_FEATURES", toiletFeatures)
+            i.putExtra("TOILET_GENDER", loo.genderType)
             i.putExtra("TOILET_ACCESS", loo.toiletAccess)
             i.putExtra("TOILET_CONTACT", loo.contact)
             i.putExtra("TOILET_JANITOR", loo.lastCleanedBy)
@@ -139,7 +134,7 @@ class Locationadapter(val mCtx: Context, val layoutResId: Int, val locationList:
             i.putExtra("NUMBER_OF_RATINGS", loo.numberOfRatings)
             i.putExtra("RATING_SUM_LIFETIME", loo.ratingSumLifeTime)
             i.putExtra("NUMBER_OF_RATINGS_LIFETIME", loo.numberOfRatingsLifeTime)
-            startActivity(mCtx,i,null)
+            startActivity(mCtx, i, null)
         }
         return view
     }

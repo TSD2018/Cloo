@@ -1,4 +1,5 @@
 /* Created by Kartik Venkataraman, 14 Nov 2018 */
+/* Rev 0.2.  Code Cleanup - Kartik Venkataraman 29 Jan 2019 */
 
 package com.example.cloo2019
 
@@ -11,7 +12,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -26,15 +27,14 @@ import com.google.firebase.database.*
 
 import kotlinx.android.synthetic.main.activity_main__locate_loo.*
 
-class MainActivity_LocateLoo : AppCompatActivity() {
+class MainActivityLocateLoo : AppCompatActivity() {
 
     private var mFusedLocationClient: FusedLocationProviderClient? = null
     private var mLocationAddress: TextView? = null
-    var mLastLocation: Location? = null
+    private var mLastLocation: Location? = null
 
-    lateinit var fireDBRef: DatabaseReference
+    private lateinit var fireDBRef: DatabaseReference
     lateinit var looList: MutableList<ToiletMaster>  // 8-JAN-2019:KARTIK
-//    lateinit var looList: MutableList<cUserInput>  // 8-JAN-2019:KARTIK
     lateinit var looListView: ListView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,15 +69,13 @@ class MainActivity_LocateLoo : AppCompatActivity() {
             override fun onDataChange(p0: DataSnapshot) {
                 if(p0.exists()){
                     looList.clear()
-                    val temp = p0.children
-                    val qait=0
                     for (looCnt in p0.children){
                         val loo = looCnt?.getValue(ToiletMaster::class.java)  // 8-JAN-2019:KARTIK
 //                        val loo = looCnt.getValue(cUserInput::class.java)  // 8-JAN-2019:KARTIK
                         looList.add(loo!!)
                     }
 
-                    val adapter = Locationadapter(this@MainActivity_LocateLoo, R.layout.loos, looList
+                    val adapter = Locationadapter(this@MainActivityLocateLoo, R.layout.loos, looList
 
                     )
                     looListView.adapter = adapter
@@ -86,31 +84,30 @@ class MainActivity_LocateLoo : AppCompatActivity() {
         })
 
         fab.setOnClickListener{
-                val i = Intent(this, MainActivity_AddNewLoo::class.java)
+                val i = Intent(this, MainActivityAddNewLoo::class.java)
                 startActivity(i)
         }
 
     }
 
-    @SuppressLint("MissingPermission")
+    @SuppressLint("MissingPermission", "SetTextI18n")
     private fun getLastLocation() {
         mFusedLocationClient!!.lastLocation
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful && task.result != null) {
                     mLastLocation = task.result
 
-                    mLocationAddress!!.text = "Latitude: " + mLastLocation!!.latitude.toString() +
-                            "\nLogitude: " + mLastLocation!!.longitude.toString()
+                    mLocationAddress!!.text = "Latitude: ${mLastLocation!!.latitude} Logitude: ${mLastLocation!!.longitude}"
                     CurrentLocation.setLastLocation(mLastLocation!!)
                 } else {
-                    Log.i(MainActivity_LocateLoo.TAG, "getLastLocation:exception", task.exception)
+                    Log.i(MainActivityLocateLoo.TAG, "getLastLocation:exception", task.exception)
                     showMessage(getString(R.string.no_location_detected))
                 }
             }
     }
 
     private fun showMessage(text: String) {
-        Toast.makeText(this@MainActivity_LocateLoo, text, Toast.LENGTH_LONG).show()
+        Toast.makeText(this@MainActivityLocateLoo, text, Toast.LENGTH_LONG).show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -150,7 +147,7 @@ class MainActivity_LocateLoo : AppCompatActivity() {
         // Provide an additional rationale to the user. This would happen if the user denied the
         // request previously, but didn't check the "Don't ask again" checkbox.
         if (shouldProvideRationale) {
-            Log.i(MainActivity_LocateLoo.TAG, "Displaying permission rationale to provide additional context.")
+            Log.i(MainActivityLocateLoo.TAG, "Displaying permission rationale to provide additional context.")
 
             showSnackbar(R.string.permission_rationale, android.R.string.ok,
                 View.OnClickListener {
@@ -159,7 +156,7 @@ class MainActivity_LocateLoo : AppCompatActivity() {
                 })
 
         } else {
-            Log.i(MainActivity_LocateLoo.TAG, "Requesting permission")
+            Log.i(MainActivityLocateLoo.TAG, "Requesting permission")
             // Request permission. It's possible this can be auto answered if device policy
             // sets the permission in a given state or the user denied the permission
             // previously and checked "Never ask again".
@@ -168,33 +165,33 @@ class MainActivity_LocateLoo : AppCompatActivity() {
     }
 
     private fun startLocationPermissionRequest() {
-        ActivityCompat.requestPermissions(this@MainActivity_LocateLoo,
+        ActivityCompat.requestPermissions(this@MainActivityLocateLoo,
             arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-            MainActivity_LocateLoo.REQUEST_PERMISSIONS_REQUEST_CODE
+            MainActivityLocateLoo.REQUEST_PERMISSIONS_REQUEST_CODE
         )
     }
 
     private fun showSnackbar(mainTextStringId: Int, actionStringId: Int,
                              listener: View.OnClickListener) {
 
-        Toast.makeText(this@MainActivity_LocateLoo, getString(mainTextStringId), Toast.LENGTH_LONG).show()
+        Toast.makeText(this@MainActivityLocateLoo, getString(mainTextStringId), Toast.LENGTH_LONG).show()
     }
 
     companion object {
 
-        private val TAG = "LocationProvider"
+        private const val TAG = "LocationProvider"
 
-        private val REQUEST_PERMISSIONS_REQUEST_CODE = 34
+        private const val REQUEST_PERMISSIONS_REQUEST_CODE = 34
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>,
                                             grantResults: IntArray) {
-        Log.i(MainActivity_LocateLoo.TAG, "onRequestPermissionResult")
+        Log.i(MainActivityLocateLoo.TAG, "onRequestPermissionResult")
         if (requestCode == REQUEST_PERMISSIONS_REQUEST_CODE) {
             if (grantResults.size <= 0) {
                 // If user interaction was interrupted, the permission request is cancelled and you
                 // receive empty arrays.
-                Log.i(MainActivity_LocateLoo.TAG, "User interaction was cancelled.")
+                Log.i(MainActivityLocateLoo.TAG, "User interaction was cancelled.")
             } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission granted.
                 getLastLocation()

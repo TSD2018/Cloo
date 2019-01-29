@@ -22,7 +22,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity
-                android:name=".MainActivity_LocateLoo"
+                android:name=".MainActivityLocateLoo"
                 android:label="@string/app_name"
                 android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -31,7 +31,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity_AddNewLoo">
+        <activity android:name=".MainActivityAddNewLoo">
         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -46,10 +46,10 @@
                 android:value="@string/google_maps_key"/>
 
         <activity
-                android:name=".MapsActivity_Directions"
+                android:name=".MapsActivityDirections"
                 android:label="@string/title_activity_maps__directions">
         </activity>
-        <activity android:name=".MainActivity_Rating">
+        <activity android:name=".MainActivityRating">
         </activity>
         <activity
                 android:name=".MyProfile"

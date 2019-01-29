@@ -1,10 +1,7 @@
 /* Created by Kartik Venkataraman, 4 Dec 2018 */
+/* Rev 0.2.  Code Cleanup - Kartik Venkataraman 29 Jan 2019 */
 
 package com.example.cloo2019
-
-class CleanedRecordChecklist (val checkListItem: String, val checkListValue: Boolean)
-{
-}
 
 class CleanedRecord (
     var cleanedRecordId: String, var toiletId: String,
@@ -18,12 +15,3 @@ class CleanedRecord (
     {
     }
 }
-
-/*
-class CleanedRecord (
-    var cleanedRecordId: String, var toiletId: String, var checkList: CleanedRecordChecklist?, var comments: String,
-    var timestamp: String, var janitorID: String) {
-    constructor() : this("", "", null, "", "", "") {
-    }
-}
-        */

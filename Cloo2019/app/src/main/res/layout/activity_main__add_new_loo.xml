@@ -30,8 +30,9 @@
             android:id="@+id/button_GetLocation"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="4dp" android:layout_marginRight="4dp"
-            tools:layout_editor_absoluteY="0dp" app:layout_constraintStart_toEndOf="@+id/textView_AddNewLoo"
-            android:layout_marginLeft="8dp" android:layout_marginStart="8dp"/>
+            app:layout_constraintStart_toEndOf="@+id/textView_AddNewLoo"
+            android:layout_marginLeft="8dp" android:layout_marginStart="8dp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textView_AddNewLoo"/>
     <Button
             android:text="@string/strings_SubmitButtonLabel"
             android:layout_width="wrap_content"

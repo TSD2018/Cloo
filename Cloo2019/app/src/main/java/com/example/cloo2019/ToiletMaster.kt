@@ -1,14 +1,8 @@
 /* Created by Kartik Venkataraman, 14 Nov 2018 */
+/* Rev 0.2.  Code Cleanup - Kartik Venkataraman 29 Jan 2019 */
 
 package com.example.cloo2019
 
-import android.location.Location
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import java.sql.RowIdLifetime
-
-
-// Inserted in lieu of the code commented in the next section
 class ToiletMaster(
     var toiletId: String,
 //    var location: Location?,   // 9-Jan-2019:KARTIK_V1: Location does not have null assignment, so constructor fails
@@ -35,23 +29,7 @@ class ToiletMaster(
 ) {
     constructor() : this(
         "", 0.0, 0.0, 0.0, "", "", 0.0, 0, 0,
-        0,0, 0,0, 0, "", "",
-        "", "","",""
-    ) {
-    }
-    /******* 19-JAN-2019:KARTIK_V1 TOP *****/
-    // Dummy functions as of now, need to refactor the code to include these.
-
-    fun readToiletMaster(toiletid: String, toiletRecord: ToiletMaster) : ToiletMaster {
-        var fireDBRef: DatabaseReference
-        fireDBRef = FirebaseDatabase.getInstance().getReference("ToiletMaster")
-        return toiletRecord
-    }
-
-    fun writeToiletMaster(toiletRecord: ToiletMaster){
-
-    }
-
-    /******* 19-JAN-2019:KARTIK_V1 END *****/
+        0, 0, 0, 0, 0, "", "",
+        "", "", "", ""
+    )
 }
-

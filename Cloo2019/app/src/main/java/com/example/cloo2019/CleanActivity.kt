@@ -1,43 +1,35 @@
 /* Created by Kartik Venkataraman, 4 Dec 2018 */
+/* Rev 0.2.  Code Cleanup - Kartik Venkataraman 29 Jan 2019 */
 
 package com.example.cloo2019
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.*
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 
 class CleanActivity : AppCompatActivity() {
 
-    val TAG = "CleanActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_clean)
 
-        val toiletID: String = intent.getStringExtra("TOILET_ID")
-        val toiletName: String = intent.getStringExtra("TOILET_NAME")
-        val janitorName: String = intent.getStringExtra("TOILET_JANITOR")
+        val toiletID = intent.getStringExtra("TOILET_ID")
+        val toiletName = intent.getStringExtra("TOILET_NAME")
+        val janitorName = intent.getStringExtra("TOILET_JANITOR")
 
-
-        val textToiletName = findViewById<TextView >(R.id.textView_toiletName)
+        val textToiletName = findViewById<TextView>(R.id.textView_toiletName)
         textToiletName.text = toiletName
 
         val textJanitorName = findViewById<EditText>(R.id.editText_JanitorName)
         textJanitorName.setText(janitorName)
 
         val buttonCleaned = findViewById<Button>(R.id.button_Cleaned)
-        val janitorComments: EditText = findViewById(R.id.editTextOthers)
-        var timeStamp = findViewById<TextView>(R.id.textViewCleanTimeStamp)
+        val janitorComments = findViewById<EditText>(R.id.editTextOthers)
+        val timeStamp = findViewById<TextView>(R.id.textViewCleanTimeStamp)
         timeStamp!!.text = CurrentTimeStamp().getPresentableTimeString(CurrentTimeStamp().getString())
 
-//        val janitorID: String = "Test Name, should come from Janitor login"
-//        var recordTime: String = "Test, should include the system timestamp"
-
-        buttonCleaned.setOnClickListener(){
+        buttonCleaned.setOnClickListener {
             val waterAvailable: CheckBox = findViewById(R.id.checkBoxWater)
             val lightWorking: CheckBox = findViewById(R.id.checkBoxElectricity)
             val stinks: CheckBox = findViewById(R.id.checkBoxStinks)
@@ -51,30 +43,16 @@ class CleanActivity : AppCompatActivity() {
             val tissue: CheckBox = findViewById(R.id.checkBoxTissue)
             val recordTime = CurrentTimeStamp().getString()
 
-/*            var cleanedToilet = CleanedRecord()
-            cleanedToilet.toiletId = toiletID
-            cleanedToilet.comments = janitorComments.text.toString()
-            cleanedToilet.janitorID = janitorID
-            cleanedToilet.timestamp = recordTime
-            cleanedToilet.waterAvailable = waterAvailable.isChecked
-            cleanedToilet.lightsWorking = lightWorking.isChecked
-            cleanedToilet.stinks = stinks.isChecked
-            cleanedToilet.plumbingOk = plumbingOk.isChecked
-            cleanedToilet.mirror = mirror.isChecked
-            cleanedToilet.sink = sink.isChecked
-            cleanedToilet.toilets = toilets.isChecked
-            cleanedToilet.floor = floor.isChecked
-            cleanedToilet.wallTiles = wallTiles.isChecked
-            cleanedToilet.soap = soap.isChecked
-            cleanedToilet.tissue = tissue.isChecked
-*/
-            val FireDBRef = FirebaseDatabase.getInstance().getReference("ToiletClean/$toiletID")
-            val cleanedRecordId = FireDBRef.push().key
-            if(cleanedRecordId == null) {
-                Toast.makeText(this@CleanActivity, "push key returned null", Toast.LENGTH_SHORT).show()
-            }
-            else {
-                var cleanedToilet = CleanedRecord(
+            val fireDBRef = FirebaseDatabase.getInstance().getReference("ToiletClean/$toiletID")
+            val cleanedRecordId = fireDBRef.push().key
+            if (cleanedRecordId == null) {
+                Toast.makeText(
+                    this@CleanActivity,
+                    "Clean Report cannot be captured as push key returned null.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                val cleanedToilet = CleanedRecord(
                     cleanedRecordId,
                     toiletID,
                     waterAvailable.isChecked,
@@ -90,23 +68,27 @@ class CleanActivity : AppCompatActivity() {
                     tissue.isChecked,
                     janitorComments.text.toString(),
                     CurrentTimeStamp().getString(),
-                    janitorName)
+                    janitorName
+                )
 
-               FireDBRef.child(cleanedRecordId).setValue(cleanedToilet).addOnCompleteListener {
-                    Toast.makeText(this@CleanActivity, "Thank you! Cleaned Record Submitted", Toast.LENGTH_SHORT).show()
+                fireDBRef.child(cleanedRecordId).setValue(cleanedToilet).addOnCompleteListener {
+
+                    // CleanToilet has been updated.  Now the rest of the records should be updated
+                    // ToiletMaster needs to be updated with the timestamp of when it is cleaned and by whom, so that it can be
+                    // shown in the landing page
+                    // Similarly, ratings is reset to 0, However ratingLifeTime values are left as is.
+                    val toiletDBRef = FirebaseDatabase.getInstance().getReference("ToiletMaster/$toiletID")
+                    toiletDBRef.child("lastCleanedTimeStamp").setValue(recordTime)
+                    toiletDBRef.child("lastCleanedBy").setValue(textJanitorName.text.toString())
+
+                    toiletDBRef.child("ratingSum").setValue(0)       // value is reset to 0
+                    toiletDBRef.child("numberOfRatings").setValue(0)    // value is reset to 0
+
+
+                    Toast.makeText(this@CleanActivity, "Thank you! Clean report captured", Toast.LENGTH_SHORT).show()
                 }
             }
-            Toast.makeText(this@CleanActivity,"KV_DEBUG:: End of Cleaned in CleanActivity!", Toast.LENGTH_SHORT).show()
 
-/****** TODO: 23-Jan-2019: Kartik TOP *****/
-            val toiletDBRef = FirebaseDatabase.getInstance().getReference("ToiletMaster/$toiletID")
-            toiletDBRef.child("lastCleanedTimeStamp").setValue(recordTime)
-            toiletDBRef.child("lastCleanedBy").setValue(textJanitorName.text.toString())
-
-            toiletDBRef.child("ratingSum").setValue(0)       // value is reset to 0
-            toiletDBRef.child("numberOfRatings").setValue(0)    // value is reset to 0
-
-/****** TODO:23-Jan-2019: Kartik END *****/
             finish()
         }
     }
