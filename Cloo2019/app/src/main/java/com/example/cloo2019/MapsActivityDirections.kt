@@ -1,24 +1,17 @@
 /* Created by Kartik Venkataraman, 14 Nov 2018 */
+/* Rev 0.2.  Code Cleanup - Kartik Venkataraman 29 Jan 2019 */
 
 package com.example.cloo2019
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Color
 import android.location.Location
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.RatingBar
 import android.widget.TextView
-import android.widget.Toast
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.VolleyError
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -27,17 +20,13 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.maps.model.PolylineOptions
-import com.google.maps.android.PolyUtil
-import org.json.JSONObject
 
-class MapsActivity_Directions : AppCompatActivity(), OnMapReadyCallback {
+class MapsActivityDirections : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
 
     private lateinit var lastLocation: Location
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-
     private lateinit var toiletID: String
     private lateinit var toiletAddress: String
     private var lat: Double = 0.0
@@ -50,14 +39,12 @@ class MapsActivity_Directions : AppCompatActivity(), OnMapReadyCallback {
     private var numberOfRatings: Int = 0
     private var ratingSumLifeTime: Int = 0
     private var numberOfRatingsLifeTime: Int = 0
-
     private lateinit var toiletContact: String
     private lateinit var toiletJanitor: String
     private lateinit var toiletMaintainedBy: String
     private lateinit var toiletName: String
     private lateinit var toiletOwnedBy: String
     private lateinit var toiletSponsor: String
-
     private var genderType: Int = 0
     private var toiletAccess: Int = 0
     private var toiletType: Int = 0
@@ -67,22 +54,19 @@ class MapsActivity_Directions : AppCompatActivity(), OnMapReadyCallback {
         setContentView(R.layout.activity_maps__directions)
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 
-        // TBD - Should be reading the FireBase DB for Toilet Master (after getting the TOILET_ID
-        // from the Intent and populating the information on the page here
-
         lat = intent.getDoubleExtra("LAT", 0.0)
         lng = intent.getDoubleExtra("LNG", 0.0)
         alt = intent.getDoubleExtra("ALT", 0.0)
 
-        genderType = intent.getIntExtra("TOILET_GENDER",0)
+        genderType = intent.getIntExtra("TOILET_GENDER", 0)
         toiletAccess = intent.getIntExtra("TOILET_ACCESS", 0)
         toiletType = intent.getIntExtra("TOILET_TYPE", 0)
 
         toiletContact = intent.getStringExtra("TOILET_CONTACT")
         toiletJanitor = intent.getStringExtra("TOILET_JANITOR")
         toiletMaintainedBy = intent.getStringExtra("TOILET_MAINTAINEDBY")
-        toiletName= intent.getStringExtra("TOILET_NAME")
-        toiletOwnedBy= intent.getStringExtra("TOILET_OWNEDBY")
+        toiletName = intent.getStringExtra("TOILET_NAME")
+        toiletOwnedBy = intent.getStringExtra("TOILET_OWNEDBY")
         toiletSponsor = intent.getStringExtra("TOILET_SPONSOR")
 
         toiletID = intent.getStringExtra("TOILET_ID")
@@ -94,18 +78,13 @@ class MapsActivity_Directions : AppCompatActivity(), OnMapReadyCallback {
         ratingSumLifeTime = intent.getIntExtra("RATING_SUM_LIFETIME", 0)
         numberOfRatingsLifeTime = intent.getIntExtra("NUMBER_OF_RATINGS_LIFETIME", 0)
 
-
-
         lastCleanedTimeStamp = intent.getStringExtra("LAST_CLEANED")
         lastCleanedTimeStampPresentable = intent.getStringExtra("LAST_CLEANED_PRESENTABLE")
-
         val toiletFeatures = intent.getStringExtra("TOILET_FEATURES")
-
-        var toiletFeaturesView = findViewById<TextView>(R.id.textView_feature)
-        toiletFeaturesView.setText(toiletFeatures)
+        val toiletFeaturesView = findViewById<TextView>(R.id.textView_feature)
+        toiletFeaturesView.text = toiletFeatures
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-
 
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
@@ -133,15 +112,13 @@ class MapsActivity_Directions : AppCompatActivity(), OnMapReadyCallback {
         val currentRating = findViewById<RatingBar>(R.id.ratingBar)
         looAddress.text = toiletAddress
         currentRating.setIsIndicator(true)
-        if(numberOfRatings > 0)
+        if (numberOfRatings > 0)
             currentRating.rating = (ratingSum / numberOfRatings).toFloat()
         else
             currentRating.rating = 0.0F
 
         val lastCleanedTimeStampTextView = findViewById<TextView>(R.id.textViewCleanTimeStamp)
-        lastCleanedTimeStampTextView!!.text = lastCleanedTimeStampPresentable  // will take care of showing timestamp on load
-        // TBD: Need to take care of the same, when the Toilet is cleaned, this needs to be updated again
-
+        lastCleanedTimeStampTextView!!.text = lastCleanedTimeStampPresentable  // will show timestamp on load
 
         mMap.addMarker(MarkerOptions().position(dest).title("Destination"))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(dest))
@@ -169,7 +146,7 @@ class MapsActivity_Directions : AppCompatActivity(), OnMapReadyCallback {
             i.putExtra("LAT", lat)
             i.putExtra("LNG", lng)
             i.putExtra("TOILET_ADDRESS", toiletAddress)
-            i.putExtra("TOILET_ID", toiletID )
+            i.putExtra("TOILET_ID", toiletID)
 
             i.putExtra("ALT", alt)
             i.putExtra("RATING", userRating)
@@ -195,13 +172,12 @@ class MapsActivity_Directions : AppCompatActivity(), OnMapReadyCallback {
         val buttonClean = findViewById<Button>(R.id.buttonClean)
         buttonClean?.setOnClickListener {
             val i = Intent(this, CleanActivity::class.java)
-            i.putExtra("TOILET_ID", toiletID )
+            i.putExtra("TOILET_ID", toiletID)
             i.putExtra("TOILET_NAME", toiletName)
             i.putExtra("TOILET_JANITOR", toiletJanitor)
 
             // User ratings are reset to 0 after toilet is cleaned
             // No need to share the current values with this intent
-
             startActivity(i)
         }
 
@@ -221,19 +197,16 @@ class MapsActivity_Directions : AppCompatActivity(), OnMapReadyCallback {
         // if this is true, this means your first intent finished. So you can start your second intent
         if (requestCode == 10) {
 
-            val i = Intent(this, MainActivity_Rating::class.java)
+            val i = Intent(this, MainActivityRating::class.java)
             // KARTIK to pass the toilet ID
-            i.putExtra("TOILET_ID", toiletID )
+            i.putExtra("TOILET_ID", toiletID)
             i.putExtra("TOILET_ADDRESS", toiletAddress)
             i.putExtra("RATING_SUM", ratingSum)
             i.putExtra("NUMBER_OF_RATINGS", numberOfRatings)
             i.putExtra("RATING_SUM_LIFETIME", ratingSumLifeTime)
             i.putExtra("NUMBER_OF_RATINGS_LIFETIME", numberOfRatingsLifeTime)
 
-
             startActivity(i)
         }
     }
-
-
 }

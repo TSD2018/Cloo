@@ -1,19 +1,15 @@
 /* Created by Kartik Venkataraman, 3 Dec 2018 */
+/* Rev 0.2.  Code Cleanup - Kartik Venkataraman 29 Jan 2019 */
 
 package com.example.cloo2019
 
 import android.annotation.SuppressLint
-import android.content.DialogInterface
-import android.content.Intent
-import android.location.Location
-import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import android.widget.*
-import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -49,10 +45,10 @@ class JanitorActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var toiletSponsor: String
 
     // form control member variable, requiring global scope
-    private lateinit var looAddress:EditText
+    private lateinit var looAddress: EditText
     private lateinit var editToiletName: EditText
     private lateinit var editMaintainedBy: EditText
-    private lateinit var editContactNumber : EditText
+    private lateinit var editContactNumber: EditText
     private lateinit var checkCommode: CheckBox
     private lateinit var checkIndianPan: CheckBox
     private lateinit var checkUrinal: CheckBox
@@ -69,19 +65,19 @@ class JanitorActivity : AppCompatActivity(), OnMapReadyCallback {
         setSupportActionBar(toolbar)
 
         toiletID = intent.getStringExtra("TOILET_ID")
-        toiletName= intent.getStringExtra("TOILET_NAME")
+        toiletName = intent.getStringExtra("TOILET_NAME")
         lat = intent.getDoubleExtra("LAT", 0.0)
         lng = intent.getDoubleExtra("LNG", 0.0)
         alt = intent.getDoubleExtra("ALT", 0.0)
         toiletAddress = intent.getStringExtra("TOILET_ADDRESS")
         toiletAccess = intent.getIntExtra("TOILET_ACCESS", 0)
-        genderType = intent.getIntExtra("TOILET_GENDER",0)
+        genderType = intent.getIntExtra("TOILET_GENDER", 0)
         toiletType = intent.getIntExtra("TOILET_TYPE", 0)
         toiletJanitor = intent.getStringExtra("TOILET_JANITOR")
         toiletContact = intent.getStringExtra("TOILET_CONTACT")
 
         toiletMaintainedBy = intent.getStringExtra("TOILET_MAINTAINEDBY")
-        toiletOwnedBy= intent.getStringExtra("TOILET_OWNEDBY")
+        toiletOwnedBy = intent.getStringExtra("TOILET_OWNEDBY")
         toiletSponsor = intent.getStringExtra("TOILET_SPONSOR")
         userRating = intent.getDoubleExtra("RATING", 0.0)
         lastCleanedTimeStamp = intent.getStringExtra("LAST_CLEANED")
@@ -92,30 +88,24 @@ class JanitorActivity : AppCompatActivity(), OnMapReadyCallback {
         ratingSumLifeTime = intent.getIntExtra("RATING_SUM_LIFETIME", 0)
         numberOfRatingsLifeTime = intent.getIntExtra("NUMBER_OF_RATINGS_LIFETIME", 0)
 
-
-        editToiletName = findViewById<EditText>(R.id.editText_ToiletName)
+        editToiletName = findViewById(R.id.editText_ToiletName)
         editToiletName.setText(toiletName)
-
-        editMaintainedBy= findViewById<EditText>(R.id.editTextMaintainedBy)
+        editMaintainedBy = findViewById(R.id.editTextMaintainedBy)
         editMaintainedBy.setText(toiletMaintainedBy)
-
-        editContactNumber= findViewById<EditText>(R.id.editTextContact)
+        editContactNumber = findViewById(R.id.editTextContact)
         editContactNumber.setText(toiletContact)
-
-        checkCommode = findViewById<CheckBox>(R.id.checkBoxCommode)
-        checkIndianPan = findViewById<CheckBox>(R.id.checkBoxIndianPan)
-        checkUrinal = findViewById<CheckBox>(R.id.checkBoxUrinal)
-
-
+        checkCommode = findViewById(R.id.checkBoxCommode)
+        checkIndianPan = findViewById(R.id.checkBoxIndianPan)
+        checkUrinal = findViewById(R.id.checkBoxUrinal)
 
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
         val looLatLng = findViewById<TextView>(R.id.textView_Latlng)
-        looLatLng.setText("Lat: ${lat.toString()}, Lng: ${lng.toString()}")
+        looLatLng.text = "Lat: $lat, Lng: $lng"
 
-        looAddress = findViewById<EditText>(R.id.editText_Loo_Address)
+        looAddress = findViewById(R.id.editText_Loo_Address)
         looAddress.setText(toiletAddress)
 
         val toiletAccessList =
@@ -126,22 +116,34 @@ class JanitorActivity : AppCompatActivity(), OnMapReadyCallback {
 
             spinnerToiletAccess.adapter = arrayAdapter
 
-            Log.i("TOILET ACCESS","^^^^^^^^^^^^^^^ $toiletAccess ^^^^^^^^^^^^^^^^^^^^")
+            Log.i("TOILET ACCESS", "^^^^^^^^^^^^^^^ $toiletAccess ^^^^^^^^^^^^^^^^^^^^")
 
-            spinnerToiletAccess.setSelection(toiletAccess -1) // -1 is necessary for 0 index offset
+            spinnerToiletAccess.setSelection(toiletAccess - 1) // -1 is necessary for 0 index offset
 
             spinnerToiletAccess.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                     val toiletAccessString = toiletAccessList[position]
 
-                    when (toiletAccessString) {
-                        "Free Public Toilet"    -> {toiletAccess = 1}
-                        "Pay and Use Toilet"    -> {toiletAccess = 2}
-                        "For Customers Only"    -> {toiletAccess = 3}
-                        "Restricted Entry"      -> {toiletAccess = 4}
-                        "Private"               -> {toiletAccess = 5}
-                        else                    -> {toiletAccess = 0}
+                    toiletAccess = when (toiletAccessString) {
+                        "Free Public Toilet" -> {
+                            1
+                        }
+                        "Pay and Use Toilet" -> {
+                            2
+                        }
+                        "For Customers Only" -> {
+                            3
+                        }
+                        "Restricted Entry" -> {
+                            4
+                        }
+                        "Private" -> {
+                            5
+                        }
+                        else -> {
+                            0
+                        }
                     }
                 }
 
@@ -149,7 +151,6 @@ class JanitorActivity : AppCompatActivity(), OnMapReadyCallback {
                     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                 }
             }
-
         }
 
         val spinnerGenderList = arrayOf("Gents Only", "Ladies Only", "Ladies and Gents (Separate)", "Unisex")
@@ -159,18 +160,28 @@ class JanitorActivity : AppCompatActivity(), OnMapReadyCallback {
 
             spinnerGender.adapter = arrayAdapterGender
 
-            spinnerGender.setSelection(genderType -1)  // -1 is necessary for 0 index offset
+            spinnerGender.setSelection(genderType - 1)  // -1 is necessary for 0 index offset
             spinnerGender.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                     val genderString = spinnerGenderList[position]
 
-                    when (genderString) {
-                        "Gents Only"                    -> {genderType = 1}
-                        "Ladies Only"                   -> {genderType = 2}
-                        "Ladies and Gents (Separate)"   -> {genderType = 3}
-                        "Unisex"                        -> {genderType = 4}
-                        else                            -> {genderType = 0}
+                    genderType = when (genderString) {
+                        "Gents Only" -> {
+                            1
+                        }
+                        "Ladies Only" -> {
+                            2
+                        }
+                        "Ladies and Gents (Separate)" -> {
+                            3
+                        }
+                        "Unisex" -> {
+                            4
+                        }
+                        else -> {
+                            0
+                        }
                     }
                 }
 
@@ -178,22 +189,24 @@ class JanitorActivity : AppCompatActivity(), OnMapReadyCallback {
                     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                 }
             }
-
         }
 
         when (toiletType) {
-            1 -> {checkCommode.setChecked(true)}
-            2 -> {checkIndianPan.setChecked(true)}
-            3 -> {checkUrinal.setChecked(true)}
+            1 -> {
+                checkCommode.isChecked = true
+            }
+            2 -> {
+                checkIndianPan.isChecked = true
+            }
+            3 -> {
+                checkUrinal.isChecked = true
+            }
         }
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
-
-
-
     }
 
     /**
@@ -224,17 +237,9 @@ class JanitorActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.isMyLocationEnabled = true
 
         val saveButton = findViewById<Button>(R.id.buttonSave)
-        saveButton.setOnClickListener() {
+        saveButton.setOnClickListener {
 
-            var toiletMaster = ToiletMaster()
-            /*** TBD -- this record should be read from the ToiletMaster, populated in the UI -
-             * editable controls and overwrite editable fields and retain the non-editable fields such
-             * as lastCleanedBy, lastCleanedTimeStamp, userRating
-             */
-
- //           val maintainedBy = findViewById<EditText>(R.id.editTextJanitor)
- //           val contactJanitor = findViewById<EditText>(R.id.editTextContact)
-
+            val toiletMaster = ToiletMaster()
             var toiletType = 0
             if (findViewById<CheckBox>(R.id.checkBoxCommode).isChecked) {
                 toiletType = 1
@@ -261,20 +266,19 @@ class JanitorActivity : AppCompatActivity(), OnMapReadyCallback {
 
 // Items which CANNOT be changed from the mobile
             toiletMaster.toiletId = toiletID
-            toiletMaster.userRating = userRating   // retain the original read value, will be computed based on the ToiletRatings every time rating is added
+            toiletMaster.userRating =
+                    userRating   // retain the original read value, will be computed based on the ToiletRatings every time rating is added
             toiletMaster.toiletOwnerBy = toiletOwnedBy   // from the server
             toiletMaster.toiletSponsor = toiletSponsor   // from the server
             toiletMaster.lastCleanedBy = toiletJanitor   // from clean record
             toiletMaster.lastCleanedTimeStamp = lastCleanedTimeStamp    // from clean record
-
             toiletMaster.ratingSum = ratingSum   // retain the original value
             toiletMaster.numberOfRatings = numberOfRatings  // retain the original value
             toiletMaster.ratingSumLifeTime = ratingSumLifeTime   // retain the original value
             toiletMaster.numberOfRatingsLifeTime = numberOfRatingsLifeTime    // retain the original value
 
-
-            val FireDBRef = FirebaseDatabase.getInstance().getReference("ToiletMaster")
-            FireDBRef.child(toiletID).setValue(toiletMaster).addOnCompleteListener {
+            val fireDBRef = FirebaseDatabase.getInstance().getReference("ToiletMaster")
+            fireDBRef.child(toiletID).setValue(toiletMaster).addOnCompleteListener {
                 Toast.makeText(this@JanitorActivity, "Thank you! Toilet Master Updated", Toast.LENGTH_SHORT).show()
             }
             Toast.makeText(this@JanitorActivity, "KV_DEBUG:: End of onMapReady in JanitorActivity!", Toast.LENGTH_SHORT)

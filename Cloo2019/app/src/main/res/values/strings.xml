@@ -29,7 +29,7 @@
     <string name="settings">Settings</string>
     <string name="button_go">Directions</string>
     <string name="title_activity_janitor">JanitorActivity</string>
-    <string name="string_app_version">cloo Ver 0.11</string>
+    <string name="string_app_version">cloo Ver 0.20</string>
 
     <string-array name="Gender"/>
 </resources>
