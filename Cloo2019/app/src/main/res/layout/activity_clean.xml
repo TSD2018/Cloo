@@ -8,7 +8,7 @@
         tools:context=".CleanActivity">
 
     <TextView
-            android:text="activity_clean_toilet_name"
+            android:text="@string/default_toilet_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:id="@+id/textView_toiletName"
             android:layout_marginTop="16dp"
@@ -16,7 +16,7 @@
             android:layout_marginLeft="16dp" android:layout_marginStart="16dp" app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="8dp" android:layout_marginRight="8dp"/>
     <TextView
-            android:text="1/11/11 1:11:11"
+            android:text="@string/default_timestamp"
             android:layout_width="196dp"
             android:layout_height="22dp" android:id="@+id/textViewCleanTimeStamp"
             app:layout_constraintStart_toStartOf="parent"
@@ -24,7 +24,7 @@
             app:layout_constraintTop_toBottomOf="@+id/editText_JanitorName"
             android:layout_marginTop="16dp"/>
     <Button
-            android:text="Cleaned"
+            android:text="@string/button_label_cleaned"
             android:layout_width="107dp"
             android:layout_height="39dp" android:id="@+id/button_Cleaned"
             app:layout_constraintBaseline_toBaselineOf="@+id/textViewCleanTimeStamp"
@@ -49,65 +49,67 @@
                     android:inputType="none|textCapSentences|textAutoCorrect|textAutoComplete|textMultiLine"
                     android:ems="10"
                     tools:layout_editor_absoluteY="439dp" tools:layout_editor_absoluteX="30dp"
-                    android:id="@+id/editTextOthers" android:hint="Remarks"/>
+                    android:id="@+id/editTextOthers" android:hint="@string/hint_remarks" android:singleLine="false"
+                    android:importantForAutofill="no"
+            />
             <TextView
-                    android:text="Basics"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" tools:layout_editor_absoluteY="34dp"
                     app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="16dp"
-                    android:layout_marginStart="16dp" android:id="@+id/textView_checksLabel"/>
+                    android:layout_marginStart="16dp" android:id="@+id/textView_checksLabel"
+                    android:text="@string/string_basics"/>
             <CheckBox
-                    android:text="Water Available"
+                    android:text="@string/check_item_water_available"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:id="@+id/checkBoxWater"/>
             <CheckBox
-                    android:text="Lights Working"
+                    android:text="@string/check_item_lights_available"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:id="@+id/checkBoxElectricity"/>
             <CheckBox
-                    android:text="Stinks?"
+                    android:text="@string/check_item_fresh_aroma"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:id="@+id/checkBoxStinks"/>
             <CheckBox
-                    android:text="Plumbing ok?"
+                    android:text="@string/check_item_plumbing"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:id="@+id/checkBoxPlumbing"/>
             <TextView
-                    android:text="Wash, Clean, Wipe"
+                    android:text="@string/string_wash_clean_wipe"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:id="@+id/textViewCleanAndTidy"/>
             <CheckBox
-                    android:text="Sink"
+                    android:text="@string/check_item_clean_sink"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:id="@+id/checkBoxSink"/>
             <CheckBox
-                    android:text="Mirror"
+                    android:text="@string/check_item_clean_mirror"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:id="@+id/checkBoxMirror"/>
             <CheckBox
-                    android:text="Toilets"
+                    android:text="@string/check_item_clean_toilets"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:id="@+id/checkBoxToilets"/>
             <CheckBox
-                    android:text="Floor"
+                    android:text="@string/check_item_clean_floor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:id="@+id/checkBoxFloor"/>
             <CheckBox
-                    android:text="Wall Tiles"
+                    android:text="@string/check_item_clean_wall"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" tools:layout_editor_absoluteY="333dp"
                     tools:layout_editor_absoluteX="80dp" android:id="@+id/checkBoxWall"/>
             <TextView
-                    android:text="Check Stock"
+                    android:text="@string/string_check_stock"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:id="@+id/textViewStock"/>
             <CheckBox
-                    android:text="Soap"
+                    android:text="@string/check_item_stock_handwash"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" tools:layout_editor_absoluteY="374dp"
                     tools:layout_editor_absoluteX="8dp" android:id="@+id/checkBoxSoap"/>
             <CheckBox
-                    android:text="Tissue"
+                    android:text="@string/check_item_stock_tissue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:id="@+id/checkBoxTissue"/>
         </LinearLayout>
@@ -120,5 +122,8 @@
             android:id="@+id/editText_JanitorName"
             android:layout_marginTop="16dp"
             app:layout_constraintTop_toBottomOf="@+id/textView_toiletName" android:layout_marginStart="16dp"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="16dp" android:hint="Cleaned by"/>
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="16dp"
+            android:hint="@string/hint_cleaned_by"
+            android:textSize="12sp"
+            android:importantForAutofill="no"/>
 </android.support.constraint.ConstraintLayout>

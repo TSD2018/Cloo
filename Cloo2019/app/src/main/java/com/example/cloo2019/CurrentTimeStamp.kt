@@ -11,7 +11,7 @@ class CurrentTimeStamp {
     private val current: String = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         LocalDateTime.now().toString()
     } else {
-        "Not available"
+        "Not available"   // Should be changed to a String Value
     }
 
     fun getString(): String {
