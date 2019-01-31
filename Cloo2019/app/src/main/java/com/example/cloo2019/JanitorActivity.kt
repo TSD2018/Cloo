@@ -1,5 +1,8 @@
 /* Created by Kartik Venkataraman, 3 Dec 2018 */
 /* Rev 0.2.  Code Cleanup - Kartik Venkataraman 29 Jan 2019 */
+/* Rev 0.22  Mapped string literals to STRINGS.XML - Kartik Venkataraman 31 Jan 2019 */
+/*           No changes to FireBase, will handle that as a part of the class restructuring */
+/*           Spinner text arrays are not updated.  Needs a little more study before implementing */
 
 package com.example.cloo2019
 
@@ -64,29 +67,35 @@ class JanitorActivity : AppCompatActivity(), OnMapReadyCallback {
         setContentView(R.layout.activity_janitor)
         setSupportActionBar(toolbar)
 
-        toiletID = intent.getStringExtra("TOILET_ID")
-        toiletName = intent.getStringExtra("TOILET_NAME")
-        lat = intent.getDoubleExtra("LAT", 0.0)
-        lng = intent.getDoubleExtra("LNG", 0.0)
-        alt = intent.getDoubleExtra("ALT", 0.0)
-        toiletAddress = intent.getStringExtra("TOILET_ADDRESS")
-        toiletAccess = intent.getIntExtra("TOILET_ACCESS", 0)
-        genderType = intent.getIntExtra("TOILET_GENDER", 0)
-        toiletType = intent.getIntExtra("TOILET_TYPE", 0)
-        toiletJanitor = intent.getStringExtra("TOILET_JANITOR")
-        toiletContact = intent.getStringExtra("TOILET_CONTACT")
 
-        toiletMaintainedBy = intent.getStringExtra("TOILET_MAINTAINEDBY")
-        toiletOwnedBy = intent.getStringExtra("TOILET_OWNEDBY")
-        toiletSponsor = intent.getStringExtra("TOILET_SPONSOR")
-        userRating = intent.getDoubleExtra("RATING", 0.0)
-        lastCleanedTimeStamp = intent.getStringExtra("LAST_CLEANED")
-        lastCleanedTimeStampPresentable = intent.getStringExtra("LAST_CLEANED_PRESENTABLE")
+        /************* 31 Jan 2019 - Kartik TOP ****************/
+        // Replacing the intent string literals with the constants defined
+        toiletID = intent.getStringExtra(getString(R.string.intent_toilet_id))    // ("TOILET_ID")
+        toiletName = intent.getStringExtra(getString(R.string.intent_toilet_name))  // ("TOILET_NAME")
+        lat = intent.getDoubleExtra(getString(R.string.intent_latitude), 0.0)  // ("LAT", 0.0)
+        lng = intent.getDoubleExtra(getString(R.string.intent_longitude), 0.0) //("LNG", 0.0)
+        alt = intent.getDoubleExtra(getString(R.string.intent_altitude),0.0)  //("ALT", 0.0)
+        toiletAddress = intent.getStringExtra(getString(R.string.intent_toilet_address)) //"TOILET_ADDRESS")
+        toiletAccess = intent.getIntExtra(getString(R.string.intent_toilet_access),0) //"TOILET_ACCESS", 0)
+        genderType = intent.getIntExtra(getString(R.string.intent_toilet_gender), 0) //("TOILET_GENDER", 0)
+        toiletType = intent.getIntExtra(getString(R.string.intent_toilet_type), 0) //("TOILET_TYPE", 0)
+        toiletJanitor = intent.getStringExtra(getString(R.string.intent_janitor))  // ("TOILET_JANITOR")
+        toiletContact = intent.getStringExtra(getString(R.string.intent_contact_number))  // ("TOILET_CONTACT")
+        toiletMaintainedBy = intent.getStringExtra(getString(R.string.intent_toilet_maintained_by))  // ("TOILET_MAINTAINEDBY")
+        toiletOwnedBy = intent.getStringExtra(getString(R.string.intent_toilet_owner))  // ("TOILET_OWNEDBY")
+        toiletSponsor = intent.getStringExtra(getString(R.string.intent_sponsor))  // ("TOILET_SPONSOR")
 
-        ratingSum = intent.getIntExtra("RATING_SUM", 0)
-        numberOfRatings = intent.getIntExtra("NUMBER_OF_RATINGS", 0)
-        ratingSumLifeTime = intent.getIntExtra("RATING_SUM_LIFETIME", 0)
-        numberOfRatingsLifeTime = intent.getIntExtra("NUMBER_OF_RATINGS_LIFETIME", 0)
+        userRating = intent.getDoubleExtra(getString(R.string.intent_rating), 0.0)  // ("RATING", 0.0)
+        lastCleanedTimeStamp = intent.getStringExtra(getString(R.string.intent_last_cleaned))  // ("LAST_CLEANED")
+        lastCleanedTimeStampPresentable = intent.getStringExtra(getString(R.string.intent_last_cleaned_presentable_timestamp))  // ("LAST_CLEANED_PRESENTABLE")
+
+        ratingSum = intent.getIntExtra(getString(R.string.intent_rating_sum),0) //("RATING_SUM", 0)
+        numberOfRatings = intent.getIntExtra(getString(R.string.intent_number_of_ratings),0) //("NUMBER_OF_RATINGS", 0)
+        ratingSumLifeTime = intent.getIntExtra(getString(R.string.intent_rating_sum_lifetime),0) //("RATING_SUM_LIFETIME", 0)
+        numberOfRatingsLifeTime = intent.getIntExtra(getString(R.string.intent_number_of_ratings_lifetime),0) //("NUMBER_OF_RATINGS_LIFETIME", 0)
+
+        /************* 31 Jan 2019 - Kartik END ****************/
+
 
         editToiletName = findViewById(R.id.editText_ToiletName)
         editToiletName.setText(toiletName)
@@ -103,7 +112,7 @@ class JanitorActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
         val looLatLng = findViewById<TextView>(R.id.textView_Latlng)
-        looLatLng.text = "Lat: $lat, Lng: $lng"
+        looLatLng.text = getString(R.string.strings_latitude) + " $lat, " + getString(R.string.strings_longitude) +" $lng"
 
         looAddress = findViewById(R.id.editText_Loo_Address)
         looAddress.setText(toiletAddress)
@@ -222,13 +231,23 @@ class JanitorActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        val dest = LatLng(intent.getDoubleExtra("LAT", 0.0), intent.getDoubleExtra("LNG", 0.0))
-        val userRating = intent.getDoubleExtra("RATING", 0.0)
+        /*******  31 JAN 2019 KARTIK TOP ****/
+        val dest = LatLng(intent.getDoubleExtra(getString(R.string.intent_latitude), 0.0),
+            intent.getDoubleExtra(getString(R.string.intent_longitude), 0.0))
+        val userRating = intent.getDoubleExtra(getString(R.string.intent_rating), 0.0)
+        val altVal = intent.getDoubleExtra(getString(R.string.intent_altitude), 0.0)
+
+
+//        val dest = LatLng(intent.getDoubleExtra("LAT", 0.0), intent.getDoubleExtra("LNG", 0.0))
+//        val userRating = intent.getDoubleExtra("RATING", 0.0)
         val latVal = dest.latitude
         val lngVal = dest.longitude
-        val altVal = intent.getDoubleExtra("ALT", 0.0)
+//        val altVal = intent.getDoubleExtra("ALT", 0.0)
+        mMap.addMarker(MarkerOptions().position(dest).title(getString(R.string.strings_toilet_location)))
 
-        mMap.addMarker(MarkerOptions().position(dest).title("Toilet Location"))
+//        mMap.addMarker(MarkerOptions().position(dest).title("Toilet Location"))
+        /*******  31 JAN 2019 KARTIK END ****/
+
         mMap.moveCamera(CameraUpdateFactory.newLatLng(dest))
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(dest, 12.0f))
 
@@ -279,7 +298,8 @@ class JanitorActivity : AppCompatActivity(), OnMapReadyCallback {
 
             val fireDBRef = FirebaseDatabase.getInstance().getReference("ToiletMaster")
             fireDBRef.child(toiletID).setValue(toiletMaster).addOnCompleteListener {
-                Toast.makeText(this@JanitorActivity, "Thank you! Toilet Master Updated", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@JanitorActivity, getString(R.string.status_toilet_master_updated), Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this@JanitorActivity, "Thank you! Toilet Master Updated", Toast.LENGTH_SHORT).show()
             }
             Toast.makeText(this@JanitorActivity, "KV_DEBUG:: End of onMapReady in JanitorActivity!", Toast.LENGTH_SHORT)
                 .show()

@@ -1,5 +1,9 @@
 /* Created by Kartik Venkataraman, 14 Nov 2018 */
 /* Rev 0.2.  Code Cleanup - Kartik Venkataraman 29 Jan 2019 */
+/* Rev 0.22  Mapped string literals to STRINGS.XML - Kartik Venkataraman 31 Jan 2019 */
+/*           No changes to FireBase, will handle that as a part of the class restructuring */
+
+
 
 package com.example.cloo2019
 
@@ -45,9 +49,6 @@ class MainActivityLocateLoo : AppCompatActivity() {
         looListView = findViewById(R.id.listview_loo_locations)
         looList = mutableListOf()
         fireDBRef = FirebaseDatabase.getInstance().getReference("ToiletMaster")
-//        fireDBRef = FirebaseDatabase.getInstance().getReference("toilet_master")
-//        fireDBRef = FirebaseDatabase.getInstance().getReference("ratings")
-
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         mLocationAddress = findViewById<View>(R.id.textView_current_location) as TextView
@@ -97,7 +98,9 @@ class MainActivityLocateLoo : AppCompatActivity() {
                 if (task.isSuccessful && task.result != null) {
                     mLastLocation = task.result
 
-                    mLocationAddress!!.text = "Latitude: ${mLastLocation!!.latitude} Logitude: ${mLastLocation!!.longitude}"
+                    mLocationAddress!!.text = getString(R.string.strings_latitude) +
+                            " ${mLastLocation!!.latitude} \n" +
+                            getString(R.string.strings_longitude) + " ${mLastLocation!!.longitude}"
                     CurrentLocation.setLastLocation(mLastLocation!!)
                 } else {
                     Log.i(MainActivityLocateLoo.TAG, "getLastLocation:exception", task.exception)

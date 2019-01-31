@@ -1,5 +1,7 @@
 /* Created by Kartik Venkataraman, 14 Nov 2018 */
 /* Rev 0.2.  Code Cleanup - Kartik Venkataraman 29 Jan 2019 */
+/* Rev 0.22  Mapped string literals to STRINGS.XML - Kartik Venkataraman 31 Jan 2019 */
+/*           No changes to FireBase, will handle that as a part of the class restructuring */
 
 package com.example.cloo2019
 
@@ -38,7 +40,10 @@ class MainActivityAddNewLoo : AppCompatActivity() {
                 if (task.isSuccessful && task.result != null) {
                     mLastLocation = task.result
 
-                    LocationAddress !!.text = "Latitude: ${mLastLocation!!.latitude.toString()} Logitude: ${mLastLocation!!.longitude.toString()}"
+                    LocationAddress !!.text = getString(R.string.strings_latitude) +
+                            " ${mLastLocation!!.latitude.toString()} "+
+                            getString(R.string.strings_longitude) + " ${mLastLocation!!.longitude.toString()}"
+//                    LocationAddress !!.text = "Latitude: ${mLastLocation!!.latitude.toString()} Logitude: ${mLastLocation!!.longitude.toString()}"
                 } else {
                     LocationAddress!!.text = getString(R.string.no_location_detected)
                 }
@@ -74,14 +79,16 @@ class MainActivityAddNewLoo : AppCompatActivity() {
 
 
         if(LocationAddress  == null){
-            Toast.makeText(this@MainActivityAddNewLoo, "Please set location", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@MainActivityAddNewLoo, getString(R.string.no_location_detected),
+                Toast.LENGTH_SHORT).show()      // "Please set location"
             return
         }
 
         val FireDBRef = FirebaseDatabase.getInstance().getReference("ToiletMaster")
         val toiletId = FireDBRef.push().key
         if(toiletId == null) {
-            Toast.makeText(this@MainActivityAddNewLoo, "Toilet Master push key returned null", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@MainActivityAddNewLoo,  getString(R.string.error_msg_toilet_record_id_null)     //"Toilet Master push key returned null"
+                , Toast.LENGTH_SHORT).show()
             return
         }
         val toiletMasterRecord = ToiletMaster(toiletId, mLastLocation?.latitude!!, mLastLocation?.longitude!!,
@@ -89,20 +96,23 @@ class MainActivityAddNewLoo : AppCompatActivity() {
             chosenRating,1,0,0,0,"","","",
             "","","")
         FireDBRef.child(toiletId).setValue(toiletMasterRecord).addOnCompleteListener {
-            Toast.makeText(this@MainActivityAddNewLoo,"New toiler created...", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@MainActivityAddNewLoo, getString(R.string.status_toilet_master_created)     //"New toiler created..."
+                , Toast.LENGTH_SHORT).show()
         }
-        Toast.makeText(this@MainActivityAddNewLoo,"Done!", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this@MainActivityAddNewLoo,"Done!", Toast.LENGTH_SHORT).show()
 
         val database = FirebaseDatabase.getInstance()
         val ratingRef = database.getReference("ToiletRating/$toiletId")
         val toiletRatingId = ratingRef.push().key
         if(toiletRatingId == null) {
-            Toast.makeText(this@MainActivityAddNewLoo, "Toilet Record ID push key returned null", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@MainActivityAddNewLoo, getString(R.string.error_msg_toilet_rating_id_null)   // "Toilet Record ID push key returned null"
+                , Toast.LENGTH_SHORT).show()
             return
         }
         val toiletRatingRecord = UserRating(toiletRatingId,toiletId,"",chosenRating,userComments,"" )
         ratingRef.child(toiletRatingId).setValue(toiletRatingRecord).addOnCompleteListener {
-            Toast.makeText(this@MainActivityAddNewLoo, "and Rating Saved.  Thank you", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@MainActivityAddNewLoo, getString(R.string.status_toilet_rating_saved)   // "and Rating Saved.  Thank you"
+             , Toast.LENGTH_SHORT).show()
         }
         finish()
 

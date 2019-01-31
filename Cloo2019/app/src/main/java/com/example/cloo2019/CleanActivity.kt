@@ -1,5 +1,7 @@
 /* Created by Kartik Venkataraman, 4 Dec 2018 */
 /* Rev 0.2.  Code Cleanup - Kartik Venkataraman 29 Jan 2019 */
+/* Rev 0.22  Mapped string literals to STRINGS.XML - Kartik Venkataraman 31 Jan 2019 */
+/*           No changes to FireBase, will handle that as a part of the class restructuring */
 
 package com.example.cloo2019
 
@@ -14,9 +16,9 @@ class CleanActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_clean)
 
-        val toiletID = intent.getStringExtra("TOILET_ID")
-        val toiletName = intent.getStringExtra("TOILET_NAME")
-        val janitorName = intent.getStringExtra("TOILET_JANITOR")
+        val toiletID = intent.getStringExtra(getString(R.string.intent_toilet_id))
+        val toiletName = intent.getStringExtra(getString(R.string.intent_toilet_name))
+        val janitorName = intent.getStringExtra(getString(R.string.intent_janitor))
 
         val textToiletName = findViewById<TextView>(R.id.textView_toiletName)
         textToiletName.text = toiletName
@@ -48,7 +50,7 @@ class CleanActivity : AppCompatActivity() {
             if (cleanedRecordId == null) {
                 Toast.makeText(
                     this@CleanActivity,
-                    "Clean Report cannot be captured as push key returned null.",
+                    getString(R.string.error_msg_clean_record_id_null),   // "Clean Report cannot be captured as push key returned null."
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
@@ -85,7 +87,8 @@ class CleanActivity : AppCompatActivity() {
                     toiletDBRef.child("numberOfRatings").setValue(0)    // value is reset to 0
 
 
-                    Toast.makeText(this@CleanActivity, "Thank you! Clean report captured", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@CleanActivity, getString(R.string.status_clean_report_captured), // "Thank you! Clean report captured"
+                        Toast.LENGTH_SHORT).show()
                 }
             }
 

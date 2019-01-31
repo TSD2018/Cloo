@@ -1,5 +1,7 @@
 /* Created by Kartik Venkataraman, 14 Nov 2018 */
 /* Rev 0.2.  Code Cleanup - Kartik Venkataraman 29 Jan 2019 */
+/* Rev 0.22  Mapped string literals to STRINGS.XML - Kartik Venkataraman 31 Jan 2019 */
+/*           No changes to FireBase, will handle that as a part of the class restructuring */
 
 package com.example.cloo2019
 
@@ -54,33 +56,74 @@ class MapsActivityDirections : AppCompatActivity(), OnMapReadyCallback {
         setContentView(R.layout.activity_maps__directions)
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 
-        lat = intent.getDoubleExtra("LAT", 0.0)
-        lng = intent.getDoubleExtra("LNG", 0.0)
-        alt = intent.getDoubleExtra("ALT", 0.0)
+        /***** 31 Jan 2019:Kartik TOP *********/
+        lat = intent.getDoubleExtra(getString(R.string.intent_latitude), 0.0)
+        lng = intent.getDoubleExtra(getString(R.string.intent_longitude), 0.0)
+        alt = intent.getDoubleExtra(getString(R.string.intent_altitude), 0.0)
 
-        genderType = intent.getIntExtra("TOILET_GENDER", 0)
-        toiletAccess = intent.getIntExtra("TOILET_ACCESS", 0)
-        toiletType = intent.getIntExtra("TOILET_TYPE", 0)
+        genderType = intent.getIntExtra(getString(R.string.intent_toilet_gender), 0)
+        toiletAccess = intent.getIntExtra(getString(R.string.intent_toilet_access), 0)
+        toiletType = intent.getIntExtra(getString(R.string.intent_toilet_type), 0)
 
-        toiletContact = intent.getStringExtra("TOILET_CONTACT")
-        toiletJanitor = intent.getStringExtra("TOILET_JANITOR")
-        toiletMaintainedBy = intent.getStringExtra("TOILET_MAINTAINEDBY")
-        toiletName = intent.getStringExtra("TOILET_NAME")
-        toiletOwnedBy = intent.getStringExtra("TOILET_OWNEDBY")
-        toiletSponsor = intent.getStringExtra("TOILET_SPONSOR")
+        toiletContact = intent.getStringExtra(getString(R.string.intent_contact_number))   // ("TOILET_CONTACT")
+        toiletJanitor = intent.getStringExtra(getString(R.string.intent_janitor))
+        toiletMaintainedBy = intent.getStringExtra(getString(R.string.intent_toilet_maintained_by))
+        toiletName = intent.getStringExtra(getString(R.string.intent_toilet_name))
+        toiletOwnedBy = intent.getStringExtra(getString(R.string.intent_toilet_owner))
+        toiletSponsor = intent.getStringExtra(getString(R.string.intent_sponsor))
 
-        toiletID = intent.getStringExtra("TOILET_ID")
-        toiletAddress = intent.getStringExtra("TOILET_ADDRESS")
-        userRating = intent.getDoubleExtra("RATING", 0.0)
+        toiletID = intent.getStringExtra(getString(R.string.intent_toilet_id))
+        toiletAddress = intent.getStringExtra(getString(R.string.intent_toilet_address))
+        userRating = intent.getDoubleExtra(getString(R.string.intent_rating), 0.0)
 
-        ratingSum = intent.getIntExtra("RATING_SUM", 0)
-        numberOfRatings = intent.getIntExtra("NUMBER_OF_RATINGS", 0)
-        ratingSumLifeTime = intent.getIntExtra("RATING_SUM_LIFETIME", 0)
-        numberOfRatingsLifeTime = intent.getIntExtra("NUMBER_OF_RATINGS_LIFETIME", 0)
+        ratingSum = intent.getIntExtra(getString(R.string.intent_rating_sum), 0)
+        numberOfRatings = intent.getIntExtra(getString(R.string.intent_number_of_ratings), 0)
+        ratingSumLifeTime = intent.getIntExtra(getString(R.string.intent_rating_sum_lifetime), 0)
+        numberOfRatingsLifeTime = intent.getIntExtra(getString(R.string.intent_number_of_ratings_lifetime), 0)
 
-        lastCleanedTimeStamp = intent.getStringExtra("LAST_CLEANED")
-        lastCleanedTimeStampPresentable = intent.getStringExtra("LAST_CLEANED_PRESENTABLE")
-        val toiletFeatures = intent.getStringExtra("TOILET_FEATURES")
+        lastCleanedTimeStamp = intent.getStringExtra(getString(R.string.intent_last_cleaned))
+        lastCleanedTimeStampPresentable = intent.getStringExtra(getString(R.string.intent_last_cleaned_presentable_timestamp))
+        val toiletFeatures = intent.getStringExtra(getString(R.string.intent_toilet_features))
+
+
+//        lat = intent.getDoubleExtra("LAT", 0.0)
+//        lng = intent.getDoubleExtra("LNG", 0.0)
+//        alt = intent.getDoubleExtra("ALT", 0.0)
+//
+//        genderType = intent.getIntExtra("TOILET_GENDER", 0)
+//        toiletAccess = intent.getIntExtra("TOILET_ACCESS", 0)
+//        toiletType = intent.getIntExtra("TOILET_TYPE", 0)
+//
+//        toiletContact = intent.getStringExtra("TOILET_CONTACT")
+//        toiletJanitor = intent.getStringExtra("TOILET_JANITOR")
+//        toiletMaintainedBy = intent.getStringExtra("TOILET_MAINTAINEDBY")
+//        toiletName = intent.getStringExtra("TOILET_NAME")
+//        toiletOwnedBy = intent.getStringExtra("TOILET_OWNEDBY")
+//        toiletSponsor = intent.getStringExtra("TOILET_SPONSOR")
+//
+//        toiletID = intent.getStringExtra("TOILET_ID")
+//        toiletAddress = intent.getStringExtra("TOILET_ADDRESS")
+//        userRating = intent.getDoubleExtra("RATING", 0.0)
+//
+//        ratingSum = intent.getIntExtra("RATING_SUM", 0)
+//        numberOfRatings = intent.getIntExtra("NUMBER_OF_RATINGS", 0)
+//        ratingSumLifeTime = intent.getIntExtra("RATING_SUM_LIFETIME", 0)
+//        numberOfRatingsLifeTime = intent.getIntExtra("NUMBER_OF_RATINGS_LIFETIME", 0)
+//
+//        lastCleanedTimeStamp = intent.getStringExtra("LAST_CLEANED")
+//        lastCleanedTimeStampPresentable = intent.getStringExtra("LAST_CLEANED_PRESENTABLE")
+//        val toiletFeatures = intent.getStringExtra("TOILET_FEATURES")
+
+        /***** 31 Jan 2019:Kartik END *********/
+
+
+
+
+
+
+
+
+
         val toiletFeaturesView = findViewById<TextView>(R.id.textView_feature)
         toiletFeaturesView.text = toiletFeatures
 
@@ -120,7 +163,8 @@ class MapsActivityDirections : AppCompatActivity(), OnMapReadyCallback {
         val lastCleanedTimeStampTextView = findViewById<TextView>(R.id.textViewCleanTimeStamp)
         lastCleanedTimeStampTextView!!.text = lastCleanedTimeStampPresentable  // will show timestamp on load
 
-        mMap.addMarker(MarkerOptions().position(dest).title("Destination"))
+        mMap.addMarker(MarkerOptions().position(dest).title(getString(R.string.strings_toilet_location)))
+//        mMap.addMarker(MarkerOptions().position(dest).title("Destination"))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(dest))
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(dest, 12.0f))
 
@@ -143,28 +187,59 @@ class MapsActivityDirections : AppCompatActivity(), OnMapReadyCallback {
         val buttonJanitor = findViewById<Button>(R.id.button_Janitor)
         buttonJanitor?.setOnClickListener {
             val i = Intent(this, JanitorActivity::class.java)
-            i.putExtra("LAT", lat)
-            i.putExtra("LNG", lng)
-            i.putExtra("TOILET_ADDRESS", toiletAddress)
-            i.putExtra("TOILET_ID", toiletID)
 
-            i.putExtra("ALT", alt)
-            i.putExtra("RATING", userRating)
-            i.putExtra("LAST_CLEANED", lastCleanedTimeStamp)
-            i.putExtra("LAST_CLEANED_PRESENTABLE", lastCleanedTimeStampPresentable)
-            i.putExtra("TOILET_GENDER", genderType)
-            i.putExtra("TOILET_ACCESS", toiletAccess)
-            i.putExtra("TOILET_CONTACT", toiletContact)
-            i.putExtra("TOILET_JANITOR", toiletJanitor)
-            i.putExtra("TOILET_MAINTAINEDBY", toiletMaintainedBy)
-            i.putExtra("TOILET_NAME", toiletName)
-            i.putExtra("TOILET_OWNEDBY", toiletOwnedBy)
-            i.putExtra("TOILET_SPONSOR", toiletSponsor)
-            i.putExtra("TOILET_TYPE", toiletType)
-            i.putExtra("RATING_SUM", ratingSum)
-            i.putExtra("NUMBER_OF_RATINGS", numberOfRatings)
-            i.putExtra("RATING_SUM_LIFETIME", ratingSumLifeTime)
-            i.putExtra("NUMBER_OF_RATINGS_LIFETIME", numberOfRatingsLifeTime)
+            /***** 31 Jan 2019:Kartik TOP *********/
+
+
+            i.putExtra(getString(R.string.intent_latitude), lat)
+            i.putExtra(getString(R.string.intent_longitude), lng)
+            i.putExtra(getString(R.string.intent_toilet_address), toiletAddress)
+            i.putExtra(getString(R.string.intent_toilet_id), toiletID)
+
+            i.putExtra(getString(R.string.intent_altitude), alt)
+            i.putExtra(getString(R.string.intent_rating), userRating)
+            i.putExtra(getString(R.string.intent_last_cleaned), lastCleanedTimeStamp)
+            i.putExtra(getString(R.string.intent_last_cleaned_presentable_timestamp), lastCleanedTimeStampPresentable)
+            i.putExtra(getString(R.string.intent_toilet_gender), genderType)
+            i.putExtra(getString(R.string.intent_toilet_access), toiletAccess)
+            i.putExtra(getString(R.string.intent_contact_number), toiletContact)
+            i.putExtra(getString(R.string.intent_janitor), toiletJanitor)
+            i.putExtra(getString(R.string.intent_toilet_maintained_by), toiletMaintainedBy)
+            i.putExtra(getString(R.string.intent_toilet_name), toiletName)
+            i.putExtra(getString(R.string.intent_toilet_owner), toiletOwnedBy)
+            i.putExtra(getString(R.string.intent_sponsor), toiletSponsor)
+            i.putExtra(getString(R.string.intent_toilet_type), toiletType)
+            i.putExtra(getString(R.string.intent_rating_sum), ratingSum)
+            i.putExtra(getString(R.string.intent_number_of_ratings), numberOfRatings)
+            i.putExtra(getString(R.string.intent_rating_sum_lifetime), ratingSumLifeTime)
+            i.putExtra(getString(R.string.intent_number_of_ratings_lifetime), numberOfRatingsLifeTime)
+
+//            i.putExtra("LAT", lat)
+//            i.putExtra("LNG", lng)
+//            i.putExtra("TOILET_ADDRESS", toiletAddress)
+//            i.putExtra("TOILET_ID", toiletID)
+//
+//            i.putExtra("ALT", alt)
+//            i.putExtra("RATING", userRating)
+//            i.putExtra("LAST_CLEANED", lastCleanedTimeStamp)
+//            i.putExtra("LAST_CLEANED_PRESENTABLE", lastCleanedTimeStampPresentable)
+//            i.putExtra("TOILET_GENDER", genderType)
+//            i.putExtra("TOILET_ACCESS", toiletAccess)
+//            i.putExtra("TOILET_CONTACT", toiletContact)
+//            i.putExtra("TOILET_JANITOR", toiletJanitor)
+//            i.putExtra("TOILET_MAINTAINEDBY", toiletMaintainedBy)
+//            i.putExtra("TOILET_NAME", toiletName)
+//            i.putExtra("TOILET_OWNEDBY", toiletOwnedBy)
+//            i.putExtra("TOILET_SPONSOR", toiletSponsor)
+//            i.putExtra("TOILET_TYPE", toiletType)
+//            i.putExtra("RATING_SUM", ratingSum)
+//            i.putExtra("NUMBER_OF_RATINGS", numberOfRatings)
+//            i.putExtra("RATING_SUM_LIFETIME", ratingSumLifeTime)
+//            i.putExtra("NUMBER_OF_RATINGS_LIFETIME", numberOfRatingsLifeTime)
+
+
+            /***** 31 Jan 2019:Kartik END *********/
+
 
             startActivity(i)
         }
@@ -172,9 +247,16 @@ class MapsActivityDirections : AppCompatActivity(), OnMapReadyCallback {
         val buttonClean = findViewById<Button>(R.id.buttonClean)
         buttonClean?.setOnClickListener {
             val i = Intent(this, CleanActivity::class.java)
-            i.putExtra("TOILET_ID", toiletID)
-            i.putExtra("TOILET_NAME", toiletName)
-            i.putExtra("TOILET_JANITOR", toiletJanitor)
+
+            /***** 31 Jan 2019:Kartik TOP *********/
+            i.putExtra(getString(R.string.intent_toilet_id), toiletID)
+            i.putExtra(getString(R.string.intent_toilet_name), toiletName)
+            i.putExtra(getString(R.string.intent_janitor), toiletJanitor)
+
+//            i.putExtra("TOILET_ID", toiletID)
+//            i.putExtra("TOILET_NAME", toiletName)
+//            i.putExtra("TOILET_JANITOR", toiletJanitor)
+            /***** 31 Jan 2019:Kartik END *********/
 
             // User ratings are reset to 0 after toilet is cleaned
             // No need to share the current values with this intent
@@ -199,12 +281,25 @@ class MapsActivityDirections : AppCompatActivity(), OnMapReadyCallback {
 
             val i = Intent(this, MainActivityRating::class.java)
             // KARTIK to pass the toilet ID
-            i.putExtra("TOILET_ID", toiletID)
-            i.putExtra("TOILET_ADDRESS", toiletAddress)
-            i.putExtra("RATING_SUM", ratingSum)
-            i.putExtra("NUMBER_OF_RATINGS", numberOfRatings)
-            i.putExtra("RATING_SUM_LIFETIME", ratingSumLifeTime)
-            i.putExtra("NUMBER_OF_RATINGS_LIFETIME", numberOfRatingsLifeTime)
+            /***** 31 Jan 2019:Kartik TOP *********/
+
+            i.putExtra(getString(R.string.intent_toilet_id), toiletID)
+            i.putExtra(getString(R.string.intent_toilet_address), toiletAddress)
+
+            i.putExtra(getString(R.string.intent_rating_sum), ratingSum)
+            i.putExtra(getString(R.string.intent_number_of_ratings), numberOfRatings)
+            i.putExtra(getString(R.string.intent_rating_sum_lifetime), ratingSumLifeTime)
+            i.putExtra(getString(R.string.intent_number_of_ratings_lifetime), numberOfRatingsLifeTime)
+
+//            i.putExtra("TOILET_ID", toiletID)
+//            i.putExtra("TOILET_ADDRESS", toiletAddress)
+//            i.putExtra("RATING_SUM", ratingSum)
+//            i.putExtra("NUMBER_OF_RATINGS", numberOfRatings)
+//            i.putExtra("RATING_SUM_LIFETIME", ratingSumLifeTime)
+//            i.putExtra("NUMBER_OF_RATINGS_LIFETIME", numberOfRatingsLifeTime)
+
+            /***** 31 Jan 2019:Kartik END *********/
+
 
             startActivity(i)
         }
