@@ -29,7 +29,7 @@
     <string name="settings">Settings</string>
     <string name="button_go">Directions</string>
     <string name="title_activity_janitor">JanitorActivity</string>
-    <string name="string_app_version">cloo Ver 0.23</string>
+    <string name="string_app_version">cloo\nver 0.25</string>
 
     <string-array name="Gender"/>
     <string name="hint_cleaned_by">Cleaned by</string>
@@ -56,8 +56,8 @@
     <string name="spinner_label_toilet_access">Toilet Access</string>
     <string name="spinner_label_gender">Gender</string>
     <string name="string_toilet_types">Types</string>
-    <string name="check_label_western">Western</string>
-    <string name="check_types_indian">Indian</string>
+    <string name="check_label_western">Western Style</string>
+    <string name="check_types_indian">Indian Style</string>
     <string name="check_types_urinal">Urinal</string>
     <string name="string_features">Features</string>
     <string name="check_label_water">Water</string>
@@ -119,5 +119,18 @@
     <string name="strings_rating">Rating</string>
     <string name="strings_cleaned_on">Cleaned on: </string>
     <string name="strings_toilet_for">Toilet for:</string>
+    <string name="array_toilet_gender_gents_only">Gents only</string>
+    <string name="array_toilet_gender_ladies_only">Ladies only</string>
+    <string name="array_toilet_gender_ladies_and_gents">Ladies and Gents (separate)</string>
+    <string name="array_toilet_gender_unisex">Unisex</string>
+    <string name="array_toilet_access_free_toilet">Free Public Toilet</string>
+    <string name="array_toilet_access_pay_and_use">Pay and Use Toilet</string>
+    <string name="array_toilet_access_for_customers_only">For Customers Only</string>
+    <string name="array_toilet_access_restricted_entry">Restricted Entry</string>
+    <string name="array_toilet_access_private_toilet">Private</string>
+    <string name="error_toilet_access_unknown">Toilet access unknown</string>
+    <string name="error_toilet_gender_unknown">Ladies and Gents category not known</string>
+    <string name="error_toilet_style_unknown">Toilet style unknown</string>
     <string name="strings_toilet_style">Toilet Style:</string>
+    <string name="error_no_location">Current location not detected, using default.  Refresh</string>
 </resources>

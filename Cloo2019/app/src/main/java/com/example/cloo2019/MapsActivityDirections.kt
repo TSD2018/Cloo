@@ -96,9 +96,9 @@ class MapsActivityDirections : AppCompatActivity(), OnMapReadyCallback {
 //
 //        toiletContact = intent.getStringExtra("TOILET_CONTACT")
 //        toiletJanitor = intent.getStringExtra("TOILET_JANITOR")
-//        toiletMaintainedBy = intent.getStringExtra("TOILET_MAINTAINEDBY")
+//        toiletMaintainedBy = intent.getStringExtra("TOILET_MAINTAINED BY")
 //        toiletName = intent.getStringExtra("TOILET_NAME")
-//        toiletOwnedBy = intent.getStringExtra("TOILET_OWNEDBY")
+//        toiletOwnedBy = intent.getStringExtra("TOILET_OWNED BY")
 //        toiletSponsor = intent.getStringExtra("TOILET_SPONSOR")
 //
 //        toiletID = intent.getStringExtra("TOILET_ID")
@@ -227,9 +227,9 @@ class MapsActivityDirections : AppCompatActivity(), OnMapReadyCallback {
 //            i.putExtra("TOILET_ACCESS", toiletAccess)
 //            i.putExtra("TOILET_CONTACT", toiletContact)
 //            i.putExtra("TOILET_JANITOR", toiletJanitor)
-//            i.putExtra("TOILET_MAINTAINEDBY", toiletMaintainedBy)
+//            i.putExtra("TOILET_MAINTAINED BY", toiletMaintainedBy)
 //            i.putExtra("TOILET_NAME", toiletName)
-//            i.putExtra("TOILET_OWNEDBY", toiletOwnedBy)
+//            i.putExtra("TOILET_OWNED BY", toiletOwnedBy)
 //            i.putExtra("TOILET_SPONSOR", toiletSponsor)
 //            i.putExtra("TOILET_TYPE", toiletType)
 //            i.putExtra("RATING_SUM", ratingSum)

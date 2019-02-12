@@ -36,7 +36,6 @@ class MainActivityLocateLoo : AppCompatActivity() {
     private var mFusedLocationClient: FusedLocationProviderClient? = null
     private var mLocationAddress: TextView? = null
     private var mLastLocation: Location? = null
-
     private lateinit var fireDBRef: DatabaseReference
     lateinit var looList: MutableList<ToiletMaster>  // 8-JAN-2019:KARTIK
     lateinit var looListView: ListView
@@ -46,25 +45,71 @@ class MainActivityLocateLoo : AppCompatActivity() {
         setContentView(R.layout.activity_main__locate_loo)
         setSupportActionBar(toolbar)
 
+        fireDBRef = FirebaseDatabase.getInstance().getReference("ToiletMaster")
+
         looListView = findViewById(R.id.listview_loo_locations)
         looList = mutableListOf()
-        fireDBRef = FirebaseDatabase.getInstance().getReference("ToiletMaster")
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         mLocationAddress = findViewById<View>(R.id.textView_current_location) as TextView
         mLocationAddress!!.text = ""
+        refreshToiletList()
         getLastLocation()
 
         val buttonGetLatLong=findViewById<Button>(R.id.button_RefreshLocation)
         buttonGetLatLong?.setOnClickListener {
             mLocationAddress!!.text = ""
             getLastLocation()
+            // Want to refresh the list view too.
+            refreshToiletList()
         }
 
 
+
+        fab.setOnClickListener{
+                val i = Intent(this, MainActivityAddNewLoo::class.java)
+                startActivity(i)
+        }
+
+    }
+
+    @SuppressLint("MissingPermission", "SetTextI18n")
+    private fun getLastLocation() {
+        val textView : TextView = findViewById(R.id.textView_current_location_label)
+
+        mFusedLocationClient!!.lastLocation
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful && task.result != null) {
+                    // Change the location title to "Your current location"
+                    textView.text = getString(R.string.string_location)
+
+                    mLastLocation = task.result
+
+                    mLocationAddress!!.text = getString(R.string.strings_latitude) +
+                            " ${mLastLocation!!.latitude} \n" +
+                            getString(R.string.strings_longitude) + " ${mLastLocation!!.longitude}"
+                    CurrentLocation.setLastLocation(mLastLocation!!, mLastLocation!!.provider)
+                } else {
+                    Log.i(MainActivityLocateLoo.TAG, "getLastLocation:exception", task.exception)
+                    showMessage(getString(R.string.no_location_detected))
+
+                    textView.text = getString(R.string.error_no_location)
+
+                    // Change the location title to "Current location not detected, using default.  Refresh"
+                    mLastLocation = CurrentLocation.getLastLocation()
+//                    CurrentLocation.setLastLocation(mLastLocation!!, "default") - Kartik 1 Feb 2019 : system crashes!
+
+                }
+            }
+    }
+
+    private fun refreshToiletList()
+    {
         fireDBRef.addValueEventListener(object: ValueEventListener{
             override fun onCancelled(p0: DatabaseError) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                Toast.makeText(this@MainActivityLocateLoo, "Unable to retrieve list of toilets.  Please check if your data is on", Toast.LENGTH_SHORT).show()
+                return
             }
 
             override fun onDataChange(p0: DataSnapshot) {
@@ -84,29 +129,6 @@ class MainActivityLocateLoo : AppCompatActivity() {
             }
         })
 
-        fab.setOnClickListener{
-                val i = Intent(this, MainActivityAddNewLoo::class.java)
-                startActivity(i)
-        }
-
-    }
-
-    @SuppressLint("MissingPermission", "SetTextI18n")
-    private fun getLastLocation() {
-        mFusedLocationClient!!.lastLocation
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful && task.result != null) {
-                    mLastLocation = task.result
-
-                    mLocationAddress!!.text = getString(R.string.strings_latitude) +
-                            " ${mLastLocation!!.latitude} \n" +
-                            getString(R.string.strings_longitude) + " ${mLastLocation!!.longitude}"
-                    CurrentLocation.setLastLocation(mLastLocation!!)
-                } else {
-                    Log.i(MainActivityLocateLoo.TAG, "getLastLocation:exception", task.exception)
-                    showMessage(getString(R.string.no_location_detected))
-                }
-            }
     }
 
     private fun showMessage(text: String) {

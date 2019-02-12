@@ -3,6 +3,7 @@
 /* Rev 0.22  Mapped string literals to STRINGS.XML - Kartik Venkataraman 31 Jan 2019 */
 /*           No changes to FireBase, will handle that as a part of the class restructuring */
 /*           Spinner text arrays are not updated.  Needs a little more study before implementing */
+/* Rev 0.23  Mapped spinner controls to strings,xml */
 
 package com.example.cloo2019
 
@@ -81,8 +82,8 @@ class JanitorActivity : AppCompatActivity(), OnMapReadyCallback {
         toiletType = intent.getIntExtra(getString(R.string.intent_toilet_type), 0) //("TOILET_TYPE", 0)
         toiletJanitor = intent.getStringExtra(getString(R.string.intent_janitor))  // ("TOILET_JANITOR")
         toiletContact = intent.getStringExtra(getString(R.string.intent_contact_number))  // ("TOILET_CONTACT")
-        toiletMaintainedBy = intent.getStringExtra(getString(R.string.intent_toilet_maintained_by))  // ("TOILET_MAINTAINEDBY")
-        toiletOwnedBy = intent.getStringExtra(getString(R.string.intent_toilet_owner))  // ("TOILET_OWNEDBY")
+        toiletMaintainedBy = intent.getStringExtra(getString(R.string.intent_toilet_maintained_by))  // ("TOILET_MAINTAINED BY")
+        toiletOwnedBy = intent.getStringExtra(getString(R.string.intent_toilet_owner))  // ("TOILET_OWNED BY")
         toiletSponsor = intent.getStringExtra(getString(R.string.intent_sponsor))  // ("TOILET_SPONSOR")
 
         userRating = intent.getDoubleExtra(getString(R.string.intent_rating), 0.0)  // ("RATING", 0.0)
@@ -118,7 +119,12 @@ class JanitorActivity : AppCompatActivity(), OnMapReadyCallback {
         looAddress.setText(toiletAddress)
 
         val toiletAccessList =
-            arrayOf("Free Public Toilet", "Pay and Use Toilet", "For Customers Only", "Restricted Entry", "Private")
+//            arrayOf("Free Public Toilet", "2. Pay and Use Toilet", "3. For Customers Only", "4. Restricted Entry", "5. Private")
+            arrayOf(getString(R.string.array_toilet_access_free_toilet),  // "Free Public Toilet",
+                getString(R.string.array_toilet_access_pay_and_use),  // "2. Pay and Use Toilet",
+                getString(R.string.array_toilet_access_for_customers_only), // "3. For Customers Only",
+                getString(R.string.array_toilet_access_restricted_entry), // "4. Restricted Entry",
+                getString(R.string.array_toilet_access_private_toilet)) // "5. Private")
         val spinnerToiletAccess = findViewById<Spinner>(R.id.spinner_toiletAccess)
         if (spinnerToiletAccess != null) {
             val arrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, toiletAccessList)
@@ -135,24 +141,18 @@ class JanitorActivity : AppCompatActivity(), OnMapReadyCallback {
                     val toiletAccessString = toiletAccessList[position]
 
                     toiletAccess = when (toiletAccessString) {
-                        "Free Public Toilet" -> {
-                            1
-                        }
-                        "Pay and Use Toilet" -> {
-                            2
-                        }
-                        "For Customers Only" -> {
-                            3
-                        }
-                        "Restricted Entry" -> {
-                            4
-                        }
-                        "Private" -> {
-                            5
-                        }
-                        else -> {
-                            0
-                        }
+                        getString(R.string.array_toilet_access_free_toilet)         -> { 1 }
+                        getString(R.string.array_toilet_access_pay_and_use)         -> { 2 }
+                        getString(R.string.array_toilet_access_for_customers_only)  -> { 3 }
+                        getString(R.string.array_toilet_access_restricted_entry)    -> { 4 }
+                        getString(R.string.array_toilet_access_private_toilet)      -> { 5 }
+
+//                        "Free Public Toilet" -> { 1 }
+//                        "Pay and Use Toilet" -> { 2 }
+//                        "For Customers Only" -> { 3 }
+//                        "Restricted Entry"  -> { 4 }
+//                        "Private" -> { 5 }
+                        else -> { 0 }
                     }
                 }
 
@@ -162,7 +162,12 @@ class JanitorActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
 
-        val spinnerGenderList = arrayOf("Gents Only", "Ladies Only", "Ladies and Gents (Separate)", "Unisex")
+//        val spinnerGenderList = arrayOf("Gents Only", "Ladies Only", "Ladies and Gents (Separate)", "Unisex")
+        val spinnerGenderList = arrayOf(getString(R.string.array_toilet_gender_gents_only),     // "Gents Only",
+            getString(R.string.array_toilet_gender_ladies_only),        // "Ladies Only",
+            getString(R.string.array_toilet_gender_ladies_and_gents),   // "Ladies and Gents (Separate)",
+            getString(R.string.array_toilet_gender_unisex))             // "Unisex")
+
         val spinnerGender = findViewById<Spinner>(R.id.spinner_Gender)
         if (spinnerToiletAccess != null) {
             val arrayAdapterGender = ArrayAdapter(this, android.R.layout.simple_spinner_item, spinnerGenderList)
@@ -176,21 +181,16 @@ class JanitorActivity : AppCompatActivity(), OnMapReadyCallback {
                     val genderString = spinnerGenderList[position]
 
                     genderType = when (genderString) {
-                        "Gents Only" -> {
-                            1
-                        }
-                        "Ladies Only" -> {
-                            2
-                        }
-                        "Ladies and Gents (Separate)" -> {
-                            3
-                        }
-                        "Unisex" -> {
-                            4
-                        }
-                        else -> {
-                            0
-                        }
+                        getString(R.string.array_toilet_gender_gents_only) -> { 1 }
+                        getString(R.string.array_toilet_gender_ladies_only) -> { 2 }
+                        getString(R.string.array_toilet_gender_ladies_and_gents) -> { 3 }
+                        getString(R.string.array_toilet_gender_unisex) -> { 4 }
+
+//                        "Gents Only" -> { 1 }
+//                        "Ladies Only" -> { 2 }
+//                        "Ladies and Gents (Separate)" -> { 3 }
+//                        "Unisex" -> { 4 }
+                        else -> { 0 }
                     }
                 }
 
@@ -201,15 +201,9 @@ class JanitorActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         when (toiletType) {
-            1 -> {
-                checkCommode.isChecked = true
-            }
-            2 -> {
-                checkIndianPan.isChecked = true
-            }
-            3 -> {
-                checkUrinal.isChecked = true
-            }
+            1 -> { checkCommode.isChecked = true }
+            2 -> { checkIndianPan.isChecked = true }
+            3 -> { checkUrinal.isChecked = true }
         }
 
         fab.setOnClickListener { view ->
@@ -301,8 +295,9 @@ class JanitorActivity : AppCompatActivity(), OnMapReadyCallback {
                 Toast.makeText(this@JanitorActivity, getString(R.string.status_toilet_master_updated), Toast.LENGTH_SHORT).show()
 //                Toast.makeText(this@JanitorActivity, "Thank you! Toilet Master Updated", Toast.LENGTH_SHORT).show()
             }
-            Toast.makeText(this@JanitorActivity, "KV_DEBUG:: End of onMapReady in JanitorActivity!", Toast.LENGTH_SHORT)
-                .show()
+//            Toast.makeText(this@JanitorActivity, "KV_DEBUG:: End of onMapReady in JanitorActivity!", Toast.LENGTH_SHORT)
+//                .show()
+            finish()
         }
     }
 }

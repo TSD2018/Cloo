@@ -43,6 +43,8 @@ class MainActivityAddNewLoo : AppCompatActivity() {
                     LocationAddress !!.text = getString(R.string.strings_latitude) +
                             " ${mLastLocation!!.latitude.toString()} "+
                             getString(R.string.strings_longitude) + " ${mLastLocation!!.longitude.toString()}"
+                    CurrentLocation.setLastLocation(mLastLocation!!, mLastLocation!!.provider)
+
 //                    LocationAddress !!.text = "Latitude: ${mLastLocation!!.latitude.toString()} Logitude: ${mLastLocation!!.longitude.toString()}"
                 } else {
                     LocationAddress!!.text = getString(R.string.no_location_detected)
@@ -55,12 +57,12 @@ class MainActivityAddNewLoo : AppCompatActivity() {
                 val msg = ratingBar.rating.toString()
                 Toast.makeText(this@MainActivityAddNewLoo, msg, Toast.LENGTH_SHORT).show()
 
-                val msg_Comments = editComments.text
+                val msgComments = editComments.text
 
                 val current = CurrentTimeStamp()
                 Toast.makeText(this@MainActivityAddNewLoo, current.toString(), Toast.LENGTH_SHORT).show()
 
-                Toast.makeText(this@MainActivityAddNewLoo, "$msg $msg_Comments", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@MainActivityAddNewLoo, "$msg $msgComments", Toast.LENGTH_SHORT).show()
 
                 saveUserInputs()
             }
@@ -78,7 +80,7 @@ class MainActivityAddNewLoo : AppCompatActivity() {
         val looAddress = ""
 
 
-        if(LocationAddress  == null){
+        if(mLastLocation == null){
             Toast.makeText(this@MainActivityAddNewLoo, getString(R.string.no_location_detected),
                 Toast.LENGTH_SHORT).show()      // "Please set location"
             return

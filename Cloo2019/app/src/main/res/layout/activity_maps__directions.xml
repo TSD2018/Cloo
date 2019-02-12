@@ -64,7 +64,7 @@
     <TextView
             android:text="@string/string_feature_date"
             android:layout_width="0dp"
-            android:layout_height="19dp"
+            android:layout_height="wrap_content"
             android:id="@+id/textView_feature"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp" app:layout_constraintEnd_toEndOf="parent"
