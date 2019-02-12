@@ -7,10 +7,19 @@ import android.location.Location
 
 object CurrentLocation {
     private var mLastLocation: Location? = null
+    private var location_provider = "default"
 
-    fun setLastLocation(location: Location) {
-        mLastLocation = location
+    init{
+        mLastLocation?.latitude = 12.9718342     // default value
+        mLastLocation?.longitude = 77.6562343     // default value
     }
 
-    fun getLastLocation(): Location? = mLastLocation
+    fun setLastLocation(location: Location, provider: String) {
+        mLastLocation = location
+        location_provider = provider
+    }
+
+    fun getLastLocation(): Location? {return mLastLocation}
+
+    fun getLastLocationProvider(): String {return location_provider}
 }

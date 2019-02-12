@@ -21,7 +21,8 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_janitor"/>
+    <include layout="@layout/content_janitor" android:layout_width="384dp" android:layout_marginLeft="16dp"
+             android:layout_marginRight="16dp"/>
 
     <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
