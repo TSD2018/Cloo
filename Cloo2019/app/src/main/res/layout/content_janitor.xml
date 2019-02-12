@@ -10,38 +10,39 @@
         tools:context=".JanitorActivity">
 
     <EditText
-            android:layout_width="276dp"
-            android:layout_height="55dp"
+            android:layout_width="282dp"
+            android:layout_height="37dp"
             android:inputType="textPersonName"
             android:ems="10"
             android:id="@+id/editText_ToiletName"
             android:hint="@string/hint_toilet_name"
             android:layout_marginTop="8dp"
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginLeft="16dp" android:layout_marginStart="16dp"/>
+            android:layout_marginLeft="8dp" android:layout_marginStart="8dp" android:textSize="14sp"/>
     <Button
             android:text="@string/button_label_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/buttonSave"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="16dp" android:layout_marginRight="16dp"
+            android:layout_marginEnd="8dp" android:layout_marginRight="8dp"
             app:layout_constraintStart_toEndOf="@+id/editText_ToiletName" android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/editText_ToiletName"/>
+            app:layout_constraintBaseline_toBaselineOf="@+id/editText_ToiletName"
+            app:layout_constraintHorizontal_bias="0.854"/>
     <ScrollView
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp" android:layout_marginRight="8dp"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp" android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp" android:layout_marginRight="16dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp" android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="16dp"
             app:layout_constraintTop_toBottomOf="@+id/editText_ToiletName">
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                       android:orientation="vertical">
             <fragment
-                    android:layout_width="match_parent"
+                    android:layout_width="360dp"
                     android:layout_height="211dp"
                     android:id="@+id/map"
                     tools:context=".MapsActivity_Directions"
@@ -53,7 +54,7 @@
                     android:id="@+id/textView_Latlng"
             />
             <EditText
-                    android:layout_width="361dp"
+                    android:layout_width="match_parent"
                     android:layout_height="71dp"
                     android:inputType="none|textCapWords|textMultiLine"
                     android:ems="10"
@@ -76,7 +77,7 @@
                     android:layout_height="wrap_content" android:id="@+id/spinner_Gender"
             />
             <TextView
-                    android:text="Types"
+                    android:text="@string/string_toilet_types"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:id="@+id/textViewType"/>
             <LinearLayout
@@ -85,15 +86,15 @@
                     android:layout_height="match_parent">
                 <CheckBox
                         android:text="@string/check_label_western"
-                        android:layout_width="119dp"
-                        android:layout_height="wrap_content" android:id="@+id/checkBoxCommode"/>
+                        android:layout_height="wrap_content" android:id="@+id/checkBoxCommode"
+                        android:layout_width="wrap_content"/>
                 <CheckBox
                         android:text="@string/check_types_indian"
-                        android:layout_width="124dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content" android:id="@+id/checkBoxIndianPan"/>
                 <CheckBox
                         android:text="@string/check_types_urinal"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content" android:id="@+id/checkBoxUrinal"/>
             </LinearLayout>
             <TextView
