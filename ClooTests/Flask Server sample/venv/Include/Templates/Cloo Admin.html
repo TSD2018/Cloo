@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+h2,h6,p,#selbox,.btncls,#file-form {
+  text-align: center;
+  color: blue;
+  line-height: 0.8;
+  font-family: Verdana;
+}
+
+fieldset {
+  width: 300px;
+  color: blue;
+  line-height: 0.8;
+  font-family: Verdana;
+  margin:  0px auto;
+  text-align:left;
+}
+
+
+</style>
+
+</head>
+
+<body style="background-color:#bdf5bd;" onload="GetLooInfo()">
+
+<h2>Update Sponsors</h2>
+<p style="line-height: 0.4;font-size:75%;">Rev 0.2</p>
+
+<form id="file-form">
+<br>
+<div style="margin-left: auto; margin-right: auto;">
+<label class="top"><b>Available Toilets:</b></label>
+<label id="TDropdown"></label>
+<select id="selbox" name="Toilets registered" style="color: black;" onchange="PopSpName()">
+</select>
+</div>
+  <br>
+<br>
+<br>
+<fieldset>
+<legend><b>Sponsor details</b></legend><br>
+<b>Name:</b><br><br>
+<input id="t1" type="text" name="Sponsor name" value="None" size="32">
+<br><br><br>
+<b>Add logo:</b><br><br>
+<input type="file" id="file-select" name="photos" />
+<br><br>
+<img id="image" width="" height=""/>
+</fieldset>
+<br><br>
+<input type="button" name="submit" class="btncls" value="Submit" style="font-weight:bold;font-size:150%;" onclick="MainJS()">
+</form>
+
+<script>
+//Global variable to hold Loo Ids
+var ToiletObj;
+
+
+function MainJS(){
+
+   //Capture the selected toilet from the dropdown.
+   var s1 = document.getElementById("selbox"); 
+   var LIndex = s1.options.selectedIndex;
+   var SelLoo = s1.options[LIndex].text;
+
+   //Get the Sponsor name provided by the user.
+   var Sponsor = document.getElementById("t1");
+   var SponsorName = Sponsor.value;
+
+   //This function is to update the sponsor name for the selected toilet name in the database.
+   UpdateSponsorinDB(SelLoo,SponsorName);
+   HandleSponsorLogo();
+
+}
+
+
+function GetLogo(){
+
+   var formData = new FormData();
+   var LooId = GetLooId();
+   formData.append("LooId",LooId)
+   console.log(LooId);
+
+   var xmlhttp = new XMLHttpRequest();
+   xmlhttp.responseType = 'blob';
+   xmlhttp.onreadystatechange = function() {
+   if (this.readyState == 4 && this.status == 200) {
+       HandleFileObj(this);
+   }
+   else
+   {
+       document.getElementById("image").style.visibility = "hidden";
+       document.getElementById("image").width = 0;
+       document.getElementById("image").height = 0;
+   }
+  };
+   xmlhttp.open("POST", "http://localhost:5000/result3", true);
+   xmlhttp.send(formData);
+
+}
+
+
+function HandleSponsorLogo(){
+
+   var form = document.getElementById('file-form');
+   var fileSelect = document.getElementById('file-select');   
+   var files = fileSelect.files;
+   var formData = new FormData();
+   var file = files[0];
+
+   formData.append('photos', file, file.name);
+   console.log(file.name);
+
+   var LooId = GetLooId();
+   formData.append("LooId",LooId)
+   console.log(LooId);
+
+   var xmlhttp = new XMLHttpRequest();
+   xmlhttp.onreadystatechange = function() {
+   if (this.readyState == 4 && this.status == 200) {
+       GetLogo();
+   }
+  };
+   xmlhttp.open("POST", "http://localhost:5000/result2", true);
+   xmlhttp.send(formData);
+
+}
+
+
+function HandleFileObj(FileObj)
+{
+   var urlCreator = window.URL || window.webkitURL;
+   var imageUrl = urlCreator.createObjectURL(FileObj.response);
+   document.getElementById("image").style.visibility = "visible";   
+   document.querySelector("#image").src = imageUrl;
+   document.querySelector("#image").width = 82;
+   document.querySelector("#image").height = 82;
+   //urlCreator.revokeObjectURL(imageUrl);
+}
+
+
+function GetLooInfo()
+{
+   document.getElementById("TDropdown").innerHTML = "Fetching toilet information...Please wait.";
+   GetLoos();
+
+
+}
+
+function GetLoos() {
+   var xmlhttp = new XMLHttpRequest();
+   xmlhttp.onreadystatechange = function() {
+   if (this.readyState == 4 && this.status == 200) {
+        document.getElementById("TDropdown").innerHTML = "";       
+        GetLoosResp(this);
+   }
+  };
+   xmlhttp.open("GET", "http://localhost:5000/result", true);
+   xmlhttp.send();
+}
+
+function GetLoosResp(Resp)
+{
+   var obj = Resp.responseText;
+   ToiletObj = JSON.parse(obj);
+ 
+   //Populate toilet names in the dropdown box.
+   PopLooInfo(); 
+
+   //Populate sponsor name and logo.
+   PopSpName();     
+}
+
+function PopLooInfo()
+{
+   var s1 = document.getElementById("selbox");
+   var l1;
+   var counter = 0;
+
+   for (l1 in ToiletObj)
+   {
+      var c = document.createElement("option");
+      counter = counter + 1;
+      console.log(l1);
+      c.text = ToiletObj[l1].toiletName + ": " + ToiletObj[l1].address;
+      s1.options.add(c);
+   }
+
+
+}
+
+
+function PopSpName()
+{
+   var SpName = document.getElementById("t1");
+   var s1 = document.getElementById("selbox");
+   var LIndex = s1.options.selectedIndex;
+   var SelLoo = s1.options[LIndex].text;
+   
+   for (l1 in ToiletObj)
+   {
+      console.log(l1);
+      console.log(SelLoo);
+      if (SelLoo == ToiletObj[l1].toiletName + ": " + ToiletObj[l1].address)
+      {
+          SpName.value = ToiletObj[l1].toiletSponsor;
+          GetLogo();
+          break;
+      }
+      else
+      {
+          SpName.value = "";  
+          document.getElementById("image").style.visibility = "hidden";
+          document.getElementById("image").width = 0;
+          document.getElementById("image").height = 0; 
+      }
+      
+   }
+ 
+}
+
+function UpdateSponsorinDB(SelLoo,SponsorName)
+{
+   
+   var LooId = GetLooId();
+   Sponsordetails = "SelLoo=" + SelLoo + "&" + "LooId=" + LooId + "&" + "SpName=" + SponsorName;
+   alert(Sponsordetails);
+
+   var xmlhttp = new XMLHttpRequest();
+   xmlhttp.onreadystatechange = function() {
+   if (this.readyState == 4 && this.status == 200) {
+        alert("Successful post.");
+   }
+  };
+   xmlhttp.open("POST", "http://localhost:5000/result1", true);
+   xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+   xmlhttp.send(Sponsordetails);
+}
+
+
+function GetLooId()
+{
+   var s1 = document.getElementById("selbox");
+   var LIndex = s1.options.selectedIndex;
+   var SelLoo = s1.options[LIndex].text;
+   for (l1 in ToiletObj)
+   {
+      console.log(l1);
+      if (SelLoo == ToiletObj[l1].toiletName + ": " + ToiletObj[l1].address)
+      {
+          var LooId = ToiletObj[l1].toiletId;
+          return (LooId);
+      }
+      
+   }
+}
+
+</script>
+
+
+<noscript>Sorry, your browser does not support JavaScript!</noscript>
+
+</body>
+</html>
