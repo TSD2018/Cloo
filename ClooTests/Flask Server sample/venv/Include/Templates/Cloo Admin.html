@@ -26,7 +26,7 @@ fieldset {
 <body style="background-color:#bdf5bd;" onload="GetLooInfo()">
 
 <h2>Update Sponsors</h2>
-<p style="line-height: 0.4;font-size:75%;">Rev 0.2</p>
+<p style="line-height: 0.4;font-size:75%;">Rev 0.3</p>
 
 <form id="file-form">
 <br>
@@ -203,7 +203,8 @@ function PopSpName()
    {
       console.log(l1);
       console.log(SelLoo);
-      if (SelLoo == ToiletObj[l1].toiletName + ": " + ToiletObj[l1].address)
+      var LooIdstr = ToiletObj[l1].toiletName + ": " + ToiletObj[l1].address;
+      if (SelLoo == LooIdstr.trim())
       {
           SpName.value = ToiletObj[l1].toiletSponsor;
           GetLogo();
@@ -248,7 +249,8 @@ function GetLooId()
    for (l1 in ToiletObj)
    {
       console.log(l1);
-      if (SelLoo == ToiletObj[l1].toiletName + ": " + ToiletObj[l1].address)
+      var LooIdstr = ToiletObj[l1].toiletName + ": " + ToiletObj[l1].address;
+      if (SelLoo == LooIdstr.trim())
       {
           var LooId = ToiletObj[l1].toiletId;
           return (LooId);

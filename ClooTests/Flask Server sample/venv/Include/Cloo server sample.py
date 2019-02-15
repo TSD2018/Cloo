@@ -5,7 +5,7 @@ import os
 from flask import send_from_directory, send_file
 
 
-fbase = firebase.FirebaseApplication('https://naveentestproj-7a7c1.firebaseio.com/', None)  # Open DB connection
+fbase = firebase.FirebaseApplication('https://cloo2019-4d1a2.firebaseio.com/', None)  # Open DB connection
 
 app = Flask(__name__)
 CORS(app)
