@@ -5,18 +5,20 @@ import unittest
 import csv
 import sys
 
+
 def main():
     #Initialize driver session with the device and get driver handle to use later in the code.
     driver = InitializeSession()
 
     #Create CSV file for output results
-    csv_file = open('Cloo Test Results.csv', mode='w')
+    ResultFile=sys.argv[11]
+    csv_file = open(ResultFile, mode='w')
     fieldnames = ['Test case #', 'Test Result', 'Remarks']
     writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
     writer.writeheader()
 
     #Test for selecting a loo, see directions and update rating.
-    Test1(driver,writer)
+    #Test1(driver,writer)
 
     #Test for adding new loo information.
     Test2(driver,writer)
@@ -34,25 +36,39 @@ def main():
     CloseSession(driver)
 
 def InitializeSession():
-    DesiredCaps = {
-        'platformName': 'Android',
-        'platformVersion': '9',
-        'deviceName': 'Android Emulator',
-        'automationName': 'UiAutomator2',
-        'app': "E:\data\Cloo\Cloo-master\Cloo\Cloo2019\App\Build\outputs\Apk\debug\App-debug.apk",
-        'appWaitDuration': 30000,
+        SysPort=sys.argv[1]
+        Udidname=sys.argv[2]
+        PlatformVer=sys.argv[3]
+        AvdName=sys.argv[4]
+        DeviceName=sys.argv[5]
+        PlatformName=sys.argv[6]
+        AutomationName=sys.argv[7]
+        Appname=sys.argv[8]
+        AppWaitDuration=sys.argv[9]
+        DeviceReadyTimeout=sys.argv[10]
+        DesiredCaps = {
+        'platformName': PlatformName,
+        'platformVersion': PlatformVer,
+        'deviceName': DeviceName,
+        'automationName': AutomationName,
+        'app': Appname,
+        'appWaitDuration': AppWaitDuration,
         'appPackage': 'com.example.cloo2019',
         'appActivity': '.MainActivityLocateLoo',
-        'deviceReadyTimeout': 5,
-        'avd': 'Pixel_API_28'
+        'deviceReadyTimeout': DeviceReadyTimeout,
+        'avd': AvdName,
+        'systemPort':SysPort,
+        'udid':Udidname
 
-    }
+        }
 
 
 
 
-    driver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', DesiredCaps)
-    return driver
+        #driver = webdriver.Remote('http://192.168.0.6:4444/wd/hub', DesiredCaps)
+        #driver = webdriver.Remote('http://192.168.0.6:4444/wd/hub')
+        driver = webdriver.Remote('http://192.168.0.6:4723/wd/hub', DesiredCaps)
+        return driver
 
 def Test1(driver,writer):
     TestResult = ""
@@ -124,6 +140,18 @@ def Test1(driver,writer):
     time.sleep(2)
 
 def Test2(driver,writer):
+
+    #Select Allow button to access location services if prompted.
+    try:
+        element = driver.find_element_by_id('com.android.packageinstaller:id/permission_allow_button')
+        element.click()
+        time.sleep(9)
+    except:
+        TestResult = "Test 1 failed: Could not locate allow button in the flow."
+        writer.writerow({'Test case #': 'Test 1', 'Test Result': 'FAILED', 'Remarks': TestResult})
+        return (-1)
+        #print(TestResult,flush=True)
+
     #Add new loo rating and comments
     element = driver.find_element_by_class_name('android.widget.ImageButton')
     element.click()
@@ -153,11 +181,26 @@ def Test3(driver,writer):
     #element = driver.find_element_by_android_uiautomator(
     #    'new UiSelector().className("android.widget.TextView").instance(4)')
     time.sleep(2)
-    element = driver.find_elements_by_class_name('android.widget.TextView')[4]
+    driver.swipe(50,800,50,400,1500)
+    time.sleep(2)
+    element = driver.find_elements_by_class_name('android.widget.TextView')[8]
+    CleanedOn = element.get_attribute("text")
+    print(CleanedOn)
+    if "not known" in CleanedOn:
+        print("No cleaned date for the selected toilet")
+    #result = CleanedOn.find("not known")
     element.click()
     time.sleep(5)
     element = driver.find_element_by_id('com.example.cloo2019:id/buttonClean').click()
+    time.sleep(1)
+
+    # If focus is on edit box, virtual keypad pops up. this check is to undo pop up.
+    element = driver.find_element_by_id('com.example.cloo2019:id/editTextOthers')
+    if element.get_attribute("focused"):
+        time.sleep(2)
+        driver.press_keycode(4)
     time.sleep(2)
+
     element = driver.find_element_by_id('com.example.cloo2019:id/checkBoxWater').click()
     element = driver.find_element_by_id('com.example.cloo2019:id/checkBoxElectricity').click()
     element = driver.find_element_by_id('com.example.cloo2019:id/checkBoxStinks').click()
@@ -165,10 +208,12 @@ def Test3(driver,writer):
     element = driver.find_element_by_id('com.example.cloo2019:id/editTextOthers')
     element.send_keys('All basics check boxes ticked')
     time.sleep(1)
-    driver.press_keycode(4)
+    element = driver.find_element_by_id('com.example.cloo2019:id/button_Cleaned').click()
     time.sleep(2)
+    #driver.press_keycode(4)
+    #time.sleep(2)
     TestResult = "Test 3 passed the flow of adding clean record details."
-    writer.writerow({'Test case #': 'Test 1', 'Test Result': 'PASSED', 'Remarks': TestResult})
+    writer.writerow({'Test case #': 'Test 3', 'Test Result': 'PASSED', 'Remarks': TestResult})
 
 
 
@@ -187,7 +232,15 @@ def Test4 (driver,writer):
 
     #Update existing Janitor details.
     element = driver.find_element_by_id('com.example.cloo2019:id/button_Janitor').click()
-    time.sleep(5)
+    time.sleep(3)
+
+    #If focus is on edit box, virtual keypad pops up. this check is to undo pop up.
+    element = driver.find_element_by_id('com.example.cloo2019:id/editText_Loo_Address')
+    if element.get_attribute("focused"):
+        time.sleep(2)
+        driver.press_keycode(4)
+    time.sleep(2)
+
 
     #Select Toilet access from the drop down.
     element = driver.find_element_by_id('com.example.cloo2019:id/spinner_toiletAccess')
