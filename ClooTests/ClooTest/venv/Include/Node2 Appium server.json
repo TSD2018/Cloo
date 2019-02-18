@@ -1,0 +1,32 @@
+{
+  "capabilities":
+      [
+        {
+        "platformName": "Android",
+        "platformVersion": "8",
+        "deviceName": "Android Emulator",
+        "automationName": "UiAutomator2",
+        "app": "E:\\data\\Cloo\\Cloo-master\\Cloo\\Cloo2019\\App\\Build\\outputs\\Apk\\debug\\App-debug.apk",
+        "appWaitDuration": 30000,
+        "appPackage": "com.example.cloo2019",
+        "appActivity": ".MainActivityLocateLoo",
+        "deviceReadyTimeout": 5,
+        "avd": "Nexus_5X_API_27"
+
+    }
+      ],
+  "configuration":
+  {
+    "cleanUpCycle":3000,
+    "timeout":30000,
+    "proxy": "org.openqa.grid.selenium.proxy.DefaultRemoteProxy",
+    "url":"http://192.168.0.6:4725/wd/hub",
+    "host": "192.168.0.6",
+    "port": 4725,
+    "maxSession": 2,
+    "register": true,
+    "registerCycle": 5000,
+    "hubPort": 4444,
+    "hubHost": "192.168.0.6"
+  }
+}
