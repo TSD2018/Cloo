@@ -120,9 +120,8 @@ class MapsActivityDirections : AppCompatActivity(), OnMapReadyCallback {
 
 
 
-
-
-
+        val toiletSponsorTextView = findViewById<TextView>(R.id.textViewSponsor)
+        toiletSponsorTextView.text = toiletSponsor
 
         val toiletFeaturesView = findViewById<TextView>(R.id.textView_feature)
         toiletFeaturesView.text = toiletFeatures
