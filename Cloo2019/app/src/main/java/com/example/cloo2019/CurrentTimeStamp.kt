@@ -26,7 +26,7 @@ class CurrentTimeStamp {
         // 2019-01-12T22:23:29.994 is the format of the string as an input
         var dateTimeString = "not known"
 
-        if (timeStampString != "") {
+        if (timeStampString != "" && timeStampString != "Not available") {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val dateTime: LocalDateTime = LocalDateTime.parse(timeStampString, DateTimeFormatter.ISO_DATE_TIME)
                 dateTimeString = dateTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))

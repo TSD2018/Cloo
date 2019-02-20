@@ -94,9 +94,19 @@ class Locationadapter(
         }
 
         val lastCleanedTimeStampPresentable = CurrentTimeStamp().getPresentableTimeString(loo.lastCleanedTimeStamp)
-        textViewLooName.text = "${loo.toiletName}\n" + mCtx.getString(R.string.strings_rating) +
-                "[$ratings]      $distanceStr\n" + mCtx.getString(R.string.strings_cleaned_on) +
-                " $lastCleanedTimeStampPresentable"
+
+        if(loo.toiletSponsor != "") {
+            val toiletSponserString: String = "\nSponsor: " + loo.toiletSponsor
+            textViewLooName.text = "${loo.toiletName}\n" + mCtx.getString(R.string.strings_rating) +
+                    "[$ratings]      $distanceStr\n" + mCtx.getString(R.string.strings_cleaned_on) +
+                    " $lastCleanedTimeStampPresentable" + toiletSponserString
+        }
+        else {
+            textViewLooName.text = "${loo.toiletName}\n" + mCtx.getString(R.string.strings_rating) +
+                    "[$ratings]      $distanceStr\n" + mCtx.getString(R.string.strings_cleaned_on) +
+                    " $lastCleanedTimeStampPresentable"
+        }
+
 
 /*
         textViewLooName.text = """${loo.toiletName}
