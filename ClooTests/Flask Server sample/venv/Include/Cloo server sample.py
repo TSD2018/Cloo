@@ -84,8 +84,6 @@ def result3():
        looid =(request.form.get('LooId'))
        print("Toilet Id= " +looid)
 
-       #Replace the file name with the name you get from the firebase database for a specific LooId.
-       #filenm = "<filename from firebase>"
        filenm = fbase.get('/ToiletMaster/'+looid, 'sponsor_image')
        print(filenm)
 
