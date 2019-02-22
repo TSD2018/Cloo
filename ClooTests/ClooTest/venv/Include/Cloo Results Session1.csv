@@ -1,3 +1,2 @@
 Test case #,Test Result,Remarks
-Test 2,PASSED,Test 2 passed the flow of adding toilets
-Test 3,PASSED,Test 3 passed the flow of adding clean record details.
+Test 4,PASSED,Test 4 passed the flow of updating records for the selected toilet.
