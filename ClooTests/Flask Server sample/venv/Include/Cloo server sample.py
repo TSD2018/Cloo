@@ -1,7 +1,8 @@
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS, cross_origin
 from firebase import firebase
-import os
+import os, json
+from geopy import distance
 from flask import send_from_directory, send_file
 
 
@@ -23,29 +24,29 @@ def index():
 @app.route('/result',methods = ['POST', 'GET'])
 def result():
    if request.method == 'GET':
-      #obj = ["Cloo1", "Cloo2", "Cloo3"]
-      #obj = {"T1":"Cloo1","T2":"Cloo2","T3":"Cloo3"}
-      obj = {"Toilets": [
-          {
-              "name": "Cloo1",
-              "addr": "addr1",
-              "Id": "Id1"
-          },
-          {
-              "name": "Cloo2",
-              "addr": "addr2",
-              "Id": "Id2"
-          },
-          {
-              "name": "Cloo3",
-              "addr": "addr3",
-              "Id": "Id3"
-          }
-      ]
-      }
-
       obj1 = fbase.get('/ToiletMaster', None)
+      print(obj1)
       return (jsonify(obj1))
+
+
+#This request is to fetch Toilet details based on current lat long and radius. Finding nearest toilets...
+@app.route('/resultsub',methods = ['GET', 'POST'])
+def resultsub():
+   if request.method == 'POST':
+          Lat = (request.form.get('Lat'))
+          print("Lat= " + Lat)
+          Lng = (request.form.get('Lng'))
+          print("Long= " + Lng)
+          Radius = (request.form.get('Radius'))
+          print("Radius =" + Radius)
+          obj1 = fbase.get('/ToiletMaster', None)
+          RefLatLng = (float(Lat),float(Lng))
+          #filtered_dict = list(filter(lambda item: item['numberOfRatings'] >= 2, obj1.values()))
+          filtered_dict = list(filter(lambda item: distance.great_circle(RefLatLng, (item['lat'],item['lng'])).kilometers <= float(Radius), obj1.values()))
+          #filtered_dict = list(filter(lambda item: , obj1.values()))
+          print(filtered_dict)
+          return (jsonify(filtered_dict))
+
 
 
 #This request is to update the sponsor name as sent from the client.
@@ -59,7 +60,7 @@ def result1():
        sponsor =  (request.form.get('SpName'))
        print("Sponsor =" +sponsor)
        fbase.patch('/ToiletMaster/'+looid, {'toiletSponsor': sponsor})
-       return ("respstr")
+       return ("OK")
 
 
 #This request is to upload sponsor logo to the server and store the path in firebase for a selected toilet id.
@@ -98,5 +99,5 @@ def result3():
 
 
 if __name__ == '__main__':
-   app.run(debug = True)
+   app.run(host='0.0.0.0',port=5000,debug = True)
 
