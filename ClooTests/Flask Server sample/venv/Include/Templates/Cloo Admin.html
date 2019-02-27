@@ -11,11 +11,16 @@ h2,h6,p,#selbox,.btncls,#file-form {
 
 fieldset {
   width: 300px;
+  height: 300px;
   color: blue;
   line-height: 0.8;
   font-family: Verdana;
   margin:  0px auto;
   text-align:left;
+  display: inline-block;
+  box-sizing: border-box;
+  vertical-align:top;
+
 }
 
 
@@ -25,8 +30,8 @@ fieldset {
 
 <body style="background-color:#bdf5bd;" onload="GetLooInfo()">
 
-<h2>Update Sponsors</h2>
-<p style="line-height: 0.4;font-size:75%;">Rev 0.3</p>
+<h2>Cloo Admin</h2>
+<p style="line-height: 0.4;font-size:75%;">Rev 0.4</p>
 
 <form id="file-form">
 <br>
@@ -39,18 +44,33 @@ fieldset {
   <br>
 <br>
 <br>
-<fieldset>
-<legend><b>Sponsor details</b></legend><br>
-<b>Name:</b><br><br>
-<input id="t1" type="text" name="Sponsor name" value="None" size="32">
-<br><br><br>
-<b>Add logo:</b><br><br>
-<input type="file" id="file-select" name="photos" />
+  <fieldset>
+  <legend><b>Sponsor details</b></legend><br>
+  <b>Name:</b><br><br>
+  <input id="t1" type="text" name="Sponsor name" value="None" size="32">
+  <br><br><br>
+  <b>Add logo:</b><br><br>
+  <input type="file" id="file-select" name="photos" />
+  <br><br>
+  <img id="image" width="" height=""/>
+  <br><br>
+  <input type="button" name="submit" class="btncls" value="Update" style="font-weight:bold;font-size:150%;" onclick="MainJS()">
+  </fieldset>
+  <fieldset>
+  <legend><b>Get nearest based on:</b></legend><br>
+  <b>Latitude:</b><br><br>
+  <input id="lat1" type="text" name="Latitude" value="" size="12">
+  <br><br><br>
+  <b>Longitude:</b><br><br>
+  <input id="lng1" type="text" name="Longitude" value="" size="12">
+  <br><br><br>
+  <b>Radius (in kms):</b><br><br>
+  <input id="rad1" type="text" name="Radius" value="" size="12">
+  <br><br><br>
+  <input type="button" name="submit" class="btncls" value="Get" style="font-weight:bold;font-size:150%;" onclick="GetSubLooInfo()">
+  </fieldset>
 <br><br>
-<img id="image" width="" height=""/>
-</fieldset>
 <br><br>
-<input type="button" name="submit" class="btncls" value="Submit" style="font-weight:bold;font-size:150%;" onclick="MainJS()">
 </form>
 
 <script>
@@ -161,6 +181,36 @@ function GetLoos() {
    xmlhttp.send();
 }
 
+
+function GetSubLooInfo()
+{
+   document.getElementById("TDropdown").innerHTML = "Fetching toilet information...Please wait.";
+   GetSubLoos();
+
+
+}
+
+function GetSubLoos() {
+   
+   var Latval = document.getElementById("lat1").value;
+   var Lngval = document.getElementById("lng1").value;
+   var Radval = document.getElementById("rad1").value;
+
+   NearestDetails = "Lat=" + Latval + "&" + "Lng=" + Lngval + "&" + "Radius=" + Radval;
+
+   var xmlhttp = new XMLHttpRequest();
+   xmlhttp.onreadystatechange = function() {
+   if (this.readyState == 4 && this.status == 200) {
+        alert("Successful post.");
+        GetLoosResp(this);
+        document.getElementById("TDropdown").innerHTML = "";
+   }
+  };
+   xmlhttp.open("POST", "http://localhost:5000/resultsub", true);
+   xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+   xmlhttp.send(NearestDetails);
+}
+
 function GetLoosResp(Resp)
 {
    var obj = Resp.responseText;
@@ -178,7 +228,7 @@ function PopLooInfo()
    var s1 = document.getElementById("selbox");
    var l1;
    var counter = 0;
-
+   document.getElementById("selbox").innerHTML = "";
    for (l1 in ToiletObj)
    {
       var c = document.createElement("option");
