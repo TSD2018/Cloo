@@ -71,6 +71,11 @@ class MainActivityLocateLoo : AppCompatActivity() {
                 startActivity(i)
         }
 
+        val bFlask = findViewById<Button>(R.id.buttonFask)
+        bFlask.setOnClickListener{
+            val f = Intent(this, LandingActivity::class.java)
+            startActivity(f)
+        }
     }
 
     @SuppressLint("MissingPermission", "SetTextI18n")
