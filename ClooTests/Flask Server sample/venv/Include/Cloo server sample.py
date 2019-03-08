@@ -1,10 +1,10 @@
-from flask import Flask, request, jsonify, render_template
-from flask_cors import CORS, cross_origin
+import json
+import os
 from firebase import firebase
-import os, json
-from geopy import distance
+from flask import Flask, request, jsonify, render_template
 from flask import send_from_directory, send_file
-
+from flask_cors import CORS, cross_origin
+from geopy import distance
 
 fbase = firebase.FirebaseApplication('https://cloo2019-4d1a2.firebaseio.com/', None)  # Open DB connection
 
@@ -24,7 +24,11 @@ def index():
 @app.route('/result',methods = ['POST', 'GET'])
 def result():
    if request.method == 'GET':
+#      obj1 = fbase.get('/', None)
       obj1 = fbase.get('/ToiletMaster', None)
+#      str = {"Toilets":[obj1]}
+#      print(str)
+#      return (jsonify(str))
       print(obj1)
       return (jsonify(obj1))
 
@@ -32,7 +36,7 @@ def result():
 #This request is to fetch Toilet details based on current lat long and radius. Finding nearest toilets...
 @app.route('/resultsub',methods = ['GET', 'POST'])
 def resultsub():
-   if request.method == 'POST':
+   if request.method == 'POST' or request.method == "GET":
           Lat = (request.form.get('Lat'))
           print("Lat= " + Lat)
           Lng = (request.form.get('Lng'))
