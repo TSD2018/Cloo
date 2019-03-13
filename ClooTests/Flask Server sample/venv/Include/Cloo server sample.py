@@ -98,6 +98,25 @@ def result3():
            return ("NOTOK")
 
 
+#This request is to add a new toilet in the database.
+@app.route('/AddNewToilet',methods = ['GET', 'POST'])
+def AddNewToilet():
+   if request.method == 'POST':
+       looName =(request.form.get('SelLoo'))
+       toiletaddr = (request.form.get('ToiletAddr'))
+       Lat = (request.form.get('Lat'))
+       Lng = (request.form.get('Lng'))
+       UserRating = (request.form.get('Rating'))
+       #looName = "New Toilet from Flask server"
+       #toiletaddr = "Eco-friendly toilet address"
+       #Lat = "12.777342"
+       #Lng = "77.123423"
+       #UserRating = "5"
+       NewToilet = {"toiletName":looName,"address":toiletaddr,"lat":Lat,"lng":Lng,"userRating":UserRating}
+       filenm = fbase.post('/ToiletMaster/', NewToilet)
+       return ("OK")
+
+
 if __name__ == '__main__':
    app.run(host='0.0.0.0',port=5000,debug = True)
 
