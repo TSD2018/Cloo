@@ -86,39 +86,6 @@ class MapsActivityDirections : AppCompatActivity(), OnMapReadyCallback {
         val toiletFeatures = intent.getStringExtra(getString(R.string.intent_toilet_features))
 
 
-//        lat = intent.getDoubleExtra("LAT", 0.0)
-//        lng = intent.getDoubleExtra("LNG", 0.0)
-//        alt = intent.getDoubleExtra("ALT", 0.0)
-//
-//        genderType = intent.getIntExtra("TOILET_GENDER", 0)
-//        toiletAccess = intent.getIntExtra("TOILET_ACCESS", 0)
-//        toiletType = intent.getIntExtra("TOILET_TYPE", 0)
-//
-//        toiletContact = intent.getStringExtra("TOILET_CONTACT")
-//        toiletJanitor = intent.getStringExtra("TOILET_JANITOR")
-//        toiletMaintainedBy = intent.getStringExtra("TOILET_MAINTAINED BY")
-//        toiletName = intent.getStringExtra("TOILET_NAME")
-//        toiletOwnedBy = intent.getStringExtra("TOILET_OWNED BY")
-//        toiletSponsor = intent.getStringExtra("TOILET_SPONSOR")
-//
-//        toiletID = intent.getStringExtra("TOILET_ID")
-//        toiletAddress = intent.getStringExtra("TOILET_ADDRESS")
-//        userRating = intent.getDoubleExtra("RATING", 0.0)
-//
-//        ratingSum = intent.getIntExtra("RATING_SUM", 0)
-//        numberOfRatings = intent.getIntExtra("NUMBER_OF_RATINGS", 0)
-//        ratingSumLifeTime = intent.getIntExtra("RATING_SUM_LIFETIME", 0)
-//        numberOfRatingsLifeTime = intent.getIntExtra("NUMBER_OF_RATINGS_LIFETIME", 0)
-//
-//        lastCleanedTimeStamp = intent.getStringExtra("LAST_CLEANED")
-//        lastCleanedTimeStampPresentable = intent.getStringExtra("LAST_CLEANED_PRESENTABLE")
-//        val toiletFeatures = intent.getStringExtra("TOILET_FEATURES")
-
-        /***** 31 Jan 2019:Kartik END *********/
-
-
-
-
 
         val toiletSponsorTextView = findViewById<TextView>(R.id.textViewSponsor)
         toiletSponsorTextView.text = toiletSponsor
@@ -213,33 +180,6 @@ class MapsActivityDirections : AppCompatActivity(), OnMapReadyCallback {
             i.putExtra(getString(R.string.intent_rating_sum_lifetime), ratingSumLifeTime)
             i.putExtra(getString(R.string.intent_number_of_ratings_lifetime), numberOfRatingsLifeTime)
 
-//            i.putExtra("LAT", lat)
-//            i.putExtra("LNG", lng)
-//            i.putExtra("TOILET_ADDRESS", toiletAddress)
-//            i.putExtra("TOILET_ID", toiletID)
-//
-//            i.putExtra("ALT", alt)
-//            i.putExtra("RATING", userRating)
-//            i.putExtra("LAST_CLEANED", lastCleanedTimeStamp)
-//            i.putExtra("LAST_CLEANED_PRESENTABLE", lastCleanedTimeStampPresentable)
-//            i.putExtra("TOILET_GENDER", genderType)
-//            i.putExtra("TOILET_ACCESS", toiletAccess)
-//            i.putExtra("TOILET_CONTACT", toiletContact)
-//            i.putExtra("TOILET_JANITOR", toiletJanitor)
-//            i.putExtra("TOILET_MAINTAINED BY", toiletMaintainedBy)
-//            i.putExtra("TOILET_NAME", toiletName)
-//            i.putExtra("TOILET_OWNED BY", toiletOwnedBy)
-//            i.putExtra("TOILET_SPONSOR", toiletSponsor)
-//            i.putExtra("TOILET_TYPE", toiletType)
-//            i.putExtra("RATING_SUM", ratingSum)
-//            i.putExtra("NUMBER_OF_RATINGS", numberOfRatings)
-//            i.putExtra("RATING_SUM_LIFETIME", ratingSumLifeTime)
-//            i.putExtra("NUMBER_OF_RATINGS_LIFETIME", numberOfRatingsLifeTime)
-
-
-            /***** 31 Jan 2019:Kartik END *********/
-
-
             startActivity(i)
         }
 
@@ -252,9 +192,6 @@ class MapsActivityDirections : AppCompatActivity(), OnMapReadyCallback {
             i.putExtra(getString(R.string.intent_toilet_name), toiletName)
             i.putExtra(getString(R.string.intent_janitor), toiletJanitor)
 
-//            i.putExtra("TOILET_ID", toiletID)
-//            i.putExtra("TOILET_NAME", toiletName)
-//            i.putExtra("TOILET_JANITOR", toiletJanitor)
             /***** 31 Jan 2019:Kartik END *********/
 
             // User ratings are reset to 0 after toilet is cleaned
@@ -290,16 +227,7 @@ class MapsActivityDirections : AppCompatActivity(), OnMapReadyCallback {
             i.putExtra(getString(R.string.intent_rating_sum_lifetime), ratingSumLifeTime)
             i.putExtra(getString(R.string.intent_number_of_ratings_lifetime), numberOfRatingsLifeTime)
 
-//            i.putExtra("TOILET_ID", toiletID)
-//            i.putExtra("TOILET_ADDRESS", toiletAddress)
-//            i.putExtra("RATING_SUM", ratingSum)
-//            i.putExtra("NUMBER_OF_RATINGS", numberOfRatings)
-//            i.putExtra("RATING_SUM_LIFETIME", ratingSumLifeTime)
-//            i.putExtra("NUMBER_OF_RATINGS_LIFETIME", numberOfRatingsLifeTime)
-
             /***** 31 Jan 2019:Kartik END *********/
-
-
             startActivity(i)
         }
     }

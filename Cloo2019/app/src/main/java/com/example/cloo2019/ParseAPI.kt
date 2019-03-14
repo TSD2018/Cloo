@@ -18,7 +18,7 @@ class ParseAPI {
 
 
 
-            for (rec in 0..jsonlist.length())
+            for (rec in 0..(jsonlist.length() - 1))
             {
                 val str: String = jsonlist[rec] as String
                 Log.d(TAG, "jsonObject.names ${jsonObject.names()}")
