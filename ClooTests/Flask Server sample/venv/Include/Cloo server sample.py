@@ -44,9 +44,9 @@ def resultsub():
           #filtered_dict = list(filter(lambda item: item['numberOfRatings'] >= 2, obj1.values()))
           filtered_dict = list(filter(lambda item: distance.great_circle(RefLatLng, (item['lat'],item['lng'])).kilometers <= float(Radius), obj1.values()))
           #filtered_dict = list(filter(lambda item: , obj1.values()))
+          #filtered_dict = {x: y for x,y in obj1.items() if distance.great_circle(RefLatLng, (y['lat'],y['lng'])).kilometers <= float(Radius)}
           print(filtered_dict)
           return (jsonify(filtered_dict))
-
 
 
 #This request is to update the sponsor name as sent from the client.
