@@ -97,7 +97,7 @@
             app:layout_constraintBottom_toTopOf="@+id/textViewCleanedOnLabel"
             android:textColor="@android:color/holo_blue_dark"/>
     <TextView
-            android:text="@string/default_maintined_by"
+            android:text="@string/default_maintained_by"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/textview_JanitorName"

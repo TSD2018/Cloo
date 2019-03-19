@@ -1,12 +1,14 @@
 package com.example.cloo2019
 
 import android.content.Context
+import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.ListView
+import android.widget.TextView
 
 import kotlinx.android.synthetic.main.activity_landing.*
 import kotlinx.android.synthetic.main.content_landing.*
@@ -55,11 +57,18 @@ class LandingActivity : AppCompatActivity() {
 //        downloadData.execute("http://192.168.1.2:5000/resultsub?Lat=12.9718342&Lng=77.6562343&Radius=1")
         Log.d(TAG, "onCreate done")
 
+        val tvLocationHead = findViewById<TextView>(R.id.textViewLocation)
+        if (CurrentLocation.getLastLocationProvider() == "default")
+            tvLocationHead.text = "Unable to determine current location, using defaults!  Please turn on location and retry"
+        else
+            tvLocationHead.text = "Showing toilets near me..."
 
+        fab.setOnClickListener {
+            val i = Intent(this, MainActivityAddNewLoo::class.java)
+            startActivity(i)
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                .setAction("Action", null).show()
         }
     }
 
