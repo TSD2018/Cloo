@@ -102,8 +102,6 @@ class MainActivityLocateLoo : AppCompatActivity() {
 
                     // Change the location title to "Current location not detected, using default.  Refresh"
                     mLastLocation = CurrentLocation.getLastLocation()
-//                    CurrentLocation.setLastLocation(mLastLocation!!, "default") - Kartik 1 Feb 2019 : system crashes!
-
                 }
             }
     }

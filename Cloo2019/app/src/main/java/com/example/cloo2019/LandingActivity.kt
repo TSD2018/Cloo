@@ -10,8 +10,13 @@ import android.widget.ListView
 
 import kotlinx.android.synthetic.main.activity_landing.*
 import kotlinx.android.synthetic.main.content_landing.*
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
 import java.net.URL
+import java.net.URLEncoder
 import kotlin.properties.Delegates
 
 class ToiletEntry {
@@ -46,7 +51,7 @@ class LandingActivity : AppCompatActivity() {
         setContentView(R.layout.activity_landing)
         setSupportActionBar(toolbar)
 
-        downloadData.execute("http://192.168.1.2:5000/result")
+        downloadData.execute("http://192.168.1.2:5000/result")  // not using this URL
 //        downloadData.execute("http://192.168.1.2:5000/resultsub?Lat=12.9718342&Lng=77.6562343&Radius=1")
         Log.d(TAG, "onCreate done")
 
@@ -103,16 +108,46 @@ class LandingActivity : AppCompatActivity() {
 
             private fun downloadToiletMaster(urlPath: String?) : String {
                 Log.d(TAG, "downloadToiletMaster: urlPath $urlPath")
+                val paramsSting = "Lat=" + "12.9718342" + "&" + "Lng=" + "77.6562343" + "&" + "Radius=" + "1"
+                val currentLocation = CurrentLocation
 
-//                val url = URL(urlPath)
-//                val connection = url.openConnection() as HttpURLConnection
-//                connection.requestMethod = "POST"
-//                connection.setRequestProperty("Lat","12.9718342")
-//                connection.setRequestProperty("Lat", "77.6562343")
-//                connection.setRequestProperty("Radius","1")
-//
+                val latLabel = "Lat"
+                val latVal = currentLocation.getLastLatAsString()   //"12.9718342"
+                val lngLabel = "Lng"
+                val lngVal = currentLocation.getLastLngAsString()   //"77.6562343"
+                val radiusLabel = "Radius"
+                val radiusVal = currentLocation.getLookUpRadius()   // 1 km
+
+                try {
+                    val url = URL("http://192.168.1.6:5000/resultsub")
+                    val connection = url.openConnection() as HttpURLConnection
+                    connection.requestMethod = "POST"
+                    connection.doOutput = true
+
+                    var data = URLEncoder.encode(latLabel, "UTF-8") + "=" + URLEncoder.encode(latVal, "UTF-8")
+                    data += "&" + URLEncoder.encode(lngLabel, "UTF-8") + "=" + URLEncoder.encode(lngVal, "UTF-8")
+                    data += "&" + URLEncoder.encode(radiusLabel, "UTF-8") + "=" + URLEncoder.encode(radiusVal, "UTF-8")
+
+                    connection.connect()
+
+                    val os = OutputStreamWriter(connection.outputStream)
+                    os.write(data)
+                    os.flush()
+
+                    var stream = connection.inputStream
+                    var reader = BufferedReader(InputStreamReader(stream, "UTF-8"), 8)
+                    val result = reader.readText()
+
+                    Log.d(TAG, "********** results   \n $result")
+
+                    return result
+                } catch (e : IOException) {
+                    e.printStackTrace()
+                    return "Error"
+                }
+
 //                return url.readText()
-                return URL(urlPath).readText()
+//                return URL(urlPath).readText()
             }
         }
 

@@ -1,31 +1,23 @@
 package com.example.cloo2019
 
 import android.util.Log
+import org.json.JSONArray
 import org.json.JSONObject
 import java.lang.Exception
 
 class ParseAPI {
     private val TAG = "ParseAPI"
     val toilets = ArrayList<ToiletMaster>()
-//    val toilets = ArrayList<ToiletEntry>()
 
     fun handleJson(jsonString: String?) : Boolean {
         var status = true
 
         try {
-            val jsonObject = JSONObject(jsonString)
-            val jsonlist = jsonObject.names()
-
-
-
-            for (rec in 0..(jsonlist.length() - 1))
+            val jsonArray = JSONArray(jsonString)
+            for (rec in 0..(jsonArray.length() - 1))
             {
-                val str: String = jsonlist[rec] as String
-                Log.d(TAG, "jsonObject.names ${jsonObject.names()}")
-                Log.d(TAG, "jsonlist ${str}")
+                val jsonToiletRec = jsonArray.getJSONObject(rec)
                 var toiletRecord = ToiletMaster()
-//                var toiletRecord = ToiletEntry()
-                val jsonToiletRec = jsonObject.getJSONObject(str)
                 toiletRecord.address= jsonToiletRec.getString("address")
                 toiletRecord.alt= jsonToiletRec.getDouble("alt")
                 toiletRecord.contact = jsonToiletRec.getString("contact")
@@ -50,25 +42,6 @@ class ParseAPI {
                 Log.d(TAG, toiletRecord.toString())
                 toilets.add(toiletRecord)
             }
-
-
-//            val jsonArray = jsonObject.getJSONArray("")
-//            val jsonArray = jsonObject.getJSONArray(str)
-
-
-//            for(rec in 0..(jsonArray.length()-1))
-//            {
-//                var toiletRecord = ToiletEntry()
-//                  val jsonToiletRec = jsonObject.getJSONObject(str)
-//                val jsonToiletRec = jsonArray.getJSONObject(0)
-//                val jsonToiletRec = jsonArray.getJSONObject(rec)
-//                toiletRecord.toiletId = jsonToiletRec.getString("toiletId")
-//                toiletRecord.toiletAddress = jsonToiletRec.getString("address")
-//                toiletRecord.toiletName = jsonToiletRec.getString("toiletName")
-//                Log.d(TAG, toiletRecord.toString())
-//                toilets.add(toiletRecord)
-//            }
-
         } catch (e: Exception) {
             e.printStackTrace()
             status = false
