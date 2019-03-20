@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">Cloo2019</string>
-    <string name="string_app_version">cloo\nver 0.57</string>
+    <string name="app_name">cloo</string>
+    <string name="string_app_version">cloo\nver 0.61</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_maps__directions">Map</string>
+    <string name="title_activity_maps__directions">Toilet Details</string>
     <string name="title_activity_my_profile">My Profile</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -29,7 +29,7 @@
     <string name="permission_denied_explanation">Permission was denied, but is needed for core functionality.</string>
     <string name="settings">Settings</string>
     <string name="button_go">Directions</string>
-    <string name="title_activity_janitor">JanitorActivity</string>
+    <string name="title_activity_janitor">Edit Toilet Features</string>
 
     <string-array name="Gender"/>
     <string name="hint_cleaned_by">Cleaned by</string>
@@ -40,7 +40,7 @@
     <string name="string_basics">Basic working requirement</string>
     <string name="check_item_water_available">Water</string>
     <string name="check_item_lights_available">Lights Working</string>
-    <string name="check_item_fresh_aroma">Fresh Aroma</string>
+    <string name="check_item_fresh_aroma">Fresh Air</string>
     <string name="check_item_plumbing">Working Plumbing</string>
     <string name="check_item_clean_sink">Sink, Washbasin</string>
     <string name="check_item_clean_mirror">Mirror</string>
@@ -72,13 +72,13 @@
     <string name="check_label_freshair_fan">Fresh Air Fan</string>
     <string name="check_label_air_freshner">Air Freshner</string>
     <string name="check_label_maintained_by">Maintained by:</string>
-    <string name="hint_maintained_by">Maintained By</string>
+    <string name="hint_maintained_by">Maintained by</string>
     <string name="hint_contact_number">Contact Number</string>
     <string name="string_please_rate">Please rate</string>
     <string name="button_label_submit_close">Submit</string>
     <string name="button_label_submit_show_next">Submit, Show Next</string>
     <string name="string_feature_date">Feature Data</string>
-    <string name="default_maintined_by">Default Maintained By</string>
+    <string name="default_maintained_by">Default Maintained By</string>
     <string name="button_label_update_record">Update Record</string>
     <string name="button_label_clean">Clean</string>
     <string name="string_sponsor">Default Sponsor</string>
@@ -133,9 +133,13 @@
     <string name="error_toilet_style_unknown">Toilet style unknown</string>
     <string name="strings_toilet_style">Toilet Style:</string>
     <string name="error_no_location">Current location not detected, using default. Refresh</string>
-    <string name="title_activity_landing">LandingActivity</string>
+    <string name="title_activity_landing">Toilets near me</string>
 
-    <string name="title_activity_start_up_screen">StartUpScreenActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_start_up_screen">cloo</string>
+    <string name="dummy_button">Proceed</string>
+    <string name="dummy_content">cloo</string>
+
+    <string name="title_activity_startup">cloo</string>
+
+    <string name="title_activity_fullscreen">cloo</string>
 </resources>

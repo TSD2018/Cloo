@@ -31,8 +31,8 @@ object CurrentLocation {
     private var radius = "1"
 
     init {
-//        mLastLocation?.latitude = 12.9718342     // default value
-//        mLastLocation?.longitude = 77.6562343     // default value
+        mLastLocation?.latitude = 12.9718342     // default value
+        mLastLocation?.longitude = 77.6562343     // default value
     }
 
     fun setLastLocation(location: Location, provider: String) {
