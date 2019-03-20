@@ -7,6 +7,7 @@ from flask import send_from_directory, send_file
 
 
 fbase = firebase.FirebaseApplication('https://cloo2019-4d1a2.firebaseio.com/', None)  # Open DB connection
+#fbase = firebase.FirebaseApplication('https://naveentestproj-7a7c1.firebaseio.com/', None)  # Open DB connection
 
 app = Flask(__name__)
 CORS(app)
@@ -18,7 +19,11 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 #This request is to fetch the default html file from the server to be displayed on the browser.
 @app.route('/')
 def index():
+   #Unit test function calls!!
+   #AddNewRating()
+   #AddNewToilet()
    return render_template("Cloo Admin.html")
+   #return ("OK")
 
 #This request is to fetch Toilet details from database and send to the client.
 @app.route('/result',methods = ['POST', 'GET'])
@@ -29,7 +34,7 @@ def result():
       return (jsonify(obj1))
 
 
-#This request is to fetch Toilet details based on current lat long and radius. Finding nearest toilets...
+#This request is to fetch Toilet details based on current lat, long and radius. Finding nearest toilets...
 @app.route('/resultsub',methods = ['GET', 'POST'])
 def resultsub():
    if request.method == 'POST':
@@ -107,14 +112,58 @@ def AddNewToilet():
        Lat = (request.form.get('Lat'))
        Lng = (request.form.get('Lng'))
        UserRating = (request.form.get('Rating'))
-       #looName = "New Toilet from Flask server"
-       #toiletaddr = "Eco-friendly toilet address"
-       #Lat = "12.777342"
-       #Lng = "77.123423"
-       #UserRating = "5"
-       NewToilet = {"toiletName":looName,"address":toiletaddr,"lat":Lat,"lng":Lng,"userRating":UserRating}
-       filenm = fbase.post('/ToiletMaster/', NewToilet)
+       UserComments = (request.form.get('Comments'))
+       GenderType = (request.form.get('GenderType'))
+       #looName = "New Toilet from Flask server8"
+       #toiletaddr = "Eco-friendly toilet address8"
+       #Lat = "12.7773488"
+       #Lng = "77.1234288"
+       #UserRating = "1"
+       #UserComments="Comment from user8"
+       #GenderType="0"
+       NewToilet = {"toiletName":looName,"address":toiletaddr,"lat":float(Lat),"lng":float(Lng),"userRating":0,
+                        "alt":0,"contact":"","genderType":int(GenderType),"lastCleanedBy":"","lastCleanedTimeStamp":"",
+                        "maintainedBy":"","sponsor_image":"","toiletAccess":0,"toiletOwnerBy":"",
+                        "toiletSponsor":"","toiletType":0,"numberOfRatings":0,
+                        "numberOfRatingsLifeTime":0,"ratingSum":0,"ratingSumLifeTime":0,"toiletId":""}
+
+       res = fbase.post('/ToiletMaster/', NewToilet)
+       looid = res['name']
+       fbase.patch('/ToiletMaster/'+looid,{'toiletId': looid})
+       print (fbase.get('/ToiletMaster/' + looid, None))
+       AddRatingtoDB(looid,UserRating,UserComments)
        return ("OK")
+
+
+#This request is to add a new rating for a specific toilet in the database.
+@app.route('/AddNewRating',methods = ['GET', 'POST'])
+def AddNewRating():
+   if request.method == 'POST':
+       looid = (request.form.get('LooId'))
+       UserRating = (request.form.get('Rating'))
+       UserComments = (request.form.get('Comments'))
+       #looid = "-LaPSmSv68a7uQgWnjXx"
+       #UserRating = "4"
+       #UserComments = "Comment 7one"
+       AddRatingtoDB(looid,UserRating,UserComments)
+       return ("OK")
+
+
+def AddRatingtoDB(looid,UserRating,UserComments):
+    if (UserRating != ""):
+        NewRating = {"toiletId": looid, "timeString": "", "userComments": UserComments, "userId": "",
+                     "userRating": int(UserRating),
+                     "ratingId": 0}
+        res = fbase.post('/ToiletRating/' + looid, NewRating)
+        fbase.patch('/ToiletRating/' + looid + '/' + res['name'], {'ratingId': res['name']})
+        res1 = fbase.get('/ToiletRating', None)
+
+        numberOfRatings = fbase.get('/ToiletMaster/' + looid, 'numberOfRatings')
+        numberOfRatingsLifeTime = fbase.get('/ToiletMaster/' + looid, 'numberOfRatingsLifeTime')
+        ratingSum = fbase.get('/ToiletMaster/' + looid, 'ratingSum')
+        ratingSumLifeTime = fbase.get('/ToiletMaster/' + looid, 'ratingSumLifeTime')
+        fbase.patch('/ToiletMaster/'+looid,{'numberOfRatings': numberOfRatings+1,'numberOfRatingsLifeTime':numberOfRatingsLifeTime+1,
+                                            'ratingSum':ratingSum+int(UserRating),'ratingSumLifeTime':ratingSumLifeTime+int(UserRating)})
 
 
 if __name__ == '__main__':

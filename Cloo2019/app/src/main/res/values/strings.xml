@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Cloo2019</string>
-    <string name="string_app_version">cloo\nver 0.27</string>
+    <string name="string_app_version">cloo\nver 0.57</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_maps__directions">Map</string>
     <string name="title_activity_my_profile">My Profile</string>
@@ -117,7 +117,7 @@
     <string name="strings_mtrs_away">mtr(s) away</string>
     <string name="strings_na_spaces">N A</string>
     <string name="strings_rating">Rating</string>
-    <string name="strings_cleaned_on">Cleaned on: </string>
+    <string name="strings_cleaned_on">Cleaned on:</string>
     <string name="strings_toilet_for">Toilet for:</string>
     <string name="array_toilet_gender_gents_only">Gents only</string>
     <string name="array_toilet_gender_ladies_only">Ladies only</string>
@@ -132,5 +132,10 @@
     <string name="error_toilet_gender_unknown">Ladies and Gents category not known</string>
     <string name="error_toilet_style_unknown">Toilet style unknown</string>
     <string name="strings_toilet_style">Toilet Style:</string>
-    <string name="error_no_location">Current location not detected, using default.  Refresh</string>
+    <string name="error_no_location">Current location not detected, using default. Refresh</string>
+    <string name="title_activity_landing">LandingActivity</string>
+
+    <string name="title_activity_start_up_screen">StartUpScreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>
