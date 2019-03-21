@@ -12,18 +12,26 @@ fbase = firebase.FirebaseApplication('https://cloo2019-4d1a2.firebaseio.com/', N
 app = Flask(__name__)
 CORS(app)
 
-UPLOAD_FOLDER = os.path.basename('uploads')
+HostedServer = True
+
+if HostedServer == True:
+    #Use this for running the server on a hosted server (PythonAnywhere server)
+    UPLOAD_FOLDER = "/home/ClooServerR1/mysite/uploads/"
+else:
+    # Use this for running the server on a local system
+    UPLOAD_FOLDER = os.path.basename('uploads')
+
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
 #This request is to fetch the default html file from the server to be displayed on the browser.
 @app.route('/')
 def index():
-   #Unit test function calls!!
-   #AddNewRating()
-   #AddNewToilet()
-   return render_template("Cloo Admin.html")
-   #return ("OK")
+    #Unit test function calls!!
+    #AddNewRating()
+    #AddNewToilet()
+    #return render_template("Cloo Admin.html")
+    return ("OK")
 
 #This request is to fetch Toilet details from database and send to the client.
 @app.route('/result',methods = ['POST', 'GET'])
@@ -73,7 +81,10 @@ def result1():
 def result2():
    if request.method == 'POST':
        file = request.files['photos']
-       f = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+       if HostedServer == True:
+           f = app.config['UPLOAD_FOLDER'] + file.filename
+       else:
+            f = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
        file.save(f)
        print(f)
        looid =(request.form.get('LooId'))
@@ -98,7 +109,10 @@ def result3():
        #return (send_from_directory(app.config['UPLOAD_FOLDER'],
                                   #filenm, as_attachment=True))
        if filenm != None:
-           return (send_file(app.root_path+"\\"+filenm, as_attachment=True))
+           if HostedServer == True:
+               return (send_file(filenm, as_attachment=True))
+           else:
+                return (send_file(app.root_path+"\\"+filenm, as_attachment=True))
        else:
            return ("NOTOK")
 
@@ -165,7 +179,7 @@ def AddRatingtoDB(looid,UserRating,UserComments):
         fbase.patch('/ToiletMaster/'+looid,{'numberOfRatings': numberOfRatings+1,'numberOfRatingsLifeTime':numberOfRatingsLifeTime+1,
                                             'ratingSum':ratingSum+int(UserRating),'ratingSumLifeTime':ratingSumLifeTime+int(UserRating)})
 
-
-if __name__ == '__main__':
-   app.run(host='0.0.0.0',port=5000,debug = True)
+if HostedServer != True:
+    if __name__ == '__main__':
+        app.run(host='0.0.0.0',port=5000,debug = True)
 
