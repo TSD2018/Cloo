@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">cloo</string>
-    <string name="string_app_version">cloo\nver 0.61</string>
+    <string name="string_app_version">cloo\nver 0.67</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_maps__directions">Toilet Details</string>
     <string name="title_activity_my_profile">My Profile</string>
@@ -30,6 +30,8 @@
     <string name="settings">Settings</string>
     <string name="button_go">Directions</string>
     <string name="title_activity_janitor">Edit Toilet Features</string>
+    <string name="title_activity_rating">Your Toilet Rating</string>
+    <string name="title_activity_clean">Maintenance Form</string>
 
     <string-array name="Gender"/>
     <string name="hint_cleaned_by">Cleaned by</string>
@@ -138,6 +140,7 @@
     <string name="title_activity_start_up_screen">cloo</string>
     <string name="dummy_button">Proceed</string>
     <string name="dummy_content">cloo</string>
+    <string name="dummy_slogan">Join the community to help get cleaner accessible toilets\n\n</string>
 
     <string name="title_activity_startup">cloo</string>
 

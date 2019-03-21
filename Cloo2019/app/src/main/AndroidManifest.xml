@@ -65,7 +65,9 @@
                 android:name=".MapsActivityDirections"
                 android:label="@string/title_activity_maps__directions">
         </activity>
-        <activity android:name=".MainActivityRating">
+        <activity
+                android:name=".MainActivityRating"
+                android:label="@string/title_activity_rating">
         </activity>
         <activity
                 android:name=".MyProfile"
@@ -76,7 +78,8 @@
                 android:label="@string/title_activity_janitor"
                 android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".CleanActivity">
+        <activity android:name=".CleanActivity"
+            android:label="@string/title_activity_clean">
         </activity>
     </application>
 

@@ -88,6 +88,11 @@ class FullscreenActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallba
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        try {
+            this.supportActionBar!!.hide()
+        } catch (e: NullPointerException) {
+        }
+
         setContentView(R.layout.activity_fullscreen)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -110,13 +115,28 @@ class FullscreenActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallba
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
-        dummy_button.setOnTouchListener(mDelayHideTouchListener)
+//        dummy_button.setOnTouchListener(mDelayHideTouchListener)
+//
+//        dummy_button.setOnClickListener{
+//            gotoLandingPage()
+//        }
+//
+//        var i = 0
+//        while (i < 200) {
+//            Thread.sleep(100)
+//            i += 1
+//        }
+//
+//        val f = Intent(this, LandingActivity::class.java)
+//        startActivity(f)
+//        finish()
+    }
 
-        dummy_button.setOnClickListener{
-            val f = Intent(this, LandingActivity::class.java)
-            startActivity(f)
-            finish()
-        }
+    private fun gotoLandingPage() {
+        Thread.sleep(5000)
+        val f = Intent(this, LandingActivity::class.java)
+        startActivity(f)
+        finish()
     }
 
     @SuppressLint("MissingPermission")
@@ -142,6 +162,7 @@ class FullscreenActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallba
         }
         if (loc != null) {
             CurrentLocation.setLastLocation(loc, loc.provider)
+            gotoLandingPage()
             // mLatitudeTextView.setText(String.valueOf(mLocation.getLatitude()));
             //mLongitudeTextView.setText(String.valueOf(mLocation.getLongitude()));
         } else {
@@ -169,6 +190,7 @@ class FullscreenActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallba
         // You can now create a LatLng Object for use with maps
 //        val latLng = LatLng(location.latitude, location.longitude)
         CurrentLocation.setLastLocation(location, location.provider)
+//        gotoLandingPage()
     }
 
     private fun checkLocation(): Boolean {

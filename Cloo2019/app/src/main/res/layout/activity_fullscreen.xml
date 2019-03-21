@@ -21,6 +21,17 @@
 
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
+    <TextView
+            android:text="@string/dummy_slogan"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" android:id="@+id/textView2" android:textSize="24sp"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:gravity="bottom|center"/>
+    <TextView
+            android:text="@string/string_app_version"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:id="@+id/textView3" android:gravity="bottom|center"
+            android:textColor="@color/black_overlay"/>
     <FrameLayout android:layout_width="match_parent"
                  android:layout_height="match_parent"
                  android:fitsSystemWindows="true">
@@ -32,16 +43,7 @@
                       android:layout_gravity="bottom|center_horizontal"
                       android:background="@color/black_overlay"
                       android:orientation="horizontal"
-                      tools:ignore="UselessParent">
-
-            <Button android:id="@+id/dummy_button"
-                    style="?metaButtonBarButtonStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/dummy_button"/>
-
-        </LinearLayout>
+                      tools:ignore="UselessParent"/>
     </FrameLayout>
 
 </FrameLayout>
