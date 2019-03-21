@@ -3,25 +3,7 @@
 
 package com.example.cloo2019
 
-import android.Manifest
-import android.content.Context
-import android.content.DialogInterface
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.location.Location
-import android.location.LocationManager
-import android.os.Bundle
-import android.provider.Settings
-import android.support.v4.app.ActivityCompat
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
-import android.util.Log
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.tasks.OnSuccessListener
 
 object CurrentLocation {
     private val TAG = "CurrentLocation"
@@ -33,6 +15,9 @@ object CurrentLocation {
     init {
         mLastLocation?.latitude = 12.9718342     // default value
         mLastLocation?.longitude = 77.6562343     // default value
+        mLastLocation?.altitude = 0.0  // default value
+        mLastLocation?.accuracy = 0.0f  //
+        mLastLocation?.provider = "default"
     }
 
     fun setLastLocation(location: Location, provider: String) {
