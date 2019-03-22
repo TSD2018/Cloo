@@ -2,7 +2,6 @@ package com.example.cloo2019
 
 import android.util.Log
 import org.json.JSONArray
-import org.json.JSONObject
 import java.lang.Exception
 
 class ParseAPI {
@@ -17,7 +16,7 @@ class ParseAPI {
             for (rec in 0..(jsonArray.length() - 1))
             {
                 val jsonToiletRec = jsonArray.getJSONObject(rec)
-                var toiletRecord = ToiletMaster()
+                val toiletRecord = ToiletMaster()
                 toiletRecord.address= jsonToiletRec.getString("address")
                 toiletRecord.alt= jsonToiletRec.getDouble("alt")
                 toiletRecord.contact = jsonToiletRec.getString("contact")

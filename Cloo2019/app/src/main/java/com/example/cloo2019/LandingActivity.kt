@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.ListView
@@ -23,8 +22,8 @@ import kotlin.properties.Delegates
 
 class ToiletEntry {
     var toiletId: String = ""
-    var toiletName: String = ""
-    var toiletAddress: String = ""
+    private var toiletName: String = ""
+    private var toiletAddress: String = ""
 
 
 
@@ -53,15 +52,18 @@ class LandingActivity : AppCompatActivity() {
         setContentView(R.layout.activity_landing)
         setSupportActionBar(toolbar)
 
-        downloadData.execute("http://192.168.1.2:5000/result")  // not using this URL
+        val url = getString(R.string.url_server) + getString(R.string.url_landing_page_api)
+        Log.d(TAG, url)
+
+        downloadData.execute(url)  // not using this URL
 //        downloadData.execute("http://192.168.1.2:5000/resultsub?Lat=12.9718342&Lng=77.6562343&Radius=1")
         Log.d(TAG, "onCreate done")
 
         val tvLocationHead = findViewById<TextView>(R.id.textViewLocation)
         if (CurrentLocation.getLastLocationProvider() == "default")
-            tvLocationHead.text = "Unable to determine current location, using defaults!  Please turn on location and retry"
+            tvLocationHead.text = getString(R.string.error_location_not_found)
         else
-            tvLocationHead.text = "Showing toilets near me..."
+            tvLocationHead.text = getString(R.string.string_location_found) + " ${CurrentLocation.getLookUpRadius().toString()}km(s)"
 
         fab.setOnClickListener {
             val i = Intent(this, MainActivityAddNewLoo::class.java)
@@ -117,7 +119,7 @@ class LandingActivity : AppCompatActivity() {
 
             private fun downloadToiletMaster(urlPath: String?) : String {
                 Log.d(TAG, "downloadToiletMaster: urlPath $urlPath")
-                val paramsSting = "Lat=" + "12.9718342" + "&" + "Lng=" + "77.6562343" + "&" + "Radius=" + "1"
+//                val paramsSting = "Lat=" + "12.9718342" + "&" + "Lng=" + "77.6562343" + "&" + "Radius=" + "1"
                 val currentLocation = CurrentLocation
 
                 val latLabel = "Lat"
@@ -128,7 +130,12 @@ class LandingActivity : AppCompatActivity() {
                 val radiusVal = currentLocation.getLookUpRadius()   // 1 km
 
                 try {
-                    val url = URL("http://192.168.1.6:5000/resultsub")
+                    val url = URL(urlPath)
+
+
+
+//                    val url = URL("http://clooserverr1.pythonanywhere.com/resultsub")
+//                    val url = URL("http://192.168.1.6:5000/resultsub")
                     val connection = url.openConnection() as HttpURLConnection
                     connection.requestMethod = "POST"
                     connection.doOutput = true
@@ -143,8 +150,8 @@ class LandingActivity : AppCompatActivity() {
                     os.write(data)
                     os.flush()
 
-                    var stream = connection.inputStream
-                    var reader = BufferedReader(InputStreamReader(stream, "UTF-8"), 8)
+                    val stream = connection.inputStream
+                    val reader = BufferedReader(InputStreamReader(stream, "UTF-8"), 8)
                     val result = reader.readText()
 
                     Log.d(TAG, "********** results   \n $result")

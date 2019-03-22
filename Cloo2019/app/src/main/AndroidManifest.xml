@@ -37,18 +37,29 @@
                 android:label="@string/title_activity_landing"
                 android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity
-                android:name=".MainActivityLocateLoo"
-                android:label="@string/app_name"
-                android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
         <activity android:name=".MainActivityAddNewLoo">
         </activity>
+        <activity
+                android:name=".MapsActivityDirections"
+                android:label="@string/title_activity_maps__directions">
+        </activity>
+        <activity
+                android:name=".MainActivityRating"
+                android:label="@string/title_activity_rating">
+        </activity>
+        <activity
+                android:name=".MyProfile"
+                android:label="@string/title_activity_my_profile">
+        </activity>
+        <activity
+                android:name=".JanitorActivity"
+                android:label="@string/title_activity_janitor"
+                android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".CleanActivity"
+                  android:label="@string/title_activity_clean">
+        </activity>
+
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -61,23 +72,6 @@
                 android:name="com.google.android.geo.API_KEY"
                 android:value="@string/google_maps_key"/>
 
-        <activity
-                android:name=".MapsActivityDirections"
-                android:label="@string/title_activity_maps__directions">
-        </activity>
-        <activity android:name=".MainActivityRating">
-        </activity>
-        <activity
-                android:name=".MyProfile"
-                android:label="@string/title_activity_my_profile">
-        </activity>
-        <activity
-                android:name=".JanitorActivity"
-                android:label="@string/title_activity_janitor"
-                android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity android:name=".CleanActivity">
-        </activity>
     </application>
 
 </manifest>
