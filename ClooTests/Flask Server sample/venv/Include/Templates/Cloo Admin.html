@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <style>
 h2,h6,p,#selbox,.btncls,#file-form {
   text-align: center;
@@ -9,7 +10,7 @@ h2,h6,p,#selbox,.btncls,#file-form {
   font-family: Verdana;
 }
 
-fieldset {
+fieldset{
   width: 300px;
   height: 300px;
   color: blue;
@@ -23,15 +24,33 @@ fieldset {
 
 }
 
+table {
+  //font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid black;
+  text-align: left;
+  padding: 8px;
+  width:100px;
+  word-wrap:break-word;
+  line-height: 1.2;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
 
 </style>
 
 </head>
 
-<body style="background-color:#bdf5bd;" onload="GetLooInfo()">
+<body style="background-color:#bdf5bd;" onload="GetSubLooInfo()">
 
 <h2>Cloo Admin</h2>
-<p style="line-height: 0.4;font-size:75%;">Rev 0.4</p>
+<p style="line-height: 0.4;font-size:75%;">Rev 0.5</p>
 
 <form id="file-form">
 <br>
@@ -40,6 +59,10 @@ fieldset {
 <label id="TDropdown"></label>
 <select id="selbox" name="Toilets registered" style="color: black;" onchange="PopSpName()">
 </select>
+<br><br>
+<table id=LooList onclick="GetRowVal(event)">
+
+</table>
 </div>
   <br>
 <br>
@@ -59,13 +82,13 @@ fieldset {
   <fieldset>
   <legend><b>Get nearest based on:</b></legend><br>
   <b>Latitude:</b><br><br>
-  <input id="lat1" type="text" name="Latitude" value="" size="12">
+  <input id="lat1" type="text" name="Latitude" value="13.1" size="12">
   <br><br><br>
   <b>Longitude:</b><br><br>
-  <input id="lng1" type="text" name="Longitude" value="" size="12">
+  <input id="lng1" type="text" name="Longitude" value="77.1" size="12">
   <br><br><br>
   <b>Radius (in kms):</b><br><br>
-  <input id="rad1" type="text" name="Radius" value="" size="12">
+  <input id="rad1" type="text" name="Radius" value="100" size="12">
   <br><br><br>
   <input type="button" name="submit" class="btncls" value="Get" style="font-weight:bold;font-size:150%;" onclick="GetSubLooInfo()">
   </fieldset>
@@ -74,6 +97,7 @@ fieldset {
 </form>
 
 <script>
+
 //Global variable to hold Loo Ids
 var ToiletObj;
 
@@ -116,7 +140,7 @@ function GetLogo(){
        document.getElementById("image").height = 0;
    }
   };
-   xmlhttp.open("POST", "http://localhost:5000/result3", true);
+   xmlhttp.open("POST", "http://clooserverr1.pythonanywhere.com/result3", true);
    xmlhttp.send(formData);
 
 }
@@ -143,7 +167,7 @@ function HandleSponsorLogo(){
        GetLogo();
    }
   };
-   xmlhttp.open("POST", "http://localhost:5000/result2", true);
+   xmlhttp.open("POST", "http://clooserverr1.pythonanywhere.com/result2", true);
    xmlhttp.send(formData);
 
 }
@@ -177,7 +201,7 @@ function GetLoos() {
         GetLoosResp(this);
    }
   };
-   xmlhttp.open("GET", "http://localhost:5000/result", true);
+   xmlhttp.open("GET", "http://clooserverr1.pythonanywhere.com/result", true);
    xmlhttp.send();
 }
 
@@ -206,7 +230,7 @@ function GetSubLoos() {
         document.getElementById("TDropdown").innerHTML = "";
    }
   };
-   xmlhttp.open("POST", "http://localhost:5000/resultsub", true);
+   xmlhttp.open("POST", "http://clooserverr1.pythonanywhere.com/resultsub", true);
    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
    xmlhttp.send(NearestDetails);
 }
@@ -229,16 +253,108 @@ function PopLooInfo()
    var l1;
    var counter = 0;
    document.getElementById("selbox").innerHTML = "";
+   document.getElementById("LooList").innerHTML = "";
+   CreateTableHeader();
    for (l1 in ToiletObj)
    {
       var c = document.createElement("option");
-      counter = counter + 1;
       console.log(l1);
-      c.text = ToiletObj[l1].toiletName + ": " + ToiletObj[l1].address;
+      var LooIdstr = ToiletObj[l1].toiletName + ": " + ToiletObj[l1].address;
+      c.text = LooIdstr.trim();
       s1.options.add(c);
+      counter = counter + 1;
+      PopListView(counter,LooIdstr,l1);
+      //if (counter == 5)
+         //break;
    }
 
 
+}
+
+
+function CreateTableHeader()
+{
+      var s2 = document.getElementById("LooList");
+
+      var c1 = document.createElement("TR");
+      c1.setAttribute("id","Row");
+      s2.appendChild(c1);
+      var c2 = document.createElement("TH");
+      c2.appendChild(document.createTextNode("Toilet Name"));      
+      document.getElementById("Row").appendChild(c2);
+
+      var c3 = document.createElement("TH");
+      c3.appendChild(document.createTextNode("Sponsor Name"));      
+      document.getElementById("Row").appendChild(c3);
+
+      var c4 = document.createElement("TH");
+      c4.appendChild(document.createTextNode("Sponsor Logo"));      
+      document.getElementById("Row").appendChild(c4);
+}
+
+function PopListView(counter,LooIdstr,l1)
+{
+      var s2 = document.getElementById("LooList");
+
+      var c1 = document.createElement("TR");
+      c1.setAttribute("id","Row"+counter);
+      s2.appendChild(c1);
+      var c2 = document.createElement("TD");
+      c2.appendChild(document.createTextNode(LooIdstr.trim()));      
+      document.getElementById("Row"+counter).appendChild(c2);
+
+      var c3 = document.createElement("TD");
+      c3.appendChild(document.createTextNode(ToiletObj[l1].toiletSponsor));      
+      document.getElementById("Row"+counter).appendChild(c3);
+
+
+      var c4 = document.createElement("TD");
+      var image1 = document.createElement("IMG");
+      image1.setAttribute("id","ListImg"+counter);
+      image1.setAttribute("src","");
+      image1.setAttribute("width","");
+      image1.setAttribute("height","");
+      image1.setAttribute("style","");
+      c4.appendChild(image1);      
+      document.getElementById("Row"+counter).appendChild(c4);
+
+      GetLogoInList(ToiletObj[l1].toiletId,image1);
+}
+
+
+function GetLogoInList(LooId,Ind1){
+
+   var formData = new FormData();
+   formData.append("LooId",LooId)
+   console.log(LooId);
+
+   var xmlhttp = new XMLHttpRequest();
+   xmlhttp.responseType = 'blob';
+   xmlhttp.onreadystatechange = function() {
+   if (this.readyState == 4 && this.status == 200) {
+       var urlCreator = window.URL || window.webkitURL;
+       var imageUrl = urlCreator.createObjectURL(this.response);
+       //$(Ind1).attr("visibility","visible");       
+       Ind1.style.visibility = "visible";   
+       Ind1.src = imageUrl;
+       Ind1.width = 82;
+       Ind1.height = 82;
+       //urlCreator.revokeObjectURL(imageUrl);
+
+
+   }
+
+  };
+   xmlhttp.open("POST", "http://clooserverr1.pythonanywhere.com/result3", true);
+   xmlhttp.send(formData);
+
+}
+
+function GetRowVal(e)
+{
+     alert(e.target.innerText);
+     alert(e.target.parentNode.cells[0].innerText);
+     alert(e.target.parentNode.cells[1].innerText);
 }
 
 
@@ -285,7 +401,7 @@ function UpdateSponsorinDB(SelLoo,SponsorName)
         alert("Successful post.");
    }
   };
-   xmlhttp.open("POST", "http://localhost:5000/result1", true);
+   xmlhttp.open("POST", "http://clooserverr1.pythonanywhere.com/result1", true);
    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
    xmlhttp.send(Sponsordetails);
 }
@@ -309,8 +425,8 @@ function GetLooId()
    }
 }
 
-</script>
 
+</script>
 
 <noscript>Sorry, your browser does not support JavaScript!</noscript>
 
