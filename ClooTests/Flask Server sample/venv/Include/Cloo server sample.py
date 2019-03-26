@@ -65,6 +65,9 @@ def resultsub():
           sorted_dict = sorted(filtered_dict, key=lambda i: (i['distance']))
           #for i in sorted_dict:
               #print (i['distance'],i['lat'],i['lng'],i['toiletName'],i['address'])
+
+          for i in sorted_dict:
+              i.pop('distance')
           return (jsonify(sorted_dict))
 
 
@@ -134,6 +137,9 @@ def AddNewToilet():
        UserRating = (request.form.get('Rating'))
        UserComments = (request.form.get('Comments'))
        GenderType = (request.form.get('GenderType'))
+       Altitude = (request.form.get('Altitude'))
+       ToiletType = (request.form.get('ToiletType'))
+       ToiletAccess = (request.form.get('ToiletAccess'))
        #looName = "New Toilet from Flask server8"
        #toiletaddr = "Eco-friendly toilet address8"
        #Lat = "12.7773488"
@@ -142,9 +148,9 @@ def AddNewToilet():
        #UserComments="Comment from user8"
        #GenderType="0"
        NewToilet = {"toiletName":looName,"address":toiletaddr,"lat":float(Lat),"lng":float(Lng),"userRating":0,
-                        "alt":0,"contact":"","genderType":int(GenderType),"lastCleanedBy":"","lastCleanedTimeStamp":"",
-                        "maintainedBy":"","sponsor_image":"","toiletAccess":0,"toiletOwnerBy":"",
-                        "toiletSponsor":"","toiletType":0,"numberOfRatings":0,
+                        "alt":float(Altitude),"contact":"","genderType":int(GenderType),"lastCleanedBy":"","lastCleanedTimeStamp":"",
+                        "maintainedBy":"","sponsor_image":"","toiletAccess":int(ToiletAccess),"toiletOwnerBy":"",
+                        "toiletSponsor":"","toiletType":int(ToiletType),"numberOfRatings":0,
                         "numberOfRatingsLifeTime":0,"ratingSum":0,"ratingSumLifeTime":0,"toiletId":""}
 
        res = fbase.post('/ToiletMaster/', NewToilet)
