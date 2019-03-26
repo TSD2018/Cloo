@@ -19,6 +19,7 @@ import com.google.android.gms.location.LocationServices
 
 import android.location.Location
 import android.location.LocationManager
+import android.net.Uri
 import android.os.Handler
 import android.view.View
 import kotlinx.android.synthetic.main.activity_fullscreen.*
@@ -31,6 +32,9 @@ class FullscreenActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallba
     com.google.android.gms.location.LocationListener {
 
     private val TAG = "FullscreenActivity"
+    private val NO_PERMISSION = 1
+    private val LOCATION_OFF = 2
+
     private var mGoogleApiClient: GoogleApiClient? = null
     private var mLocation: Location? = null
     private var mLocationManager: LocationManager? = null
@@ -141,6 +145,7 @@ class FullscreenActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallba
     @SuppressLint("MissingPermission")
     override fun onConnected(p0: Bundle?) {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            showAlert(NO_PERMISSION)
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -194,20 +199,57 @@ class FullscreenActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallba
 
     private fun checkLocation(): Boolean {
         if (!isLocationEnabled)
-            showAlert()
+            showAlert(LOCATION_OFF)
         return isLocationEnabled
     }
 
-    private fun showAlert() {
+    private fun showAlert(alertFlag: Int) {
+
+        val title: String
+        val message: String
+        val button: String
+
+        when(alertFlag) {
+            NO_PERMISSION -> {
+                title = "Location Permissions"
+                message = "Cloo requires Location Permissions on your device.\nPlease Approve Permissions to" + "\nuse Location"
+                button = "Location Permission"
+            }
+            else /*LOCATION_OFF*/  -> {
+                title = "Enable Location"
+                message = "Your Locations Settings is set to 'Off'.\nPlease Enable Location to" + "\nuse this app"
+                button = "Location Settings"
+
+            }
+        }
+
         val dialog = AlertDialog.Builder(this)
-        dialog.setTitle("Enable Location")
-            .setMessage("Your Locations Settings is set to 'Off'.\nPlease Enable Location to " + "use this app")
-            .setPositiveButton("Location Settings") { paramDialogInterface, paramInt ->
-                val myIntent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                startActivity(myIntent)
+        dialog.setTitle(title)
+            .setMessage(message)
+            .setPositiveButton(button) { paramDialogInterface, paramInt ->
+                val myIntent: Intent
+                if(alertFlag == NO_PERMISSION){
+                    myIntent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                    startActivity(myIntent)}
+                else {
+                    myIntent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                    startActivity(myIntent)
+                }
             }
             .setNegativeButton("Cancel") { paramDialogInterface, paramInt -> }
         dialog.show()
+
+//        finish()
+
+//        val dialog = AlertDialog.Builder(this)
+//        dialog.setTitle("Enable Location")
+//            .setMessage("Your Locations Settings is set to 'Off'.\nPlease Enable Location to " + "use this app")
+//            .setPositiveButton("Location Settings") { paramDialogInterface, paramInt ->
+//                val myIntent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+//                startActivity(myIntent)
+//            }
+//            .setNegativeButton("Cancel") { paramDialogInterface, paramInt -> }
+//        dialog.show()
     }
 
     override fun onStart() {
