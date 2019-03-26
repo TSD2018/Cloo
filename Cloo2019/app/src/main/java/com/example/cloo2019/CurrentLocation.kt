@@ -40,12 +40,4 @@ object CurrentLocation {
     fun getLookUpRadius() : String {
         return radius
     }
-
-    fun getLocationDetailsAsString(): String {
-        val loc = mLastLocation
-        return if(loc != null) {"Lat: ${loc.latitude}\nLng: ${loc.longitude}\nAlt: ${loc.altitude}\n" +
-                "Accuracy Captured: ${loc.accuracy}\nProvider: ${loc.provider}"}
-        else {"Location not enabled or available.  Using defaults"}
-    }
-
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.example.cloo2019">
+
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -8,7 +9,6 @@
     -->
     <uses-permission
             android:name="android.permission.ACCESS_FINE_LOCATION"/> <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.READ_PROFILE"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
@@ -21,8 +21,6 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
-        <activity android:name=".UserAddToiletActivity">
-        </activity>
         <activity
                 android:name=".FullscreenActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
@@ -58,10 +56,10 @@
                 android:label="@string/title_activity_janitor"
                 android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity
-                android:name=".CleanActivity"
-                android:label="@string/title_activity_clean">
+        <activity android:name=".CleanActivity"
+                  android:label="@string/title_activity_clean">
         </activity>
+
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -73,6 +71,7 @@
         <meta-data
                 android:name="com.google.android.geo.API_KEY"
                 android:value="@string/google_maps_key"/>
+
     </application>
 
 </manifest>

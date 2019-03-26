@@ -66,8 +66,7 @@ class LandingActivity : AppCompatActivity() {
             tvLocationHead.text = getString(R.string.string_location_found) + " ${CurrentLocation.getLookUpRadius().toString()}km(s)"
 
         fab.setOnClickListener {
-            val i = Intent(this, UserAddToiletActivity::class.java)
-//            val i = Intent(this, MainActivityAddNewLoo::class.java)
+            val i = Intent(this, MainActivityAddNewLoo::class.java)
             startActivity(i)
 
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
