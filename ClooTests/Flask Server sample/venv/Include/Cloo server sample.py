@@ -12,7 +12,7 @@ fbase = firebase.FirebaseApplication('https://cloo2019-4d1a2.firebaseio.com/', N
 app = Flask(__name__)
 CORS(app)
 
-HostedServer = False
+HostedServer = True
 
 if HostedServer == True:
     #Use this for running the server on a hosted server (PythonAnywhere server)
@@ -53,19 +53,13 @@ def resultsub():
           Radius = (request.form.get('Radius'))
           print("Radius =" + Radius)
           obj1 = fbase.get('/ToiletMaster', None)
-
           RefLatLng = (float(Lat),float(Lng))
+          #filtered_dict = list(filter(lambda item: item['numberOfRatings'] >= 2, obj1.values()))
           filtered_dict = list(filter(lambda item: distance.great_circle(RefLatLng, (item['lat'],item['lng'])).kilometers <= float(Radius), obj1.values()))
+          #filtered_dict = list(filter(lambda item: , obj1.values()))
           #filtered_dict = {x: y for x,y in obj1.items() if distance.great_circle(RefLatLng, (y['lat'],y['lng'])).kilometers <= float(Radius)}
-          #sorted_dict = sorted(filtered_dict, key = lambda i: (i['lat'], i['lng']))
-
-          for i in filtered_dict:
-              i.update({'distance': distance.great_circle(RefLatLng, (i['lat'],i['lng'])).kilometers})
-
-          sorted_dict = sorted(filtered_dict, key=lambda i: (i['distance']))
-          #for i in sorted_dict:
-              #print (i['distance'],i['lat'],i['lng'],i['toiletName'],i['address'])
-          return (jsonify(sorted_dict))
+          print(filtered_dict)
+          return (jsonify(filtered_dict))
 
 
 #This request is to update the sponsor name as sent from the client.
