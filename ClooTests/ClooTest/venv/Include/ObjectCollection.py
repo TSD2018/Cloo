@@ -1,6 +1,7 @@
 import time
 from appium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
+from appium.webdriver.common.touch_action import TouchAction
 import unittest
 import csv
 import sys
@@ -57,6 +58,12 @@ def SelectFromDropDown(driver,boxvalue,valueid):
     time.sleep(2)
     element = driver.find_elements_by_class_name('android.widget.TextView')[valueid]
     element.click()
+    time.sleep(2)
+
+def ScrollSimulation(driver,grpvalue,x1,y1,x2,y2):
+    time.sleep(2)
+    element = driver.find_element_by_class_name(grpvalue)
+    TouchAction(driver).press(element, x1, y1).wait(1000).move_to(element, x2, y2).release().perform()
     time.sleep(2)
 
 
