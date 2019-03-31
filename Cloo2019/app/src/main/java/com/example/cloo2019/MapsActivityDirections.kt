@@ -47,6 +47,7 @@ class MapsActivityDirections : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var toiletName: String
     private lateinit var toiletOwnedBy: String
     private lateinit var toiletSponsor: String
+    private lateinit var sponsorPath: String
     private var genderType: Int = 0
     private var toiletAccess: Int = 0
     private var toiletType: Int = 0
@@ -71,6 +72,7 @@ class MapsActivityDirections : AppCompatActivity(), OnMapReadyCallback {
         toiletName = intent.getStringExtra(getString(R.string.intent_toilet_name))
         toiletOwnedBy = intent.getStringExtra(getString(R.string.intent_toilet_owner))
         toiletSponsor = intent.getStringExtra(getString(R.string.intent_sponsor))
+        sponsorPath = intent.getStringExtra("SPONSOR_IMAGE_PATH")   // KARTIK_31-March-2019
 
         toiletID = intent.getStringExtra(getString(R.string.intent_toilet_id))
         toiletAddress = intent.getStringExtra(getString(R.string.intent_toilet_address))
@@ -174,6 +176,9 @@ class MapsActivityDirections : AppCompatActivity(), OnMapReadyCallback {
             i.putExtra(getString(R.string.intent_toilet_name), toiletName)
             i.putExtra(getString(R.string.intent_toilet_owner), toiletOwnedBy)
             i.putExtra(getString(R.string.intent_sponsor), toiletSponsor)
+            i.putExtra("SPONSOR_IMAGE_PATH",sponsorPath)        // KARTIK_31-March-2019
+
+
             i.putExtra(getString(R.string.intent_toilet_type), toiletType)
             i.putExtra(getString(R.string.intent_rating_sum), ratingSum)
             i.putExtra(getString(R.string.intent_number_of_ratings), numberOfRatings)
