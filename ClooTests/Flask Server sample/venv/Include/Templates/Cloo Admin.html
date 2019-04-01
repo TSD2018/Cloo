@@ -100,7 +100,7 @@ tr:nth-child(even) {
 
 //Global variable to hold Loo Ids
 var ToiletObj;
-
+var HostedServer = true;
 
 function MainJS(){
 
@@ -140,8 +140,12 @@ function GetLogo(){
        document.getElementById("image").height = 0;
    }
   };
-   xmlhttp.open("POST", "http://clooserverr1.pythonanywhere.com/result3", true);
-   xmlhttp.send(formData);
+   
+   if(HostedServer == true)
+      xmlhttp.open("GET", "http://clooserverr1.pythonanywhere.com/result3" + "?LooId=" + LooId, true);
+   else
+      xmlhttp.open("GET", "http://localhost:5000/result3" + "?LooId=" + LooId, true);
+   xmlhttp.send();
 
 }
 
@@ -167,7 +171,12 @@ function HandleSponsorLogo(){
        GetLogo();
    }
   };
-   xmlhttp.open("POST", "http://clooserverr1.pythonanywhere.com/result2", true);
+
+   if(HostedServer == true)
+      xmlhttp.open("POST", "http://clooserverr1.pythonanywhere.com/result2", true);
+   else
+      xmlhttp.open("POST", "http://localhost:5000/result2", true);
+
    xmlhttp.send(formData);
 
 }
@@ -201,7 +210,11 @@ function GetLoos() {
         GetLoosResp(this);
    }
   };
-   xmlhttp.open("GET", "http://clooserverr1.pythonanywhere.com/result", true);
+   
+   if(HostedServer == true)
+      xmlhttp.open("GET", "http://clooserverr1.pythonanywhere.com/result", true);
+   else
+      xmlhttp.open("GET", "http://localhost:5000/result", true);
    xmlhttp.send();
 }
 
@@ -225,14 +238,17 @@ function GetSubLoos() {
    var xmlhttp = new XMLHttpRequest();
    xmlhttp.onreadystatechange = function() {
    if (this.readyState == 4 && this.status == 200) {
-        alert("Successful post.");
         GetLoosResp(this);
         document.getElementById("TDropdown").innerHTML = "";
    }
   };
-   xmlhttp.open("POST", "http://clooserverr1.pythonanywhere.com/resultsub", true);
-   xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-   xmlhttp.send(NearestDetails);
+
+   if(HostedServer == true)
+      xmlhttp.open("GET", "http://clooserverr1.pythonanywhere.com/resultsub" + "?" + NearestDetails, true);
+   else
+      xmlhttp.open("GET", "http://localhost:5000/resultsub" + "?" + NearestDetails, true);
+   //xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+   xmlhttp.send();
 }
 
 function GetLoosResp(Resp)
@@ -345,8 +361,12 @@ function GetLogoInList(LooId,Ind1){
    }
 
   };
-   xmlhttp.open("POST", "http://clooserverr1.pythonanywhere.com/result3", true);
-   xmlhttp.send(formData);
+
+   if(HostedServer == true)
+      xmlhttp.open("GET", "http://clooserverr1.pythonanywhere.com/result3" + "?LooId=" + LooId, true);
+   else
+      xmlhttp.open("GET", "http://localhost:5000/result3" + "?LooId=" + LooId, true);
+   xmlhttp.send();
 
 }
 
@@ -401,7 +421,12 @@ function UpdateSponsorinDB(SelLoo,SponsorName)
         alert("Successful post.");
    }
   };
-   xmlhttp.open("POST", "http://clooserverr1.pythonanywhere.com/result1", true);
+
+
+   if(HostedServer == true)
+      xmlhttp.open("POST", "http://clooserverr1.pythonanywhere.com/result1", true);
+   else
+      xmlhttp.open("POST", "http://localhost:5000/result1", true);
    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
    xmlhttp.send(Sponsordetails);
 }

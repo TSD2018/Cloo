@@ -12,7 +12,7 @@ fbase = firebase.FirebaseApplication('https://cloo2019-4d1a2.firebaseio.com/', N
 app = Flask(__name__)
 CORS(app)
 
-HostedServer = True
+HostedServer = False
 
 if HostedServer == True:
     #Use this for running the server on a hosted server (PythonAnywhere server)
@@ -43,14 +43,14 @@ def result():
 
 
 #This request is to fetch Toilet details based on current lat, long and radius. Finding nearest toilets...
-@app.route('/resultsub',methods = ['GET', 'POST'])
+@app.route('/resultsub',methods = ['POST', 'GET'])
 def resultsub():
-   if request.method == 'POST':
-          Lat = (request.form.get('Lat'))
+   if request.method == 'GET':
+          Lat = request.args.get('Lat')
           print("Lat= " + Lat)
-          Lng = (request.form.get('Lng'))
+          Lng = request.args.get('Lng')
           print("Long= " + Lng)
-          Radius = (request.form.get('Radius'))
+          Radius = request.args.get('Radius')
           print("Radius =" + Radius)
           obj1 = fbase.get('/ToiletMaster', None)
 
@@ -104,10 +104,10 @@ def result2():
 
 
 #This request is to send the sponsor logo based on selected toilet id to the client.
-@app.route('/result3',methods = ['GET', 'POST'])
+@app.route('/result3',methods = ['POST', 'GET'])
 def result3():
-   if request.method == 'POST':
-       looid =(request.form.get('LooId'))
+   if request.method == 'GET':
+       looid =(request.args.get('LooId'))
        print("Toilet Id= " +looid)
 
        #Replace the file name with the name you get from the firebase database for a specific LooId.
