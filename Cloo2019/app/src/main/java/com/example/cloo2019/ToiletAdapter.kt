@@ -58,8 +58,9 @@ class ToiletAdapter(context: Context, private val resource: Int, private val toi
         Log.d(TAG, "Sponsor URL path = ${urlStr}")
 
         Picasso.get()
-            .load("https://s3.scoopwhoop.com/anj/logos/709764582.jpg")
-//            .load(context.getString(R.string.url_server)+currentToilet.sponsorImagePath)
+//            .load("https://s3.scoopwhoop.com/anj/logos/709764582.jpg")
+//            .load(context.getString(R.string.url_server)+"uploads/test.jpg")
+            .load(context.getString(R.string.url_server)+currentToilet.sponsorImagePath)
             .placeholder(R.drawable.placeholder)
             .error(R.drawable.sponsor)
             .into(ivSponsor)
