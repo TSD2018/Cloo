@@ -43,14 +43,43 @@ def result():
 
 
 #This request is to fetch Toilet details based on current lat, long and radius. Finding nearest toilets...
-@app.route('/resultsub',methods = ['POST', 'GET'])
-def resultsub():
+@app.route('/resultsubnew',methods = ['POST', 'GET'])
+def resultsubnew():
    if request.method == 'GET':
           Lat = request.args.get('Lat')
           print("Lat= " + Lat)
           Lng = request.args.get('Lng')
           print("Long= " + Lng)
           Radius = request.args.get('Radius')
+          print("Radius =" + Radius)
+          obj1 = fbase.get('/ToiletMaster', None)
+
+          RefLatLng = (float(Lat),float(Lng))
+          filtered_dict = list(filter(lambda item: distance.great_circle(RefLatLng, (item['lat'],item['lng'])).kilometers <= float(Radius), obj1.values()))
+          #filtered_dict = {x: y for x,y in obj1.items() if distance.great_circle(RefLatLng, (y['lat'],y['lng'])).kilometers <= float(Radius)}
+          #sorted_dict = sorted(filtered_dict, key = lambda i: (i['lat'], i['lng']))
+
+          for i in filtered_dict:
+              i.update({'distance': distance.great_circle(RefLatLng, (i['lat'],i['lng'])).kilometers})
+
+          sorted_dict = sorted(filtered_dict, key=lambda i: (i['distance']))
+          #for i in sorted_dict:
+              #print (i['distance'],i['lat'],i['lng'],i['toiletName'],i['address'])
+
+          for i in sorted_dict:
+              i.pop('distance')
+          return (jsonify(sorted_dict))
+
+
+#This request is to fetch Toilet details based on current lat, long and radius. Finding nearest toilets...
+@app.route('/resultsub',methods = ['GET', 'POST'])
+def resultsub():
+   if request.method == 'POST':
+          Lat = request.form.get('Lat')
+          print("Lat= " + Lat)
+          Lng = request.form.get('Lng')
+          print("Long= " + Lng)
+          Radius = request.form.get('Radius')
           print("Radius =" + Radius)
           obj1 = fbase.get('/ToiletMaster', None)
 
@@ -104,10 +133,33 @@ def result2():
 
 
 #This request is to send the sponsor logo based on selected toilet id to the client.
-@app.route('/result3',methods = ['POST', 'GET'])
-def result3():
+@app.route('/result3new',methods = ['POST', 'GET'])
+def result3new():
    if request.method == 'GET':
        looid =(request.args.get('LooId'))
+       print("Toilet Id= " +looid)
+
+       #Replace the file name with the name you get from the firebase database for a specific LooId.
+       #filenm = "<filename from firebase>"
+       filenm = fbase.get('/ToiletMaster/'+looid, 'sponsor_image')
+       print(filenm)
+
+       #return (send_from_directory(app.config['UPLOAD_FOLDER'],
+                                  #filenm, as_attachment=True))
+       if filenm != None:
+           if HostedServer == True:
+               return (send_file(filenm, as_attachment=True))
+           else:
+                return (send_file(app.root_path+"\\"+filenm, as_attachment=True))
+       else:
+           return ("NOTOK")
+
+
+#This request is to send the sponsor logo based on selected toilet id to the client.
+@app.route('/result3',methods = ['GET', 'POST'])
+def result3():
+   if request.method == 'POST':
+       looid =(request.form.get('LooId'))
        print("Toilet Id= " +looid)
 
        #Replace the file name with the name you get from the firebase database for a specific LooId.
