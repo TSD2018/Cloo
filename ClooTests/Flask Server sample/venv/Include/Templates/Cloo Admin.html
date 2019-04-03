@@ -142,9 +142,9 @@ function GetLogo(){
   };
    
    if(HostedServer == true)
-      xmlhttp.open("GET", "http://clooserverr1.pythonanywhere.com/result3" + "?LooId=" + LooId, true);
+      xmlhttp.open("GET", "http://clooserverr1.pythonanywhere.com/result3new" + "?LooId=" + LooId, true);
    else
-      xmlhttp.open("GET", "http://localhost:5000/result3" + "?LooId=" + LooId, true);
+      xmlhttp.open("GET", "http://localhost:5000/result3new" + "?LooId=" + LooId, true);
    xmlhttp.send();
 
 }
@@ -244,9 +244,9 @@ function GetSubLoos() {
   };
 
    if(HostedServer == true)
-      xmlhttp.open("GET", "http://clooserverr1.pythonanywhere.com/resultsub" + "?" + NearestDetails, true);
+      xmlhttp.open("GET", "http://clooserverr1.pythonanywhere.com/resultsubnew" + "?" + NearestDetails, true);
    else
-      xmlhttp.open("GET", "http://localhost:5000/resultsub" + "?" + NearestDetails, true);
+      xmlhttp.open("GET", "http://localhost:5000/resultsubnew" + "?" + NearestDetails, true);
    //xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
    xmlhttp.send();
 }
@@ -363,9 +363,9 @@ function GetLogoInList(LooId,Ind1){
   };
 
    if(HostedServer == true)
-      xmlhttp.open("GET", "http://clooserverr1.pythonanywhere.com/result3" + "?LooId=" + LooId, true);
+      xmlhttp.open("GET", "http://clooserverr1.pythonanywhere.com/result3new" + "?LooId=" + LooId, true);
    else
-      xmlhttp.open("GET", "http://localhost:5000/result3" + "?LooId=" + LooId, true);
+      xmlhttp.open("GET", "http://localhost:5000/result3new" + "?LooId=" + LooId, true);
    xmlhttp.send();
 
 }

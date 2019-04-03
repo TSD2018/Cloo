@@ -16,10 +16,12 @@ HostedServer = False
 
 if HostedServer == True:
     #Use this for running the server on a hosted server (PythonAnywhere server)
-    UPLOAD_FOLDER = "/home/ClooServerR1/mysite/uploads/"
+    UPLOAD_FOLDER = "/home/ClooServerR1/mysite/"
+    #UPLOAD_FOLDER = "uploads/"
 else:
     # Use this for running the server on a local system
-    UPLOAD_FOLDER = os.path.basename('uploads')
+    #UPLOAD_FOLDER = os.path.basename('uploads')
+    UPLOAD_FOLDER = "uploads/"
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -120,14 +122,17 @@ def result2():
    if request.method == 'POST':
        file = request.files['photos']
        if HostedServer == True:
-           f = app.config['UPLOAD_FOLDER'] + file.filename
+           f = app.config['UPLOAD_FOLDER'] + "uploads/" + file.filename
+           fdb = "uploads/" + file.filename
        else:
-            f = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+            #f = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+            f = app.config['UPLOAD_FOLDER'] + file.filename
+            fdb = app.config['UPLOAD_FOLDER'] + file.filename
        file.save(f)
        print(f)
        looid =(request.form.get('LooId'))
        print("Toilet Id= " +looid)
-       fbase.patch('/ToiletMaster/'+looid, {'sponsor_image': f})
+       fbase.patch('/ToiletMaster/'+looid, {'sponsor_image': fdb})
        return ("OK")
        #return (send_from_directory(app.config['UPLOAD_FOLDER'],file.filename, as_attachment=True))
 
@@ -148,7 +153,7 @@ def result3new():
                                   #filenm, as_attachment=True))
        if filenm != None:
            if HostedServer == True:
-               return (send_file(filenm, as_attachment=True))
+               return (send_file(app.config['UPLOAD_FOLDER'] + filenm, as_attachment=True))
            else:
                 return (send_file(app.root_path+"\\"+filenm, as_attachment=True))
        else:
@@ -171,7 +176,7 @@ def result3():
                                   #filenm, as_attachment=True))
        if filenm != None:
            if HostedServer == True:
-               return (send_file(filenm, as_attachment=True))
+               return (send_file(app.config['UPLOAD_FOLDER'] + filenm, as_attachment=True))
            else:
                 return (send_file(app.root_path+"\\"+filenm, as_attachment=True))
        else:
