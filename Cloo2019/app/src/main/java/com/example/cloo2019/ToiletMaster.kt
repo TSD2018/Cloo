@@ -24,12 +24,13 @@ class ToiletMaster(
     var toiletOwnerBy: String,
     var toiletSponsor: String,
     var lastCleanedTimeStamp: String,
-    var lastCleanedBy: String
+    var lastCleanedBy: String,
+    var sponsorImagePath: String
 
 ) {
     constructor() : this(
         "", 0.0, 0.0, 0.0, "", "", 0.0, 0, 0,
         0, 0, 0, 0, 0, "", "",
-        "", "", "", ""
+        "", "", "", "", ""
     )
 }

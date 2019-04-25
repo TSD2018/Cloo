@@ -5,13 +5,18 @@ import android.content.Intent
 import android.support.constraint.ConstraintLayout
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.ContextCompat.startActivity
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import com.squareup.picasso.Picasso
 import java.math.RoundingMode
+import java.net.HttpURLConnection
+import java.net.URL
+import java.net.URLEncoder
 import java.text.DecimalFormat
 import kotlin.math.pow
 import kotlin.math.round
@@ -38,6 +43,7 @@ class ToiletAdapter(context: Context, private val resource: Int, private val toi
         val tvCleaned: TextView = view.findViewById(R.id.textviewCleaned)
         val tvSponsor: TextView = view.findViewById(R.id.textviewSponsor)
         val tvGenderIcon: ImageView = view.findViewById(R.id.imageViewGender)
+        val ivSponsor: ImageView = view.findViewById(R.id.imageViewSponsor)
 
         val currentToilet = toilets[position]
 
@@ -47,6 +53,18 @@ class ToiletAdapter(context: Context, private val resource: Int, private val toi
         tvDistance.text = getDistance(currentToilet.lat, currentToilet.lng)
         tvCleaned.text = formatCleanedTimeStamp(currentToilet.lastCleanedTimeStamp)
         tvSponsor.text = formatSponsor(currentToilet.toiletSponsor)
+
+        val urlStr = URL(context.getString(R.string.url_server) + currentToilet.sponsorImagePath)
+        Log.d(TAG, "Sponsor URL path = ${urlStr}")
+
+        Picasso.get()
+//            .load("https://s3.scoopwhoop.com/anj/logos/709764582.jpg")
+//            .load(context.getString(R.string.url_server)+"uploads/test.jpg")
+            .load(context.getString(R.string.url_server)+currentToilet.sponsorImagePath)
+            .placeholder(R.drawable.placeholder)
+            .error(R.drawable.sponsor)
+            .into(ivSponsor)
+
 
         when (currentToilet.genderType){
             1 -> {context.getString(R.string.array_toilet_gender_gents_only)
@@ -116,6 +134,8 @@ class ToiletAdapter(context: Context, private val resource: Int, private val toi
                 i.putExtra(context.getString(R.string.intent_toilet_name), currentToilet.toiletName)
                 i.putExtra(context.getString(R.string.intent_toilet_owner), currentToilet.toiletOwnerBy)
                 i.putExtra(context.getString(R.string.intent_sponsor), currentToilet.toiletSponsor)
+                i.putExtra("SPONSOR_IMAGE_PATH", currentToilet.sponsorImagePath)        // KARTIK_31-March-2019
+
                 i.putExtra(context.getString(R.string.intent_toilet_type), currentToilet.toiletType)
                 i.putExtra(context.getString(R.string.intent_rating_sum), currentToilet.ratingSum)
                 i.putExtra(context.getString(R.string.intent_number_of_ratings), currentToilet.numberOfRatings)
@@ -172,7 +192,7 @@ class ToiletAdapter(context: Context, private val resource: Int, private val toi
     }
 
     private fun formatCleanedTimeStamp( cleanedTS: String) : String {
-        val tsString = "Cleaned on: " + CurrentTimeStamp().getPresentableTimeString(cleanedTS)
+        val tsString = "Cleaned on:\n" + CurrentTimeStamp().getPresentableTimeString(cleanedTS)
         return tsString
     }
 

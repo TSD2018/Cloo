@@ -166,6 +166,8 @@ class FullscreenActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallba
         }
         if (loc != null) {
             CurrentLocation.setLastLocation(loc, loc.provider)
+            Log.d(TAG, "Lat: ${CurrentLocation.getLastLatAsString()} Lng: ${CurrentLocation.getLastLngAsString()}")
+
             gotoLandingPage()
             // mLatitudeTextView.setText(String.valueOf(mLocation.getLatitude()));
             //mLongitudeTextView.setText(String.valueOf(mLocation.getLongitude()));

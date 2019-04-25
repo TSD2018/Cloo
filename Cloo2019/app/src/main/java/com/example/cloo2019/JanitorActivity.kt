@@ -47,6 +47,7 @@ class JanitorActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var lastCleanedTimeStampPresentable: String
     private lateinit var toiletOwnedBy: String
     private lateinit var toiletSponsor: String
+    private lateinit var sponsorPath: String   // KARTIK_31_MARCH_2019
 
     // form control member variable, requiring global scope
     private lateinit var looAddress: EditText
@@ -85,6 +86,7 @@ class JanitorActivity : AppCompatActivity(), OnMapReadyCallback {
         toiletMaintainedBy = intent.getStringExtra(getString(R.string.intent_toilet_maintained_by))  // ("TOILET_MAINTAINED BY")
         toiletOwnedBy = intent.getStringExtra(getString(R.string.intent_toilet_owner))  // ("TOILET_OWNED BY")
         toiletSponsor = intent.getStringExtra(getString(R.string.intent_sponsor))  // ("TOILET_SPONSOR")
+        sponsorPath = intent.getStringExtra("SPONSOR_IMAGE_PATH")   // KARTIK_31_MARCH_2019
 
         userRating = intent.getDoubleExtra(getString(R.string.intent_rating), 0.0)  // ("RATING", 0.0)
         lastCleanedTimeStamp = intent.getStringExtra(getString(R.string.intent_last_cleaned))  // ("LAST_CLEANED")
@@ -283,12 +285,14 @@ class JanitorActivity : AppCompatActivity(), OnMapReadyCallback {
                     userRating   // retain the original read value, will be computed based on the ToiletRatings every time rating is added
             toiletMaster.toiletOwnerBy = toiletOwnedBy   // from the server
             toiletMaster.toiletSponsor = toiletSponsor   // from the server
+
             toiletMaster.lastCleanedBy = toiletJanitor   // from clean record
             toiletMaster.lastCleanedTimeStamp = lastCleanedTimeStamp    // from clean record
             toiletMaster.ratingSum = ratingSum   // retain the original value
             toiletMaster.numberOfRatings = numberOfRatings  // retain the original value
             toiletMaster.ratingSumLifeTime = ratingSumLifeTime   // retain the original value
             toiletMaster.numberOfRatingsLifeTime = numberOfRatingsLifeTime    // retain the original value
+            toiletMaster.sponsorImagePath = sponsorPath  // from the server  :: KARTIK_31_MARCH_2019
 
             val fireDBRef = FirebaseDatabase.getInstance().getReference("ToiletMaster")
             fireDBRef.child(toiletID).setValue(toiletMaster).addOnCompleteListener {

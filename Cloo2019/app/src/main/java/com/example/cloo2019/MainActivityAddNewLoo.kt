@@ -96,7 +96,7 @@ class MainActivityAddNewLoo : AppCompatActivity() {
         val toiletMasterRecord = ToiletMaster(toiletId, mLastLocation?.latitude!!, mLastLocation?.longitude!!,
             mLastLocation?.altitude!!, "",  looAddress, chosenRating.toDouble(),chosenRating,1,
             chosenRating,1,0,0,0,"","","",
-            "","","")
+            "","","", "")
         FireDBRef.child(toiletId).setValue(toiletMasterRecord).addOnCompleteListener {
             Toast.makeText(this@MainActivityAddNewLoo, getString(R.string.status_toilet_master_created)     //"New toiler created..."
                 , Toast.LENGTH_SHORT).show()
