@@ -48,6 +48,19 @@ class ParseAPI {
             } catch (e: Exception) {
                 Log.d(TAG, "Exception while reading json record, Json element ${e.toString()} missing")
             }
+            try {
+                toiletRecord.contributor = jsonToiletRec.getString("contributor") // This tag or element might not be there, throws an exception
+                Log.d(TAG, "Contributor = ${toiletRecord.contributor}")
+            } catch (e: Exception) {
+                Log.d(TAG, "Exception while reading json record, Json element ${e.toString()} missing")
+            }
+            try {
+                toiletRecord.contributorId = jsonToiletRec.getString("contributorId") // This tag or element might not be there, throws an exception
+                Log.d(TAG, "Contributor = ${toiletRecord.contributorId}")
+            } catch (e: Exception) {
+                Log.d(TAG, "Exception while reading json record, Json element ${e.toString()} missing")
+            }
+
             toiletRecord.toiletAccess = jsonToiletRec.getInt("toiletAccess")
             toiletRecord.toiletId = jsonToiletRec.getString("toiletId")
             toiletRecord.toiletName = jsonToiletRec.getString("toiletName")

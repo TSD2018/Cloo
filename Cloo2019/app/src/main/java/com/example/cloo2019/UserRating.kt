@@ -5,11 +5,12 @@ package com.example.cloo2019
 
 
 class UserRating(
-    val ratingId: String, val toiletId: String, val userID: String, val userRating: Int,
+    val ratingId: String, val toiletId: String, val userName: String, val userID: String, val userRating: Int,
     val userComments: String, var timeString: String
 ) {
     constructor() : this(
-        "", "", "", 0, "", ""
+        "", "", CurrentUser.getCurrentUser(), CurrentUser.getCurrentUserID(), 0,
+        "", ""
     )
 }
 

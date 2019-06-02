@@ -25,12 +25,15 @@ class ToiletMaster(
     var toiletSponsor: String,
     var lastCleanedTimeStamp: String,
     var lastCleanedBy: String,
-    var sponsorImagePath: String
+    var sponsorImagePath: String,
+    var contributor: String,
+    var contributorId: String
+
 
 ) {
     constructor() : this(
         "", 0.0, 0.0, 0.0, "", "", 0.0, 0, 0,
         0, 0, 0, 0, 0, "", "",
-        "", "", "", "", ""
+        "", "", "", "", "", "", ""
     )
 }

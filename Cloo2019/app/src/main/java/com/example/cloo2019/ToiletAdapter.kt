@@ -134,7 +134,9 @@ class ToiletAdapter(context: Context, private val resource: Int, private val toi
                 i.putExtra(context.getString(R.string.intent_toilet_name), currentToilet.toiletName)
                 i.putExtra(context.getString(R.string.intent_toilet_owner), currentToilet.toiletOwnerBy)
                 i.putExtra(context.getString(R.string.intent_sponsor), currentToilet.toiletSponsor)
-                i.putExtra("SPONSOR_IMAGE_PATH", currentToilet.sponsorImagePath)        // KARTIK_31-March-2019
+                i.putExtra(context.getString(R.string.intent_sponsor_image_path), currentToilet.sponsorImagePath)        // KARTIK_31-March-2019
+                i.putExtra(context.getString(R.string.intent_user_name), currentToilet.contributor)     // KARTIK_2-June-2019
+                i.putExtra(context.getString(R.string.intent_user_id), currentToilet.contributorId)   // KARTIK_2-June-2019
 
                 i.putExtra(context.getString(R.string.intent_toilet_type), currentToilet.toiletType)
                 i.putExtra(context.getString(R.string.intent_rating_sum), currentToilet.ratingSum)

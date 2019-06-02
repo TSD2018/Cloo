@@ -48,6 +48,9 @@ class MapsActivityDirections : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var toiletOwnedBy: String
     private lateinit var toiletSponsor: String
     private lateinit var sponsorPath: String
+    private lateinit var contributor: String
+    private lateinit var contributorId: String
+
     private var genderType: Int = 0
     private var toiletAccess: Int = 0
     private var toiletType: Int = 0
@@ -72,7 +75,17 @@ class MapsActivityDirections : AppCompatActivity(), OnMapReadyCallback {
         toiletName = intent.getStringExtra(getString(R.string.intent_toilet_name))
         toiletOwnedBy = intent.getStringExtra(getString(R.string.intent_toilet_owner))
         toiletSponsor = intent.getStringExtra(getString(R.string.intent_sponsor))
-        sponsorPath = intent.getStringExtra("SPONSOR_IMAGE_PATH")   // KARTIK_31-March-2019
+        sponsorPath = intent.getStringExtra(getString(R.string.intent_sponsor_image_path))   // KARTIK_31-March-2019
+
+        contributor = intent.getStringExtra(getString(R.string.intent_user_name))   // KARTIK_2_June_2019
+
+        contributorId = intent.getStringExtra(getString(R.string.intent_user_id))   // KARTIK_2_June_2019
+        if(contributorId == "") {
+            contributor = CurrentUser.getCurrentUser()
+            contributorId = CurrentUser.getCurrentUserID()
+        }
+        // KARTIK_2_June_2019 --- End
+
 
         toiletID = intent.getStringExtra(getString(R.string.intent_toilet_id))
         toiletAddress = intent.getStringExtra(getString(R.string.intent_toilet_address))
@@ -177,6 +190,8 @@ class MapsActivityDirections : AppCompatActivity(), OnMapReadyCallback {
             i.putExtra(getString(R.string.intent_toilet_owner), toiletOwnedBy)
             i.putExtra(getString(R.string.intent_sponsor), toiletSponsor)
             i.putExtra("SPONSOR_IMAGE_PATH",sponsorPath)        // KARTIK_31-March-2019
+            i.putExtra(getString(R.string.intent_user_name), contributor)     // KARTIK_2-June-2019
+            i.putExtra(getString(R.string.intent_user_name), contributorId)   // KARTIK_2-June-2019
 
 
             i.putExtra(getString(R.string.intent_toilet_type), toiletType)

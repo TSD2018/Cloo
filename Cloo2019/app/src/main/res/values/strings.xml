@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">cloo</string>
-    <string name="string_app_version">cloo\nver 0.78</string>
+    <string name="string_app_version">cloo\nver 0.80</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_maps__directions">Toilet Details</string>
     <string name="title_activity_my_profile">My Profile</string>
@@ -110,6 +110,9 @@
     <string name="intent_number_of_ratings">NUMBER_OF_RATINGS</string>
     <string name="intent_rating_sum_lifetime">RATING_SUM_LIFETIME</string>
     <string name="intent_number_of_ratings_lifetime">NUMBER_OF_RATINGS_LIFETIME</string>
+    <string name="intent_sponsor_image_path">SPONSOR_IMAGE_PATH</string>
+    <string name="intent_user_name">USER_NAME</string>
+    <string name="intent_user_id">USER_ID</string>
     <string name="strings_toilet_location">Toilet Location</string>
     <string name="status_toilet_master_created">New toilet is recorded</string>
     <string name="status_toilet_rating_saved">Appreciate your rating. Thank you!</string>
@@ -153,4 +156,5 @@
     <string name="title_activity_fullscreen">cloo</string>
     <string name="string_location_accuracy">Accuracy:</string>
     <string name="string_location_provider">Provider:</string>
+    <string name="title_activity_login">LoginActivity</string>
 </resources>

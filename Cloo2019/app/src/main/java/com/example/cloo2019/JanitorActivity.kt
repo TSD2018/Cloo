@@ -48,6 +48,8 @@ class JanitorActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var toiletOwnedBy: String
     private lateinit var toiletSponsor: String
     private lateinit var sponsorPath: String   // KARTIK_31_MARCH_2019
+    private lateinit var contributor: String   // KARTIK_2_June_2019
+    private lateinit var contributorId: String   // KARTIK_2_June_2019
 
     // form control member variable, requiring global scope
     private lateinit var looAddress: EditText
@@ -86,7 +88,9 @@ class JanitorActivity : AppCompatActivity(), OnMapReadyCallback {
         toiletMaintainedBy = intent.getStringExtra(getString(R.string.intent_toilet_maintained_by))  // ("TOILET_MAINTAINED BY")
         toiletOwnedBy = intent.getStringExtra(getString(R.string.intent_toilet_owner))  // ("TOILET_OWNED BY")
         toiletSponsor = intent.getStringExtra(getString(R.string.intent_sponsor))  // ("TOILET_SPONSOR")
-        sponsorPath = intent.getStringExtra("SPONSOR_IMAGE_PATH")   // KARTIK_31_MARCH_2019
+        sponsorPath = intent.getStringExtra(getString(R.string.intent_sponsor_image_path))   // KARTIK_31_MARCH_2019
+        contributor = intent.getStringExtra(getString(R.string.intent_user_name))   // KARTIK_2_June_2019
+        contributorId = intent.getStringExtra(getString(R.string.intent_user_id))   // KARTIK_2_June_2019
 
         userRating = intent.getDoubleExtra(getString(R.string.intent_rating), 0.0)  // ("RATING", 0.0)
         lastCleanedTimeStamp = intent.getStringExtra(getString(R.string.intent_last_cleaned))  // ("LAST_CLEANED")
@@ -293,6 +297,8 @@ class JanitorActivity : AppCompatActivity(), OnMapReadyCallback {
             toiletMaster.ratingSumLifeTime = ratingSumLifeTime   // retain the original value
             toiletMaster.numberOfRatingsLifeTime = numberOfRatingsLifeTime    // retain the original value
             toiletMaster.sponsorImagePath = sponsorPath  // from the server  :: KARTIK_31_MARCH_2019
+            toiletMaster.contributor = contributor  // from the server  :: KARTIK_2_June_2019
+            toiletMaster.contributorId = contributorId // from the server  :: KARTIK_2_June_2019
 
             val fireDBRef = FirebaseDatabase.getInstance().getReference("ToiletMaster")
             fireDBRef.child(toiletID).setValue(toiletMaster).addOnCompleteListener {

@@ -49,6 +49,7 @@ class LandingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate")
 
+
         setContentView(R.layout.activity_landing)
         setSupportActionBar(toolbar)
 
@@ -67,6 +68,10 @@ class LandingActivity : AppCompatActivity() {
 
         fab.setOnClickListener {
             val i = Intent(this, UserAddToiletActivity::class.java)
+            i.putExtra(getString(R.string.intent_user_name), CurrentUser.getCurrentUser())
+            i.putExtra(getString(R.string.intent_user_id), CurrentUser.getCurrentUserID())
+
+
 //            val i = Intent(this, MainActivityAddNewLoo::class.java)
             startActivity(i)
 

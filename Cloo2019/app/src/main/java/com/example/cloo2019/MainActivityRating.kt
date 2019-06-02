@@ -87,7 +87,8 @@ class MainActivityRating : AppCompatActivity() {
             return
         }
 
-        val userToiletRating = UserRating(userRatingId, toiletId, userID, ChosenRating, userComments,current)
+        val userToiletRating = UserRating(userRatingId, toiletId, CurrentUser.getCurrentUser(),
+            CurrentUser.getCurrentUserID(), ChosenRating, userComments,current)
 
         FireDBRef.child(userRatingId).setValue(userToiletRating).addOnCompleteListener {
 

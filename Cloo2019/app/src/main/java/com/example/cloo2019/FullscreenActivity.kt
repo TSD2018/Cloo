@@ -2,6 +2,8 @@ package com.example.cloo2019
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.ProgressDialog.show
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -22,7 +24,11 @@ import android.location.LocationManager
 import android.net.Uri
 import android.os.Handler
 import android.view.View
+import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.IdpResponse
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_fullscreen.*
+import java.util.*
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -30,6 +36,12 @@ import kotlinx.android.synthetic.main.activity_fullscreen.*
  */
 class FullscreenActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
     com.google.android.gms.location.LocationListener {
+
+//    private val LOGIN_REQUEST_CODE: Int = 1234
+//
+//    lateinit var providers : List<AuthUI.IdpConfig>
+
+
 
     private val TAG = "FullscreenActivity"
     private val NO_PERMISSION = 1
@@ -118,29 +130,62 @@ class FullscreenActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallba
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
-//        dummy_button.setOnTouchListener(mDelayHideTouchListener)
-//
-//        dummy_button.setOnClickListener{
-//            gotoLandingPage()
-//        }
-//
-//        var i = 0
-//        while (i < 200) {
-//            Thread.sleep(100)
-//            i += 1
-//        }
-//
+    }
+
+    private fun gotoLandingPage() {
+
+        Thread.sleep(5000)
+
+//        providers = Arrays.asList<AuthUI.IdpConfig>(
+//            AuthUI.IdpConfig.GoogleBuilder().build(),
+//            AuthUI.IdpConfig.EmailBuilder().build(),
+//            AuthUI.IdpConfig.PhoneBuilder().build() //,
+////            AuthUI.IdpConfig.FacebookBuilder().build()
+//        )
+
+        showSignInOptions()
+    }
+
+    private fun showSignInOptions() {
+//        startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder()
+//            .setAvailableProviders(providers)
+//            .build(), LOGIN_REQUEST_CODE
+//        )
+
+        val f = Intent(this, LoginActivity::class.java)
+        startActivity(f)
+        finish()
+
 //        val f = Intent(this, LandingActivity::class.java)
 //        startActivity(f)
 //        finish()
     }
 
-    private fun gotoLandingPage() {
-        Thread.sleep(5000)
-        val f = Intent(this, LandingActivity::class.java)
-        startActivity(f)
-        finish()
-    }
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//
+//        finish()
+//
+//        if(requestCode == LOGIN_REQUEST_CODE) {
+//            val response = IdpResponse.fromResultIntent(data)
+//
+//            if(resultCode == Activity.RESULT_OK) {
+//                val user = FirebaseAuth.getInstance().currentUser
+//                Toast.makeText(this, "" + user!!.email, Toast.LENGTH_SHORT).show()
+//                Thread.sleep(2000)
+//
+//                val f = Intent(this, LandingActivity::class.java)
+//                startActivity(f)
+//                finish()
+//            }
+//            else{
+//                val err = response?.error?.errorCode
+//                Log.d(TAG, "Error in Login Process = $err")
+//                Toast.makeText(this, "Sign in Failed", Toast.LENGTH_SHORT).show()
+//
+//            }
+//        }
+//    }
 
     @SuppressLint("MissingPermission")
     override fun onConnected(p0: Bundle?) {
@@ -187,16 +232,7 @@ class FullscreenActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallba
 
     override fun onLocationChanged(location: Location) {
 
-//        val msg = "Updated Location: " +
-//                java.lang.Double.toString(location.latitude) + "," +
-//                java.lang.Double.toString(location.longitude)
-//        mLatitudeTextView!!.text = location.latitude.toString()
-//        mLongitudeTextView!!.text = location.longitude.toString()
-//        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
-        // You can now create a LatLng Object for use with maps
-//        val latLng = LatLng(location.latitude, location.longitude)
         CurrentLocation.setLastLocation(location, location.provider)
-//        gotoLandingPage()
     }
 
     private fun checkLocation(): Boolean {
@@ -241,17 +277,6 @@ class FullscreenActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallba
             .setNegativeButton("Cancel") { paramDialogInterface, paramInt -> }
         dialog.show()
 
-//        finish()
-
-//        val dialog = AlertDialog.Builder(this)
-//        dialog.setTitle("Enable Location")
-//            .setMessage("Your Locations Settings is set to 'Off'.\nPlease Enable Location to " + "use this app")
-//            .setPositiveButton("Location Settings") { paramDialogInterface, paramInt ->
-//                val myIntent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-//                startActivity(myIntent)
-//            }
-//            .setNegativeButton("Cancel") { paramDialogInterface, paramInt -> }
-//        dialog.show()
     }
 
     override fun onStart() {

@@ -328,8 +328,10 @@ class UserAddToiletActivity : AppCompatActivity(), OnMapReadyCallback,
         }
         val toiletMasterRecord = ToiletMaster(toiletId, setLocation?.latitude!!, setLocation?.longitude!!,
             setLocation?.altitude!!, toiletNameString,  looAddress, 0.0,0,0,
-            0,0,toiletAccess,genderType,0,"","","",
-            "","","", "")
+            0,0,toiletAccess,genderType,0,"",
+            "","", "","","", "",
+            CurrentUser.getCurrentUser(), CurrentUser.getCurrentUserID())
+
         FireDBRef.child(toiletId).setValue(toiletMasterRecord).addOnCompleteListener {
             Toast.makeText(this@UserAddToiletActivity, getString(R.string.status_toilet_master_created)     //"New toiler created..."
                 , Toast.LENGTH_SHORT).show()

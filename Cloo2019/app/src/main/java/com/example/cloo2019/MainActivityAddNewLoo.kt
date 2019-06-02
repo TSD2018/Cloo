@@ -96,7 +96,8 @@ class MainActivityAddNewLoo : AppCompatActivity() {
         val toiletMasterRecord = ToiletMaster(toiletId, mLastLocation?.latitude!!, mLastLocation?.longitude!!,
             mLastLocation?.altitude!!, "",  looAddress, chosenRating.toDouble(),chosenRating,1,
             chosenRating,1,0,0,0,"","","",
-            "","","", "")
+            "","","", "",
+            CurrentUser.getCurrentUser(), CurrentUser.getCurrentUserID())
         FireDBRef.child(toiletId).setValue(toiletMasterRecord).addOnCompleteListener {
             Toast.makeText(this@MainActivityAddNewLoo, getString(R.string.status_toilet_master_created)     //"New toiler created..."
                 , Toast.LENGTH_SHORT).show()
@@ -111,7 +112,8 @@ class MainActivityAddNewLoo : AppCompatActivity() {
                 , Toast.LENGTH_SHORT).show()
             return
         }
-        val toiletRatingRecord = UserRating(toiletRatingId,toiletId,"",chosenRating,userComments,"" )
+        val toiletRatingRecord = UserRating(toiletRatingId,toiletId,CurrentUser.getCurrentUser(),
+            CurrentUser.getCurrentUserID(), chosenRating,userComments,"" )
         ratingRef.child(toiletRatingId).setValue(toiletRatingRecord).addOnCompleteListener {
             Toast.makeText(this@MainActivityAddNewLoo, getString(R.string.status_toilet_rating_saved)   // "and Rating Saved.  Thank you"
              , Toast.LENGTH_SHORT).show()
